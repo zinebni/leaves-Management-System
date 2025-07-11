@@ -56,7 +56,7 @@ function Home() {
     >
       <div className="px-5 sm:px-10 py-5 flex justify-between items-center">
         <WebSiteName />
-        <div className="flex items-center gap-2 sm:gap-5">
+        <div className="flex items-center gap-2d sm:gap-5">
           <button className="flex items-center gap-2 px-4 sm:px-5 py-1 sm:py-2 rounded-2xl font-semibold bg-lightBlue text-lg border-2 border-gray-600 cursor-pointer hover:bg-lightBlue/70 duration-500">
             {t('explore')}
             <MoveRight />
@@ -106,7 +106,7 @@ function Home() {
             </button>
           </div>
         </div>
-        <p className="mt-10  text-gray-600">
+        <p className="mt-5  text-gray-600">
           {t('footer')}
         </p>
       </div>
