@@ -5,3 +5,5 @@
   --color-mediumBlue: #2f51eb;
   --color-darkBlue: #1e36d7;
 }
+
+@custom-variant dark (&:where(.dark, .dark *));
