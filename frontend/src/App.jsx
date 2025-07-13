@@ -6,8 +6,9 @@ import 'aos/dist/aos.css';
 import { useEffect } from 'react';
 import './i18n/i18n';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
-import LoginPage from './Components/LoginPage';
+import LoginPage from './Components/login/LoginPage';
 import RegisterOrg from './Components/Organisation/RegisterOrg';
+import Otp from './Components/login/Otp';
 
 function App() {
 
@@ -25,6 +26,8 @@ function App() {
         <Route path='/Login/:role' element={<LoginPage/>}
         />
         <Route path='/Register/Organisation' element={<RegisterOrg />}
+        />
+        <Route path='/Login/Otp' element={<Otp />}
         />
       </Routes>  
     </Router>

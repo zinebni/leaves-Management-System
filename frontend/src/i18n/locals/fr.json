@@ -21,5 +21,10 @@
   "confirmedPasswordMismatch": "Mots de passe différents",
   "login": "Se connecter",
   "register": "S'inscrire",
-  "noAccount": "Vous n'avez pas de compte ?"
+  "noAccount": "Vous n'avez pas de compte ?",
+  "otp": {
+    "enter": "Entrez le code OTP",
+    "verify": "Vérifier",
+    "error": "Veuillez entrer le code complet"
+  }
 }

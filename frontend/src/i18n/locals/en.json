@@ -20,5 +20,10 @@
   "confirmedPasswordMismatch": "Passwords do not match",
   "login": "Login",
   "register": "Register",
-  "noAccount": "Don't have an account?"
+  "noAccount": "Don't have an account?",
+  "otp": {
+    "enter": "Enter OTP",
+    "verify": "Verify",
+    "error": "Please enter the full OTP"
+  }
 }

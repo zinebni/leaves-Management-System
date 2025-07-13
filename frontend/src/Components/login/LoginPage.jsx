@@ -3,9 +3,9 @@ import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom'
 import * as THREE from 'three';
 import NET from 'vanta/dist/vanta.net.min'
-import LanguageSwitcher from '../i18n/LanguageSwitcher';
+import LanguageSwitcher from '../../i18n/LanguageSwitcher';
 import { User, Building2, LockKeyhole } from 'lucide-react';
-import WebSiteName from './WebSiteName';
+import WebSiteName from '../WebSiteName';
 
 export default function LoginPage() {
   const {role} = useParams();
