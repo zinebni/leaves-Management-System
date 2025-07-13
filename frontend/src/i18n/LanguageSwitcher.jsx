@@ -41,7 +41,7 @@ export default function LanguageSwitcher() {
         className="cursor-pointer p-1"
         onClick={() => setOpenList(prev => !prev)}
       >
-        <Globe className="w-5 h-5" />
+        <Globe className="w-6 h-6" />
       </div>
 
       {openList && createPortal(Dropdown, document.body)}

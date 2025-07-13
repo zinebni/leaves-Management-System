@@ -40,15 +40,6 @@ function Home() {
     };
   }, []);
 
-  useEffect(() => {
-    const handleStorage = (e) => {
-      if (e.key === "theme") {
-        setTheme(e.newValue);
-      }
-    };
-    window.addEventListener("storage", handleStorage);
-    return () => window.removeEventListener("storage", handleStorage);
-  }, []);
 
   return (
     <div
@@ -78,7 +69,7 @@ function Home() {
 
         {/* Call to Action - Organisation */}
         <button
-          onClick={() => window.location.href = '/register-organisation'}
+          onClick={() => navigate('/Register/Organisation')}
           className="px-6 py-3 mb-8 rounded-2xl text-lg bg-mediumBlue text-white  cursor-pointer shadow-md
                       hover:bg-darkBlue hover:scale-105 duration-500
                     "
@@ -92,7 +83,7 @@ function Home() {
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <button
               className="px-4 py-2 border border-gray-500 rounded font-semibold cursor-pointer hover:bg-mediumBlue hover:text-white hover:border-none duration-500"
-              onClick={() => navigate('/Login/organisation')}
+              onClick={() => navigate('/Login/Organisation')}
             >
               {t('loginOrganization')}
             </button>

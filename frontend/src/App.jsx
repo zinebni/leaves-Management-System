@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import './i18n/i18n';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import LoginPage from './Components/LoginPage';
+import RegisterOrg from './Components/Organisation/RegisterOrg';
 
 function App() {
 
@@ -22,6 +23,8 @@ function App() {
         <Route path='/' element={<Home />}
         />
         <Route path='/Login/:role' element={<LoginPage/>}
+        />
+        <Route path='/Register/Organisation' element={<RegisterOrg />}
         />
       </Routes>  
     </Router>
