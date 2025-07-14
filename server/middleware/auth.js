@@ -2,8 +2,10 @@ import jwt from 'jsonwebtoken';
 
 const authMiddleware = async (req, res, next) => {
     try {
+    
         //1-recuperer le token dans le cookie
         const token = req.cookies.token;
+        console.log(token);
         if(!token){
             return res.status(401).json({success:false, message:"Non autorisé. Veuillez vous connecter."})
         }

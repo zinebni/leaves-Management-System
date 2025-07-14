@@ -104,6 +104,7 @@ export const sendVerifyOtp = async (req, res) => {
 
         //generate otp
         const otp = String(Math.floor(100000 + Math.random() * 900000));
+        //stocker otp
         employee.verifyOtp = otp;
         //set expiration time
         employee.verifyOtpExpireAt = Date.now() + 24*60*60*1000;; // 24 hours
@@ -134,6 +135,7 @@ export const sendVerifyOtp = async (req, res) => {
 
 //verify email
 export const verifyEmail = async (req,res)=>{
+    
      const { id: employeeId } = req.user;
      const { otp } = req.body;
      if(!employeeId||!otp){
