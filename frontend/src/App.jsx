@@ -9,6 +9,7 @@ import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import LoginPage from './Components/login/LoginPage';
 import RegisterOrg from './Components/Organisation/RegisterOrg';
 import Otp from './Components/login/Otp';
+import DashboardOrg from './Components/Organisation/dashboardOrg';
 
 function App() {
 
@@ -28,6 +29,8 @@ function App() {
         <Route path='/Register/Organisation' element={<RegisterOrg />}
         />
         <Route path='/Login/Otp' element={<Otp />}
+        />
+        <Route path='/Organisation' element={<DashboardOrg />}
         />
       </Routes>  
     </Router>
