@@ -21,7 +21,7 @@ connectDB(); //connecter la base de données
 //V-activer les middlewares----------------
 app.use(express.json());//// Middleware pour lire du JSON dans les requêtes
 app.use(cookieParser());// Middleware pour gérer les cookies
-app.use(cors({credentials: true}));// Middleware pour permettre les requêtes cross-origin (React → Express) // l'option truepermet l’envoi des cookies/JWT
+app.use(cors({origin: 'http://localhost:5173',credentials: true}));// Middleware pour permettre les requêtes cross-origin (React → Express) // l'option truepermet l’envoi des cookies/JWT
 
 
 //VI-faire appel aux routers creer == API Endpoints // creation des routes -------------------

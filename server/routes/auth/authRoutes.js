@@ -15,7 +15,7 @@ const authRouter = express.Router();
 
 //***les routes pour enregistrement et login des organisations */
 
-authRouter.post('/orgRegister',orgRegister);
+
 authRouter.post('/orgLogin',orgLogin);
 authRouter.post('/orgLogout',orgLogout);
 
@@ -30,6 +30,7 @@ authRouter.post('/send-reset-otp',sendResetOtp);
 authRouter.post('/reset-password',resetPassword);
 
 //***les routes pour register */
+authRouter.post('/orgRegister',orgRegister);
 authRouter.post('/rhRegister',authMiddleware,isOrgMiddleware,rhRegister);
 authRouter.post('/empRegister',authMiddleware,isRhMiddleware,empRegister);
 

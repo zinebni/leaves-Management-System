@@ -25,12 +25,23 @@ export const createDepartment = async (req, res) => {
     }
   };
   
-  //get all departments
-  export const getDepartments = async (req, res) => {
-    try {
+//get all departments
+export const getDepartments = async (req, res) => {
+  try {
       const departments = await departmentModel.find();
       res.status(200).json({ success: true, departments });
-    } catch (error) {
+  } catch (error) {
       res.status(500).json({ success: false, message: error.message });
-    }
-  };
+  }
+};
+
+//supprimer un department
+export const deleteDepartment = async (req, res) => {
+  const { id } = req.params;
+  try {
+    await departmentModel.findByIdAndDelete(id);
+    res.status(200).json({ success: true, message: 'Department supprimé avec succès.' });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
