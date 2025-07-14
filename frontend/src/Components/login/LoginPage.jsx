@@ -6,6 +6,8 @@ import NET from 'vanta/dist/vanta.net.min'
 import LanguageSwitcher from '../../i18n/LanguageSwitcher';
 import { User, Building2, LockKeyhole } from 'lucide-react';
 import WebSiteName from '../WebSiteName';
+import axios from 'axios';
+import Cookies from 'js-cookie';
 
 export default function LoginPage() {
   const {role} = useParams();
@@ -40,7 +42,7 @@ export default function LoginPage() {
     }
   },[]);
 
-  const login = () => {
+  const login = async () =>  {
     let isValid = true;
     const newError = {};
 
@@ -59,9 +61,32 @@ export default function LoginPage() {
 
     if(!isValid){
       setError(newError);
-    } else{
-      setError({});
+      return
+    } 
+
+    setError({});
+    const user = {
+      email,
+      password
+    };
+
+    try{
+      const res = await axios.post(
+        'http://127.0.0.1:4000/api/auth/login',
+        user
+      );
+      console.log(res);
+      const otp = await axios.post(
+        'http://127.0.0.1:4000/api/auth/send-verify-otp',
+        null, // No body in this case
+        { withCredentials: true } // ✅ This includes the token from the cookie
+      );
+
+      console.log(otp);
+    }  catch (error) {
+        console.log(error);
     }
+
   }
 
   return (
