@@ -10,6 +10,7 @@ import LoginPage from './Components/login/LoginPage';
 import RegisterOrg from './Components/Organisation/RegisterOrg';
 import Otp from './Components/login/Otp';
 import DashboardOrg from './Components/Organisation/dashboardOrg';
+import Dashbord from './Components/Dashbord';
 
 function App() {
 
@@ -31,6 +32,8 @@ function App() {
         <Route path='/Login/Otp' element={<Otp />}
         />
         <Route path='/Organisation' element={<DashboardOrg />}
+        />
+        <Route path='/Dashbord' element={<Dashbord />}
         />
       </Routes>  
     </Router>

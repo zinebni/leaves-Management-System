@@ -4,6 +4,7 @@ import NET from 'vanta/dist/vanta.net.min'
 import LanguageSwitcher from '../../i18n/LanguageSwitcher';
 import WebSiteName from '../WebSiteName';
 import { useTranslation } from 'react-i18next';
+import axios from 'axios';
 
 export default function Otp() {
   const {t} = useTranslation();
@@ -45,12 +46,23 @@ export default function Otp() {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const finalOtp = otp.join('');
     if (finalOtp.length === 6) {
       setError('');
-      alert(`OTP Submitted: ${finalOtp}`);
-      // Call API here
+      const otp = {
+        otp: finalOtp
+      };
+      console.log(otp);
+
+      try {
+        const res = await axios.post('http://127.0.0.1:4000/api/auth/verify-account', otp, {
+          withCredentials: true
+        });
+        navigate('/Dashbord');
+      } catch (error) {
+        console.error("verify failed:", error?.response?.data || error.message);
+      }
     } else {
       setError(t('otp.error'));
     }

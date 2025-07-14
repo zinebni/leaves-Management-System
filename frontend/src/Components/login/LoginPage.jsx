@@ -84,27 +84,29 @@ export default function LoginPage() {
 
         } else {
           const user = {
-          email,
-          password
-        };
+            email,
+            password
+          };
+            try {
+            // 1. Login: Set token in HTTP-only cookie
+            const res = await axios.post('http://localhost:4000/api/auth/login', user, {
+              withCredentials: true
+            });
+            console.log("Login success", res.data);
 
-        
-    try {
-    // 1. Login: Set token in HTTP-only cookie
-    const res = await axios.post('http://localhost:4000/api/auth/login', user, {
-      withCredentials: true
-    });
-    console.log("Login success", res.data);
+            // 2. Call OTP API (token is sent automatically via cookie)
+            const otpRes = await axios.post('http://localhost:4000/api/auth/send-verify-otp', null, {
+              withCredentials: true
+            });
 
-    // 2. Call OTP API (token is sent automatically via cookie)
-    const otpRes = await axios.post('http://localhost:4000/api/auth/send-verify-otp', null, {
-      withCredentials: true
-    });
-    console.log("OTP sent:", otpRes.data);
+            setTimeout(() => {
+              navigate('/Login/Otp');
+            }, 2000);
+            console.log("OTP sent:", otpRes.data);
 
-  } catch (error) {
-    console.error("Login or OTP failed:", error?.response?.data || error.message);
-  }
+          } catch (error) {
+            console.error("Login or OTP failed:", error?.response?.data || error.message);
+          }
     }
     
 
