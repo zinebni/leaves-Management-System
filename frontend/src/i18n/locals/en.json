@@ -7,5 +7,23 @@
   "loginOrganization": "Organization Login",
   "loginRH": "HR Login",
   "loginEmployee": "Employee Login",
-  "footer": "© 2025 – Leave management platform compliant with Moroccan legal framework"
+  "footer": "© 2025 – Leave management platform compliant with Moroccan legal framework",
+  "emailPlaceholder": "Email",
+  "passwordPlaceholder": "Password",
+  "orgIDPlaceholder": "Organization ID",
+  "descriptionPlaceholder": "Organization description",
+  "emailRequired": "Email is required",
+  "orgIDRequired": "Organization ID is required",
+  "passwordRequired": "Password is required",
+  "confirmedPasswordPlaceholder": "Confirm password",
+  "confirmedPasswordRequired": "Please confirm your password",
+  "confirmedPasswordMismatch": "Passwords do not match",
+  "login": "Login",
+  "register": "Register",
+  "noAccount": "Don't have an account?",
+  "otp": {
+    "enter": "Enter OTP",
+    "verify": "Verify",
+    "error": "Please enter the full OTP"
+  }
 }

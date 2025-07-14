@@ -6,11 +6,12 @@ import { MoveRight } from 'lucide-react';
 import WebSiteName from "./WebSiteName";
 import LanguageSwitcher from "../i18n/LanguageSwitcher";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
   const vantaRef = useRef(null); //  is a React ref to the <div> where the Vanta animation will appear.
   const [vantaEffect, setVantaEffect] = useState(null); //holds the instance of the Vanta animation effect so you can destroy it when the component unmounts.
-  const slogan = 'Faciliter vos congés, valoriser votre temps en toute transparence';
+  const navigate = useNavigate();
   const {t} = useTranslation();
 
   useEffect(() => {
@@ -39,15 +40,6 @@ function Home() {
     };
   }, []);
 
-  useEffect(() => {
-    const handleStorage = (e) => {
-      if (e.key === "theme") {
-        setTheme(e.newValue);
-      }
-    };
-    window.addEventListener("storage", handleStorage);
-    return () => window.removeEventListener("storage", handleStorage);
-  }, []);
 
   return (
     <div
@@ -77,7 +69,7 @@ function Home() {
 
         {/* Call to Action - Organisation */}
         <button
-          onClick={() => window.location.href = '/register-organisation'}
+          onClick={() => navigate('/Register/Organisation')}
           className="px-6 py-3 mb-8 rounded-2xl text-lg bg-mediumBlue text-white  cursor-pointer shadow-md
                       hover:bg-darkBlue hover:scale-105 duration-500
                     "
@@ -91,16 +83,19 @@ function Home() {
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <button
               className="px-4 py-2 border border-gray-500 rounded font-semibold cursor-pointer hover:bg-mediumBlue hover:text-white hover:border-none duration-500"
+              onClick={() => navigate('/Login/Organisation')}
             >
               {t('loginOrganization')}
             </button>
             <button
               className="px-4 py-2 border border-gray-500 rounded font-semibold cursor-pointer hover:bg-mediumBlue hover:text-white hover:border-none duration-500"
+              onClick={() => navigate('/Login/RH')}
             >
               {t('loginRH')}
             </button>
             <button
               className="px-4 py-2 border border-gray-500 rounded font-semibold  cursor-pointer hover:bg-mediumBlue hover:text-white hover:border-none duration-500"
+              onClick={() => navigate('/Login/Employee')}
             >
               {t('loginEmployee')}
             </button>

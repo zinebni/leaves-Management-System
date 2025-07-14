@@ -7,5 +7,24 @@
   "loginOrganization": "Connexion Organisation",
   "loginRH": "Connexion RH",
   "loginEmployee": "Connexion Employé",
-  "footer": "© 2025 – Plateforme de gestion des congés conforme au cadre légal marocain"
+  "footer": "© 2025 – Plateforme de gestion des congés conforme au cadre légal marocain",
+  "emailPlaceholder": "Email",
+  "passwordPlaceholder": "Mot de passe",
+  "orgIDPlaceholder": "Identifiant de l'organisation",
+  "descriptionPlaceholder": "Description de l'organisation",
+  "emailRequired": "Email requis",
+  "orgIDRequired": "Identifiant requis",
+  "passwordRequired": "Mot de passe requis",
+  "descriptionRequired": "Description requise",
+  "confirmedPasswordPlaceholder": "Confirmez le mot de passe",
+  "confirmedPasswordRequired": "Confirmez le mot de passe",
+  "confirmedPasswordMismatch": "Mots de passe différents",
+  "login": "Se connecter",
+  "register": "S'inscrire",
+  "noAccount": "Vous n'avez pas de compte ?",
+  "otp": {
+    "enter": "Entrez le code OTP",
+    "verify": "Vérifier",
+    "error": "Veuillez entrer le code complet"
+  }
 }
