@@ -58,7 +58,7 @@ export const logout = async (req, res)=>{
         res.clearCookie('token',{
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',
-                sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
+                sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
                 maxAge: 7*24*60*60*1000
             });
 
@@ -75,7 +75,7 @@ export const logout = async (req, res)=>{
 //send verification  otp to the User's email
 export const sendVerifyOtp = async (req, res) => {
     try {
-        const employeeId  = req.employee.id;
+        const employeeId  = req.user.id;
         const employee = await employeeModel.findById(employeeId);
 
         if(employee.isAccountVerified){
@@ -117,7 +117,7 @@ export const sendVerifyOtp = async (req, res) => {
 
 //verify email
 export const verifyEmail = async (req,res)=>{
-     const { id: employeeId } = req.employee;
+     const { id: employeeId } = req.user;
      const { otp } = req.body;
      if(!employeeId||!otp){
         return res.status(400).json({

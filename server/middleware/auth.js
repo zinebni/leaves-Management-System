@@ -15,7 +15,7 @@ const authMiddleware = async (req, res, next) => {
             return res.status(401).json({success:false, message:"Non autorisé."})
         }
 
-        req.employee={
+        req.user={
             id:tokenDecoded.id,
             role:tokenDecoded.role,
         } 

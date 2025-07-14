@@ -1,5 +1,4 @@
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
 import { v4 as uuidv4 } from 'uuid';
 import transporter from '../../config/nodemailer.js';
 import employeeModel from '../../models/employeeModel.js';
@@ -45,22 +44,22 @@ export const rhRegister = async(req,res)=>{
     //5-Sauvgarder dans la base de données
         await RH.save();
 
-    //6-generer un token JWT
-        const payload= {
-            id:RH._id,
-            role:RH.role,
-        };
-        const  secretKey = process.env.JWT_SECRET;
-        const token = jwt.sign(payload,secretKey,{expiresIn:'7d'});
+    // //6-generer un token JWT
+    //     const payload= {
+    //         id:RH._id,
+    //         role:RH.role,
+    //     };
+    //     const  secretKey = process.env.JWT_SECRET;
+    //     const token = jwt.sign(payload,secretKey,{expiresIn:'7d'});
 
-    //7-envoyer le token dans la reponse avec un cookie
-        res.cookie(
-            'token',token,{
-                httpOnly: true,
-                secure: process.env.NODE_ENV === 'production',
-                sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
-                maxAge: 7*24*60*60*1000
-            });
+    // //7-envoyer le token dans la reponse avec un cookie
+    //     res.cookie(
+    //         'token',token,{
+    //             httpOnly: true,
+    //             secure: process.env.NODE_ENV === 'production',
+    //             sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    //             maxAge: 7*24*60*60*1000
+    //         });
         
     //8-sending welcome email
         const  mailOptions = {
