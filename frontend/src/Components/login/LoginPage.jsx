@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import * as THREE from 'three';
 import NET from 'vanta/dist/vanta.net.min'
 import LanguageSwitcher from '../../i18n/LanguageSwitcher';
@@ -18,6 +18,7 @@ export default function LoginPage() {
   const [orgId, setOrgId] = useState('');
   const [password, setPassword]  = useState('');
   const [error, setError] = useState({});
+  const navigate = useNavigate();
 
   useEffect(() => {
     if(!vantaEffect){
@@ -65,28 +66,47 @@ export default function LoginPage() {
     } 
 
     setError({});
-    const user = {
-      email,
-      password
-    };
+    if(role === 'Organisation'){
+      const org = {
+        orgID: orgId,
+        password
+      };
+      console.log(org);
 
-    try{
-      const res = await axios.post(
-        'http://127.0.0.1:4000/api/auth/login',
-        user,
-  { withCredentials: true } // ✅ THIS IS REQUIRED
-      );
+      try {
+        const res = await axios.post('http://127.0.0.1:4000/api/auth/orgLogin', org, {
+          withCredentials: true
+        });
+        navigate('/Organisation');
+      } catch (error) {
+        console.error("Login failed:", error?.response?.data || error.message);
+      }
 
-      const otp = await axios.post('http://localhost:4000/api/auth/send-verify-otp', null, {
-  withCredentials: true
-});
+        } else {
+          const user = {
+          email,
+          password
+        };
 
+        
+    try {
+    // 1. Login: Set token in HTTP-only cookie
+    const res = await axios.post('http://localhost:4000/api/auth/login', user, {
+      withCredentials: true
+    });
+    console.log("Login success", res.data);
 
-      console.log(otp);
-      console.log(res);
-    }  catch (error) {
-        console.log(error);
+    // 2. Call OTP API (token is sent automatically via cookie)
+    const otpRes = await axios.post('http://localhost:4000/api/auth/send-verify-otp', null, {
+      withCredentials: true
+    });
+    console.log("OTP sent:", otpRes.data);
+
+  } catch (error) {
+    console.error("Login or OTP failed:", error?.response?.data || error.message);
+  }
     }
+    
 
   }
 
