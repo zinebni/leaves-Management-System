@@ -1,5 +1,5 @@
 import express from 'express';
-import { rhRegister } from '../../controllers/auth/rhRegisterController.js';
+
 
 //1- utiliser express pour creer un routeur 
 const rhRouter = express.Router(); 
