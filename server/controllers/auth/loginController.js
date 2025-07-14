@@ -53,21 +53,38 @@ export const login = async (req,res)=>{
 }
 
 //logout
-export const logout = async (req, res)=>{
+// logout
+export const logout = async (req, res) => {
     try {
-        res.clearCookie('token',{
-                httpOnly: true,
-                secure: process.env.NODE_ENV === 'production',
-                sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-                maxAge: 7*24*60*60*1000
-            });
+        const token = req.cookies.token;
+        const tokenDecoded = jwt.verify(token, process.env.JWT_SECRET);
+        const role = tokenDecoded.role;
+        if(role === 'org'){
+            return res.status(400).json({
+                success:false,
+                message:'logout not allowed for org'
+            })
+        }
+        const employeeId = tokenDecoded.id;
 
-        //envoyer la reponse
-        return res.status(200).json({success:true, message:"Déconnexion réussie."});
+        // Mise à jour de isAccountVerified à false
+        await employeeModel.findByIdAndUpdate(employeeId, { isAccountVerified: false });
+
+        // Supprimer le cookie JWT
+        res.clearCookie('token', {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+            maxAge: 0
+        });
+
+        return res.status(200).json({ success: true, message: "Déconnexion réussie. Compte à revérifier à la prochaine connexion." });
+
     } catch (error) {
-        return res.status(500).json({success:false, message:error.message})
+        return res.status(500).json({ success: false, message: error.message });
     }
-}
+};
+
 
 
 //!!! pour les fonction suivant l'utilisateur envoi son const { employeeId } = req.body; grace au midedleware qui accede au token stocker dans le cookie enregistré sur le navigateur

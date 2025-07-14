@@ -11,7 +11,7 @@ const authMiddleware = async (req, res, next) => {
         const tokenDecoded = jwt.verify(token,process.env.JWT_SECRET);
         
        
-        if(!tokenDecoded.id){
+        if(!tokenDecoded.id || !tokenDecoded.role){
             return res.status(401).json({success:false, message:"Non autorisé."})
         }
 
