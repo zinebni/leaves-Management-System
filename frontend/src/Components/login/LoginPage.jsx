@@ -73,16 +73,17 @@ export default function LoginPage() {
     try{
       const res = await axios.post(
         'http://127.0.0.1:4000/api/auth/login',
-        user
-      );
-      console.log(res);
-      const otp = await axios.post(
-        'http://127.0.0.1:4000/api/auth/send-verify-otp',
-        null, // No body in this case
-        { withCredentials: true } // ✅ This includes the token from the cookie
+        user,
+  { withCredentials: true } // ✅ THIS IS REQUIRED
       );
 
+      const otp = await axios.post('http://localhost:4000/api/auth/send-verify-otp', null, {
+  withCredentials: true
+});
+
+
       console.log(otp);
+      console.log(res);
     }  catch (error) {
         console.log(error);
     }
