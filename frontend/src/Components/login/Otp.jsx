@@ -1,10 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react'
+import axios from 'axios';
+import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import * as THREE from 'three';
-import NET from 'vanta/dist/vanta.net.min'
+import NET from 'vanta/dist/vanta.net.min';
 import LanguageSwitcher from '../../i18n/LanguageSwitcher';
 import WebSiteName from '../WebSiteName';
-import { useTranslation } from 'react-i18next';
-import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export default function Otp() {
   const {t} = useTranslation();
@@ -13,6 +14,7 @@ export default function Otp() {
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const inputRefs = useRef([]);
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleChange = (e, index) => {
     const value = e.target.value.replace(/\D/, ''); // Only digits
@@ -50,13 +52,10 @@ export default function Otp() {
     const finalOtp = otp.join('');
     if (finalOtp.length === 6) {
       setError('');
-      const otp = {
-        otp: finalOtp
-      };
-      console.log(otp);
+    
 
       try {
-        const res = await axios.post('http://127.0.0.1:4000/api/auth/verify-account', otp, {
+        const res = await axios.post('http://localhost:4000/api/auth/verify-account', {otp: finalOtp}, {
           withCredentials: true
         });
         navigate('/Dashbord');

@@ -1,13 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { useTranslation } from 'react-i18next';
-import { useNavigate, useParams } from 'react-router-dom'
-import * as THREE from 'three';
-import NET from 'vanta/dist/vanta.net.min'
-import LanguageSwitcher from '../../i18n/LanguageSwitcher';
-import { User, Building2, LockKeyhole } from 'lucide-react';
-import WebSiteName from '../WebSiteName';
 import axios from 'axios';
-import Cookies from 'js-cookie';
+import { Building2, LockKeyhole, User } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useNavigate, useParams } from 'react-router-dom';
+import * as THREE from 'three';
+import NET from 'vanta/dist/vanta.net.min';
+import LanguageSwitcher from '../../i18n/LanguageSwitcher';
+import WebSiteName from '../WebSiteName';
 
 export default function LoginPage() {
   const {role} = useParams();
@@ -74,7 +73,7 @@ export default function LoginPage() {
       console.log(org);
 
       try {
-        const res = await axios.post('http://127.0.0.1:4000/api/auth/orgLogin', org, {
+        const res = await axios.post('http://localhost:4000/api/auth/orgLogin', org, {
           withCredentials: true
         });
         navigate('/Organisation');
