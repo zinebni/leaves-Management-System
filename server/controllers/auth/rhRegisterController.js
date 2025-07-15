@@ -46,24 +46,10 @@ export const rhRegister = async(req,res)=>{
     //5-Sauvgarder dans la base de données
         await RH.save();
 
-    // //6-generer un token JWT
-    //     const payload= {
-    //         id:RH._id,
-    //         role:RH.role,
-    //     };
-    //     const  secretKey = process.env.JWT_SECRET;
-    //     const token = jwt.sign(payload,secretKey,{expiresIn:'7d'});
-
-    // //7-envoyer le token dans la reponse avec un cookie
-    //     res.cookie(
-    //         'token',token,{
-    //             httpOnly: true,
-    //             secure: process.env.NODE_ENV === 'production',
-    //             sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-    //             maxAge: 7*24*60*60*1000
-    //         });
+    //6-creer ses droits de conge par defaut
+        await createDefaultLeaveRights(RH);
         
-    //8-sending welcome email
+    //7-sending welcome email
         const  mailOptions = {
             from: process.env.SENDER_EMAIL,
             to: verificationEmail,
@@ -72,7 +58,7 @@ export const rhRegister = async(req,res)=>{
           };
         await transporter.sendMail(mailOptions);
         
-    //9-envoyer la reponse
+    //8-envoyer la reponse
         res.status(201).json({success:true,message:"RH enregistré avec succès."});
     }catch(error){
         res.status(500).json({success:false, message:error.message})

@@ -114,21 +114,22 @@ export const createDefaultLeaveRights = async (employee) => {
   
 
 
-// creer un droit de congé
-export const createCustomRights = async (req, res) => {
+// creer un droit  au congé
+export const createCustomRight = async (req, res) => {
   try {
-    const { employeeId, droits } = req.body;
+    const {employeeId} = req.params;
+    const {type,joursAutorisee,estPaye} = req.body;
 
-    const droitsFormates = droits.map(d => ({
-      employee: employeeId,
-      type: d.type,
-      joursAutorisee: d.joursAutorisee,
-      estPaye: d.estPaye
-    }));
+    const droitsFormates = new DroitConge({
+        employee: employeeId,
+        type,
+        joursAutorisee,
+        estPaye,
+    });
 
-    await DroitConge.insertMany(droitsFormates);
+    await droitsFormates.save();
 
-    res.status(201).json({ success: true, message: 'Droits de congé personnalisés créés.' });
+    res.status(201).json({ success: true, message: `Droits au congé ${droitsFormates.type} créés.` });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }

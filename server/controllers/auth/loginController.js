@@ -30,7 +30,7 @@ export const login = async (req,res)=>{
         
 
         //savoir s'il a droit au conge 
-        const eligible = isEligibleForLeave(employee.dateDeRecrutement);
+        const eligible = isEligibleForLeave(employee.dateDeRecrutement); //pour envoyer alert dans le frontend "vous n'avez pas le droit au conge annuel"
 
         //4-generer un token JWT
         const payload= {

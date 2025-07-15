@@ -35,11 +35,11 @@ export const deleteEmployeeById = async (req, res) => {
 //update employee by id
 export const updateEmployeeById = async (req, res) => {
     const { id } = req.params;
-    const { nom, prenom, verificationEmail, department, dateDeDepart } = req.body;
+    const { nom, prenom, verificationEmail, department,dateDeRecrutement, dateDeDepart,sexe,situationFamiliale,nombreEnfants } = req.body;
     try {
       const employee = await employeeModel.findByIdAndUpdate(
         id,
-        { nom, prenom, verificationEmail, department, dateDeDepart},
+        { nom, prenom, verificationEmail, department,dateDeRecrutement, dateDeDepart,sexe,situationFamiliale,nombreEnfants},
         { new: true }
       );
       res.status(200).json({ success: true, employee });
