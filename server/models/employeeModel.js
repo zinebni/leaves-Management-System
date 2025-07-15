@@ -49,6 +49,20 @@ const employeeSchema = new mongoose.Schema(
     organisation:{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Organisation",
+    },
+    sexe: {
+        type: String,
+        enum: ['Homme', 'Femme'],
+        required: true
+    },
+    situationFamiliale: {
+    type: String,
+    enum: ['célibataire', 'marié(e)', 'divorcé(e)'],
+    default: 'célibataire'
+    },
+    nombreEnfants: {
+        type: Number,
+        default: 0
     }
     },
 
