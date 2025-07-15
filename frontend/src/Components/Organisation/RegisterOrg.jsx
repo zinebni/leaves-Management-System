@@ -6,12 +6,14 @@ import LanguageSwitcher from '../../i18n/LanguageSwitcher';
 import { useTranslation } from 'react-i18next';
 import { Mail, Building2, FileText, LockKeyhole } from 'lucide-react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 
 export default function RegisterOrg() {
   const vantaRef = useRef(null)
   const [vantaEffect, setVantaEffect] = useState(null);
   const {t} = useTranslation();
+  const navigate = useNavigate();
 
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -19,6 +21,8 @@ export default function RegisterOrg() {
   const [confirmedPassword, setConfirmedPassword] = useState('');
   const [email, setEmail] = useState('');
   const [error, setError] = useState({});
+  const [message, setMessage] = useState('');
+  const [statusMessage, setStatusMessage] = useState(true);
 
   useEffect(() => {
     if(!vantaEffect){
@@ -82,6 +86,7 @@ export default function RegisterOrg() {
 
     setError({});
     const organisation = {
+      email,
       nom: name,
       description,
       password
@@ -90,9 +95,27 @@ export default function RegisterOrg() {
     try{
       const res = await axios.post('http://localhost:4000/api/auth/orgRegister', organisation);
       if(res.status === 201){
-        console.log(res.data);
+        setMessage(t('orgAccountCreated'));
+        setStatusMessage(true);
+        setTimeout(async () => {
+          const org = {
+            email,
+            password
+          };
+          //login
+          try {
+            const res = await axios.post('http://localhost:4000/api/auth/orgLogin', org, {
+              withCredentials: true
+            });
+            const orgID = res.data.orgID;
+            navigate(`/Organisation/${orgID}`);
+          } catch (error) {
+            console.error("Login failed:", error?.response?.data || error.message);
+          }
+        }, 3000);
       } else {
-        console.log(res.data.message);
+        setMessage(t('emailAlreadyExists'));
+        setStatusMessage(false);
       }
 
     }catch(error){
@@ -216,6 +239,9 @@ export default function RegisterOrg() {
               {error.confirmedPassword}
             </p>
           </div>
+          <p className={`mb-5 text-base font-semibold ${statusMessage ? 'text-darkBlue' : 'text-red-600'}`}>
+            {message}
+          </p>
           <button className='text-base sm:text-lg font-semibold bg-mediumBlue w-3xs sm:w-xs py-2 text-white rounded-xl mb-2 cursor-pointer hover:bg-darkBlue'
             onClick={register}
           >

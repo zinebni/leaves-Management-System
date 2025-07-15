@@ -14,10 +14,11 @@ export default function LoginPage() {
   const vantaRef = useRef(null);
   const [vantaEffect, setVantaEffect] = useState(null);
   const [email, setEmail] = useState('');
-  const [orgId, setOrgId] = useState('');
   const [password, setPassword]  = useState('');
   const [error, setError] = useState({});
   const navigate = useNavigate();
+  const [message, setMessage] = useState('');
+  const [statusMessage, setStatusMessage] = useState(true);
 
   useEffect(() => {
     if(!vantaEffect){
@@ -46,11 +47,7 @@ export default function LoginPage() {
     let isValid = true;
     const newError = {};
 
-    if(role === 'Organisation' && !orgId.trim()){
-      isValid = false;
-      newError.orgId = t("orgIDRequired");
-    }
-    else if (role !== 'Organisation' && !email.trim()){
+    if (!email.trim()){
       isValid = false;
       newError.email = t("emailRequired");
     }
@@ -67,21 +64,25 @@ export default function LoginPage() {
     setError({});
     if(role === 'Organisation'){
       const org = {
-        orgID: orgId,
+        email,
         password
       };
-      console.log(org);
 
       try {
         const res = await axios.post('http://localhost:4000/api/auth/orgLogin', org, {
           withCredentials: true
         });
-        navigate('/Organisation');
+        const orgID = res.data.orgID;
+        setMessage(t('loginSuccess'));
+        setStatusMessage(true);
+        setInterval(() => { 
+          navigate(`/Organisation/${orgID}`);
+        }, 2000);
       } catch (error) {
-        console.error("Login failed:", error?.response?.data || error.message);
+        setMessage(t('invalidCredentials'));
+        setStatusMessage(false);
       }
-
-        } else {
+   } else {
           const user = {
             email,
             password
@@ -133,30 +134,17 @@ export default function LoginPage() {
                 *-translate-y-1/2 shifts the icon up by 50% of its own height, which repositions it to be truly centered.
                 * the first - in translate mean negative
              */}
-            {role === 'Organisation' ?
-              <>
-                <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600">
-                  <Building2 size={20} />
-                </span>
-                <input 
-                  placeholder={t("orgIDPlaceholder")}
-                  value={orgId}
-                  onChange={(e) => setOrgId(e.target.value)}
-                  className="pl-10 pr-4 py-3 rounded-2xl bg-zinc-200 border-gray-700 w-full"
-                /> 
-              </>: 
-              <>
-                <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600">
-                  <Mail size={20} />
-                </span>
-                <input 
-                  placeholder={t("emailPlaceholder")}
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="pl-10 pr-4 py-3 rounded-2xl bg-zinc-200 border-gray-700 w-full"
-                />
-              </>
-            }
+            <>
+              <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600">
+                <Mail size={20} />
+              </span>
+              <input 
+                placeholder={t("emailPlaceholder")}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="pl-10 pr-4 py-3 rounded-2xl bg-zinc-200 border-gray-700 w-full"
+              />
+            </>
           </div>
           <p className='pl-5 text-red-700'>
             {role === 'Organisation' ? error.orgId : error.email}
@@ -179,6 +167,9 @@ export default function LoginPage() {
             {error.password}
           </p>
         </div>
+        <p className={`mb-5 text-base font-semibold ${statusMessage ? 'text-darkBlue' : 'text-red-600'}`}>
+          {message}
+        </p>
         <button className='text-base sm:text-lg font-semibold bg-mediumBlue w-3xs sm:w-xs py-2 text-white rounded-xl mb-2 cursor-pointer hover:bg-darkBlue'
           onClick={login}
         >

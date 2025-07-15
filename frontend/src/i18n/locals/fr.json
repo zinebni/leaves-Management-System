@@ -27,5 +27,8 @@
     "verify": "Vérifier",
     "error": "Veuillez entrer le code complet"
   },
-  "orgIdMessage": "Votre identifiant d'organisation est {{orgId}}. Connexion en cours…"
+  "orgAccountCreated": "Compte créé avec succès. Connexion en cours…",
+  "emailAlreadyExists": "Un compte avec cet e-mail existe déjà.",
+  "loginSuccess": "Connexion réussie. Redirection en cours…",
+  "invalidCredentials": "E-mail ou mot de passe incorrect."
 }
