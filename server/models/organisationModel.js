@@ -6,6 +6,11 @@ import mongooseDelete from 'mongoose-delete'; //pour instaler :npm install mongo
 const organisationSchema = new mongoose.Schema(
     //a-ajouter les champs
     {
+    email : {
+        type: String,
+        required: true,
+        unique: true,
+    },
     orgID:{type:String, required:true, unique:true, trim:true},
     nom:{type:String, required:true , trim:true},
     description:{type:String, required:false},

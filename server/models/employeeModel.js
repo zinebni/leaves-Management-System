@@ -15,7 +15,7 @@ const employeeSchema = new mongoose.Schema(
         validate: {
             validator: function (value) {
                
-                return /^[^\s@]+@[^\s@]+\.aufes\.org$/.test(value);
+                return /^[^\s@]+@[^\s@]+\.org$/.test(value);
             },
             message: 'Format d\'adresse e-mail invalide, veuillez saisir une adresse e-mail valide.',
         }

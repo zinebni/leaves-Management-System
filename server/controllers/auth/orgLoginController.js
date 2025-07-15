@@ -5,8 +5,8 @@ import organisationModel from '../../models/organisationModel.js';
 //login
 export const orgLogin = async (req,res)=>{
     //1-recuperer les infos chargées dans la requet http
-    const {orgID,password} = req.body;
-    if(!orgID||!password){
+    const {email,password} = req.body;
+    if(!email||!password){
         return res.status(400).json({
             success:false,
             message:'Informations incomplètes.'
@@ -15,7 +15,7 @@ export const orgLogin = async (req,res)=>{
     
     try {
         //2-verifier si l'organisation existe
-        const org = await organisationModel.findOne({orgID});
+        const org = await organisationModel.findOne({email});
         if(!org){
             return res.status(401).json({success:false, message:"Email ou mot de passe incorrect !"})
         }
