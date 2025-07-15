@@ -12,11 +12,11 @@ const droitCongeSchema = new mongoose.Schema(
             
         type:{
             type:String,
-            enum:['annuel', 'maternite', 'paternite', 'maladie', 'sans_solde'],
+            //enum:['annuel', 'maternite', 'paternite', 'maladie', 'sans_solde','Décès','Mariage d\’un enfant','Circoncision d’un enfant','examen'],
             required:true,
         },
 
-        joursAutorisee:{type:Number, required:true},
+        joursAutorisee:{type:Number, default:0},
 
         joursPris:{type:Number, default:0},
 

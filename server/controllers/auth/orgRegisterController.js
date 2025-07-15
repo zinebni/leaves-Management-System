@@ -19,7 +19,7 @@ export const orgRegister = async (req, res) => {
         const existingOrg = await organisationModel.findOne({ email });
         
         if (existingOrg) {
-            return res.json({ success: false, message: "une organisation avec cet email existe déjà." });
+            return res.status(400).json({ success: false, message: "une organisation avec cet email existe déjà." });
         }
         
         // Générer un orgID unique

@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import transporter from '../../config/nodemailer.js';
 import employeeModel from '../../models/employeeModel.js';
+import { isEligibleForLeave } from '../../utils/isEligibleForLeave.js';
 
 //login
 export const login = async (req,res)=>{
@@ -27,6 +28,10 @@ export const login = async (req,res)=>{
             return res.status(401).json({success:false, message:"Email ou mot de passe incorrect."})
         }
         
+
+        //savoir s'il a droit au conge 
+        const eligible = isEligibleForLeave(user.dateDeRecrutement);
+
         //4-generer un token JWT
         const payload= {
             id:employee._id,
@@ -45,7 +50,17 @@ export const login = async (req,res)=>{
             });
         
         //6-envoyer la reponse (ou le role de l'utilisateur pour le rederiger correctement vers la page RH ou employee dans le frontend)
-        res.status(200).json({success:true,message:"Connexion réussie.",role:`${employee.role}`});
+        res.status(200).json({
+            success:true,
+            message:"Connexion réussie.",
+            data: {
+            nom: employee.nom,
+            prenom: employee.prenom,
+            role: employee.role,
+            dateDeRecrutement: employee.dateDeRecrutement,
+            isEligibleForLeave: eligible
+            }
+        });
     } catch (error) {
         res.status(500).json({success:false, message:error.message})
     }

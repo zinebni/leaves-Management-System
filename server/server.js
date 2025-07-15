@@ -12,6 +12,7 @@ import authRouter from './routes/auth/authRoutes.js';
 import departmentRouter from './routes/departmentRoutes/departmentRoutes.js';
 import employeeRouter from './routes/employeeRoutes/employeeRoutes.js';
 import rhRouter from './routes/rhRoutes/rhRoutes.js';
+import droitCongeRouter from './routes/droitCongeRoutes/droitCongeRoutes.js';
 
 //IV-initialisation  du server----------------
 const app =express();//initialiser l'application
@@ -29,6 +30,9 @@ app.use('/api/department', departmentRouter);
 app.use('/api/auth', authRouter); // exemple : /api/auth/login and /api/auth/logout
 app.use('/api/employee', employeeRouter); 
 app.use('/api/rh', rhRouter);
+app.use('/api/droits', droitCongeRouter);
+
+//route de test
 app.get('/',(req,res)=> res.send(`api is working fine on ${port} :)`));
 
 //VII-lancer le server-------------------
