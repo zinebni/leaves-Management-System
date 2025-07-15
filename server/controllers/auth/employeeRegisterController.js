@@ -9,9 +9,9 @@ import { createDefaultLeaveRights } from '../leaveControllers/droitCongeControll
 //Employee register 
 
 export const empRegister = async (req, res) => {
-  const { nom, prenom, verificationEmail, department } = req.body;
+  const { nom, prenom, verificationEmail, department, sexe } = req.body;
 
-  if (!nom || !prenom  ||!verificationEmail|| !department) {
+  if (!nom || !prenom  ||!verificationEmail|| !department || !sexe) {
     return res.status(400).json({
       success: false,
       message: 'Informations incomplètes.'
@@ -40,7 +40,8 @@ export const empRegister = async (req, res) => {
       password: hashedPassword,
       role: 'employe', // FORCÉ
       verificationEmail,
-      department
+      department,
+      sexe
     });
 
     // Sauvegarder l'employé et créer ses droits de congés par défaut

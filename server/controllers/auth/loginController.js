@@ -30,7 +30,7 @@ export const login = async (req,res)=>{
         
 
         //savoir s'il a droit au conge 
-        const eligible = isEligibleForLeave(user.dateDeRecrutement);
+        const eligible = isEligibleForLeave(employee.dateDeRecrutement);
 
         //4-generer un token JWT
         const payload= {
@@ -54,6 +54,7 @@ export const login = async (req,res)=>{
             success:true,
             message:"Connexion réussie.",
             data: {
+            id: employee._id,
             nom: employee.nom,
             prenom: employee.prenom,
             role: employee.role,

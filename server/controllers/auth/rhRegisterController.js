@@ -7,9 +7,9 @@ import employeeModel from '../../models/employeeModel.js';
 
 //RH register
 export const rhRegister = async(req,res)=>{
-    const   {nom,prenom,verificationEmail,department} = req.body;  //recuperer les infos chargées dans la requet http
+    const   {nom,prenom,verificationEmail,department,sexe} = req.body;  //recuperer les infos chargées dans la requet http
 
-    if(!nom||!prenom ||!verificationEmail||!department){
+    if(!nom||!prenom ||!verificationEmail||!department||!sexe){
         return res.status(400).json({
             success:false,
             message:'Informations incomplètes.'
@@ -39,7 +39,9 @@ export const rhRegister = async(req,res)=>{
             password:hashedPassword,
             role:"RH", // FORCÉ
             verificationEmail,
-            department})
+            department,
+            sexe
+        })
 
     //5-Sauvgarder dans la base de données
         await RH.save();

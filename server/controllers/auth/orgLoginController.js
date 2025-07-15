@@ -45,7 +45,7 @@ export const orgLogin = async (req,res)=>{
             });
         
         //6-envoyer la reponse (ou le role de l'utilisateur pour le rederiger correctement  dans le frontend)
-        res.status(200).json({success:true,message:"Connexion réussie.",role:`${org.role}`,orgID: `${org.orgID}`});
+        res.status(200).json({success:true,message:"Connexion réussie.",id:`${org._id}`,role:`${org.role}`,orgID: `${org.orgID}`});
     } catch (error) {
         res.status(500).json({success:false, message:error.message})
     }
