@@ -5,7 +5,7 @@ import organisationModel from '../../models/organisationModel.js';
 
 //organisation register
 export const orgRegister = async (req, res) => {
-    const { nom, description, password } = req.body;
+    const { email, nom, description, password } = req.body;
 
     if (!email ||!nom || !password) {
         return res.status(400).json({
