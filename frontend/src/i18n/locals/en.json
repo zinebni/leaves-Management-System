@@ -25,5 +25,6 @@
     "enter": "Enter OTP",
     "verify": "Verify",
     "error": "Please enter the full OTP"
-  }
+  },
+  "orgIdMessage": "Your Organization ID is {{orgId}}. You are now being logged in…"
 }

@@ -26,5 +26,6 @@
     "enter": "Entrez le code OTP",
     "verify": "Vérifier",
     "error": "Veuillez entrer le code complet"
-  }
+  },
+  "orgIdMessage": "Votre identifiant d'organisation est {{orgId}}. Connexion en cours…"
 }

@@ -4,7 +4,8 @@ import NET from 'vanta/dist/vanta.net.min';
 import WebSiteName from '../WebSiteName';
 import LanguageSwitcher from '../../i18n/LanguageSwitcher';
 import { useTranslation } from 'react-i18next';
-import { Building2, FileText, LockKeyhole } from 'lucide-react';
+import { Mail, Building2, FileText, LockKeyhole } from 'lucide-react';
+import axios from 'axios';
 
 
 export default function RegisterOrg() {
@@ -15,7 +16,8 @@ export default function RegisterOrg() {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmedPassword, setConfirmedPassword] = useState('')
+  const [confirmedPassword, setConfirmedPassword] = useState('');
+  const [email, setEmail] = useState('');
   const [error, setError] = useState({});
 
   useEffect(() => {
@@ -46,10 +48,15 @@ export default function RegisterOrg() {
 
   },[]);
 
-  const register = () => {
+  const register = async () => {
 
     let isValid = true;
     const newError = {};
+
+    if(!email.trim()){
+      isValid = false;
+      newError.email = t("emailRequired");
+    }
 
     if(!name.trim()){
       isValid = false;
@@ -70,24 +77,72 @@ export default function RegisterOrg() {
 
     if(!isValid){
       setError(newError);
-    } else {
-      setError({});
+      return;
+    } 
+
+    setError({});
+    const organisation = {
+      nom: name,
+      description,
+      password
+    };
+
+    try{
+      const res = await axios.post('http://localhost:4000/api/auth/orgRegister', organisation);
+      if(res.status === 201){
+        console.log(res.data);
+      } else {
+        console.log(res.data.message);
+      }
+
+    }catch(error){
+      console.log(error);
     }
   }
 
   return (
-    <div ref={vantaRef}
-          className='w-full h-screen overflow-hidden relative'
-    >
+    /*
+      Stacking order by z-index (from back to front):
+
+      z-index: -3  → behind everything (even behind -2)
+      z-index: -2  → behind everything except -3
+      z-index: -1  → behind default layer and positive z-indexes
+      z-index: 0   → default layer (normal content)
+      z-index: 1   → in front of 0
+      z-index: 2   → in front of 1
+      z-index: 3   → in front of 2
+      ... and so on, higher numbers stack above lower ones
+    */
+    <div className='relative w-full min-h-screen overflow-y-auto'>
+      <div
+        ref={vantaRef}
+        className='fixed top-0 left-0 w-full h-full -z-10'
+      />
       <div className="px-5 sm:px-10 py-5 flex justify-between items-center">
         <WebSiteName />
         <LanguageSwitcher />
       </div>
-      <div className='flex justify-center items-center mt-2'>
+      <div className='flex justify-center items-center mt-2 mb-5'>
         <div className='bg-lightBlue/60 border-2 border-zinc-600 w-fit flex flex-col items-center justify-center px-6 sm:px-10 py-7 rounded-2xl'>
           <h2 className='mb-8 font-semibold text-xl'>
             {t("register")}
           </h2>
+          <div className='text-base sm:text-[17px] mb-3'>
+            <div className="relative w-3xs sm:w-xs mb-2">
+              <span className="absolute left-3 pt-4 text-gray-600">
+                <Mail size={20} />
+              </span>
+              <input 
+                placeholder={t("emailPlaceholder")}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="pl-10 pr-4 py-3 rounded-2xl bg-zinc-200 border-gray-700 w-full"
+              /> 
+            </div>
+            <p className='pl-5 text-red-700'>
+              {error.email}
+            </p>
+          </div>
           <div className='text-base sm:text-[17px] mb-3'>
             {/* relative: This makes the container a reference point for absolutely positioning elements inside it. */}
             <div className="relative w-3xs sm:w-xs mb-2">
@@ -172,9 +227,9 @@ export default function RegisterOrg() {
               {t("login")}
             </a>
           </p>
-
         </div>
       </div>
     </div>
+
   )
 }

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Building2, LockKeyhole, User } from 'lucide-react';
+import { Building2, LockKeyhole, Mail } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -147,7 +147,7 @@ export default function LoginPage() {
               </>: 
               <>
                 <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600">
-                  <User size={20} />
+                  <Mail size={20} />
                 </span>
                 <input 
                   placeholder={t("emailPlaceholder")}
