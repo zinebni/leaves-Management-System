@@ -7,7 +7,7 @@ import organisationModel from '../../models/organisationModel.js';
 export const orgRegister = async (req, res) => {
     const { nom, description, password } = req.body;
 
-    if (!nom || !password) {
+    if (!email ||!nom || !password) {
         return res.status(400).json({
             success: false,
             message: 'Informations incomplètes.'
@@ -15,22 +15,26 @@ export const orgRegister = async (req, res) => {
     }
 
     try {
+        //verifie si il y a deja un compte qui existe avec cet email
+        const existingOrg = await organisationModel.findOne({ email });
+        
+        if (existingOrg) {
+            return res.json({ success: false, message: "une organisation avec cet email existe déjà." });
+        }
+        
         // Générer un orgID unique
         const timestamp = new Date().toISOString().replace(/[-:.TZ]/g, '').slice(0, 14);
         const slugNom = nom.trim().toLowerCase().replace(/\s+/g, '-'); // ex: "My Company" => "my-company"
         const orgID = `${slugNom}-${timestamp}`; // exemple : my-company-202507091624
 
-        // Vérifier unicité (juste par sécurité, mais presque jamais déclenchée)
-        const existingUser = await organisationModel.findOne({ orgID });
-        if (existingUser) {
-            return res.json({ success: false, message: "Une organisation avec le même ID existe déjà." });
-        }
+       
 
         // Hasher le mot de passe
         const hashedPassword = await bcrypt.hash(password, 10);
 
         // Créer l'organisation
         const org = new organisationModel({
+            email,
             orgID,
             nom,
             description,

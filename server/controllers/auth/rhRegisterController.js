@@ -23,7 +23,7 @@ export const rhRegister = async(req,res)=>{
         const hashedPassword = await bcrypt.hash(randomPassword,10);
 
     //2-creer email
-        const email = `${nom.toLowerCase()}.${prenom.toLowerCase()}.${uuidv4().slice(0, 3)}@employe.aufes.org`;
+        const email = `${nom.toLowerCase()}.${prenom.toLowerCase()}.${uuidv4().slice(0, 3)}@rh.org`;
         
     //3-Vérifier si l'utilisateur existe déjà
         const existingUser = await employeeModel.findOne({email}) 
