@@ -42,7 +42,9 @@ export const empRegister = async (req, res) => {
       department
     });
 
+    // Sauvegarder l'employé et créer ses droits de congés par défaut
     await employee.save();
+    await createDefaultLeaveRights(newEmployee);
     
     //sending welcome email
         const  mailOptions = {
