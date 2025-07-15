@@ -12,7 +12,7 @@ export default function RegisterOrg() {
   const [vantaEffect, setVantaEffect] = useState(null);
   const {t} = useTranslation();
 
-  const [orgId, setOrgId] = useState('');
+  const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [password, setPassword] = useState('');
   const [confirmedPassword, setConfirmedPassword] = useState('')
@@ -51,9 +51,9 @@ export default function RegisterOrg() {
     let isValid = true;
     const newError = {};
 
-    if(!orgId.trim()){
+    if(!name.trim()){
       isValid = false;
-      newError.orgId = t("orgIDRequired");
+      newError.name = t("orgNameRequired");
     }
     if(!password.trim()){
       isValid = false;
@@ -101,14 +101,14 @@ export default function RegisterOrg() {
                 <Building2 size={20} />
               </span>
               <input 
-                placeholder={t("orgIDPlaceholder")}
-                value={orgId}
-                onChange={(e) => setOrgId(e.target.value)}
+                placeholder={t("orgNamePlaceholder")}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 className="pl-10 pr-4 py-3 rounded-2xl bg-zinc-200 border-gray-700 w-full"
               /> 
             </div>
             <p className='pl-5 text-red-700'>
-              {error.orgId}
+              {error.name}
             </p>
           </div>
           <div className='text-base sm:text-[17px] mb-3'>
