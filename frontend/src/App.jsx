@@ -31,7 +31,7 @@ function App() {
         />
         <Route path='/Login/Otp' element={<Otp />}
         />
-        <Route path='/Organisation' element={<DashboardOrg />}
+        <Route path='/Organisation/:orgID' element={<DashboardOrg />}
         />
         <Route path='/Dashbord' element={<Dashbord />}
         />

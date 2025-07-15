@@ -26,5 +26,9 @@
     "verify": "Verify",
     "error": "Please enter the full OTP"
   },
-  "orgIdMessage": "Your Organization ID is {{orgId}}. You are now being logged in…"
+  "orgAccountCreated": "Account successfully created. Logging in…",
+  "emailAlreadyExists": "An account with this email already exists.",
+  "loginSuccess": "Login successful. Redirecting…",
+  "invalidCredentials": "Incorrect email or password."
+
 }
