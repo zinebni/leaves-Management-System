@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs';
 import { v4 as uuidv4 } from 'uuid';
 import transporter from '../../config/nodemailer.js';
 import employeeModel from '../../models/employeeModel.js';
+import { createDefaultLeaveRights } from '../leaveControllers/droitCongeController.js';
 
 
 
@@ -44,7 +45,7 @@ export const empRegister = async (req, res) => {
 
     // Sauvegarder l'employé et créer ses droits de congés par défaut
     await employee.save();
-    await createDefaultLeaveRights(newEmployee);
+    await createDefaultLeaveRights(employee);
     
     //sending welcome email
         const  mailOptions = {
