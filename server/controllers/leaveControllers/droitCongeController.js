@@ -111,25 +111,27 @@ export const createDefaultLeaveRights = async (employee) => {
   }
 };
 
-  
-
-
 // creer un droit  au congé
 export const createCustomRight = async (req, res) => {
   try {
     const {employeeId} = req.params;
     const {type,joursAutorisee,estPaye} = req.body;
 
-    const droitsFormates = new DroitConge({
-        employee: employeeId,
-        type,
-        joursAutorisee,
-        estPaye,
-    });
+    if (type && joursAutorisee && estPaye ) {
+        const droits = new DroitConge({
+            employee: employeeId,
+            type,
+            joursAutorisee,
+            estPaye,
+        });
 
-    await droitsFormates.save();
+        await droits.save();
 
-    res.status(201).json({ success: true, message: `Droits au congé ${droitsFormates.type} créés.` });
+        res.status(201).json({ success: true, message: `Droits au congé ${droits.type} créés.` });
+    } else {
+        res.status(400).json({ success: false, message: 'Informations incomplètes.' });
+    }
+        
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
