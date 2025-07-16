@@ -5,6 +5,9 @@ import Employee from '../models/employeeModel.js';
 
 
 //Tâche planifiée pour mettre à jour les droits de congé annuel tous les jours selon l'ancienneté
+//Cette fonction se déclenche chaque heure pile, ex : 00:00:00, 01:00:00 ...
+// '0 0 * * * *' == 0 minute, 0 heure, tous les jours, tous les mois, tous les jours de la semaine, tous les jours de la semaine
+//'0 0 * * * *' == 'S'exécute tous les jours à 00:00:00 (minuit)
 
 nodeCron.schedule('0 0 * * * *', async () => {
   console.log("Lancement de la mise à jour automatique des droits de congé...");
