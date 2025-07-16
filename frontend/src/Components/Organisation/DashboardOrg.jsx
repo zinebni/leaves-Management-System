@@ -5,12 +5,12 @@ import SideBarOrg from './SideBarOrg';
 
 export default function DashboardOrg() {
   const {orgID} = useParams();
-
+  
   return (
     <div>
       <NavBarOrg name={orgID} />
       <div>
-        <SideBarOrg />
+        <SideBarOrg  currentPage={null} name={orgID} />
       </div>
     </div>
   )

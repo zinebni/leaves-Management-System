@@ -24,7 +24,7 @@ export default function DarkMode() {
       {
         theme === 'light' ?
         <MdDarkMode className='text-zinc-900'/> :
-        <MdLightMode className='dark:text-zinc-200' />
+        <MdLightMode className='dark:text-zinc-100' />
       }
     </div>
     

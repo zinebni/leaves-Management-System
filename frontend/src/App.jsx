@@ -12,6 +12,7 @@ import Otp from './Components/login/Otp';
 import DashboardOrg from './Components/Organisation/dashboardOrg';
 import Dashbord from './Components/Dashbord';
 import AddDeptPage from './Components/Departement/AddDeptPage';
+import AddHRPage from './Components/HR/AddHRPage';
 
 function App() {
 
@@ -36,7 +37,9 @@ function App() {
         />
         <Route path='/Dashbord' element={<Dashbord />}
         />
-        <Route path='/Departement/Add'  element={<AddDeptPage />}
+        <Route path='/Departement/Add/:orgID'  element={<AddDeptPage />}
+        />
+        <Route path='/HR/Add/:orgID' element={<AddHRPage />}
         />
       </Routes>  
     </Router>

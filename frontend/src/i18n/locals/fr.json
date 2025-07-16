@@ -36,5 +36,13 @@
   "view_departments": "Afficher",
   "rh": "RH",
   "add_rh": "Ajouter",
-  "view_rh": "Afficher"
+  "view_rh": "Afficher",
+  "department_name_placeholder": "Nom du département",
+  "department_desc_placeholder": "Description du département",
+  "add_department_title": "Ajouter un département",
+  "deptNameRequired": "Nom requis",
+  "deptAddSuccess": "Département ajouté avec succès",
+  "last_name_placeholder": "Nom",
+  "first_name_placeholder": "Prénom",
+  "add_rh_title": "Ajouter un RH"
 }
