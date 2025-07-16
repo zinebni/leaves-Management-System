@@ -1,4 +1,5 @@
 import DroitConge from '../../models/droitCongeModel.js';
+import Employee from '../../models/employeeModel.js';
 import { isEligibleForLeave } from '../../utils/isEligibleForLeave.js';
 
 
@@ -75,7 +76,8 @@ export const createDefaultLeaveRights = async (employee) => {
       });
     }
 
-    if (employee.sexe === 'Femme') {
+    //droit maternité
+    if (employee.sexe === 'Femme' && employee.nombreEnfants > 0) {
       droits.push({
         employee: employee._id,
         type: 'maternite',
@@ -83,21 +85,67 @@ export const createDefaultLeaveRights = async (employee) => {
         estPaye: true
       });
     }
-
-    if (employee.sexe === 'Homme') {
+    //droit paternité
+    if (employee.sexe === 'Homme' && employee.nombreEnfants > 0) {
       droits.push({
         employee: employee._id,
         type: 'paternite',
-        joursAutorisee: 11,
+        joursAutorisee: 3,
+        estPaye: true
+      });
+    }
+    //droit mariage
+    if(employee.situationFamiliale === 'celibataire'){
+      droits.push({
+        employee: employee._id,
+        type: 'Mariage du salarié',
+        joursAutorisee: 4,
         estPaye: true
       });
     }
 
+    //droits sans solde
     droits.push({
       employee: employee._id,
       type: 'sans_solde',
       estPaye: false
     });
+
+    //droit maladie
+    droits.push({
+      employee: employee._id,
+      type: 'maladie',
+      estPaye: false
+    });
+
+    //droit examen
+    droits.push({
+      employee: employee._id,
+      type: 'examen',
+      estPaye: false
+    });
+
+    //droit Décès 
+    droits.push({
+      employee: employee._id,
+      type: 'Décès (conjoint, parent, enfant)',
+      joursAutorisee: 3,
+      estPaye: false
+    });
+    droits.push({
+      employee: employee._id,
+      type: 'Décès (frère, sœur, beau-parent)',
+      joursAutorisee: 2,
+      estPaye: false
+    });
+
+    //droit exceptionnel
+    droits.push({
+      employee: employee._id,
+      type: 'exceptionnel',
+      estPaye: true
+    });
+
     //pour eviter les doublants
     await DroitConge.deleteMany({ employee: employee._id });
     //la creation des droits
@@ -136,6 +184,34 @@ export const createCustomRight = async (req, res) => {
     res.status(500).json({ success: false, message: err.message });
   }
 };
+
+export const createCustomRightForAllEmployees = async (req, res) => {
+  try {
+    const {type,joursAutorisee,estPaye} = req.body;
+
+    if (type && joursAutorisee && estPaye ) {
+        const employees = await Employee.find({});
+
+        for (const employee of employees) {
+            const droits = new DroitConge({
+                employee: employee._id,
+                type,
+                joursAutorisee,
+                estPaye,
+            });
+
+            await droits.save();
+        }
+
+        res.status(201).json({ success: true, message: `Droits au congé ${droits.type} créés pour tous les employés.` });
+    } else {
+        res.status(400).json({ success: false, message: 'Informations incomplètes.' });
+    }
+
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+}; 
 
 
 

@@ -6,7 +6,7 @@ import Employee from '../models/employeeModel.js';
 
 //Tâche planifiée pour mettre à jour les droits de congé annuel tous les jours selon l'ancienneté
 
-nodeCron.schedule('* * * * *', async () => {
+nodeCron.schedule('0 0 * * * *', async () => {
   console.log("Lancement de la mise à jour automatique des droits de congé...");
   const employees = await Employee.find();
 

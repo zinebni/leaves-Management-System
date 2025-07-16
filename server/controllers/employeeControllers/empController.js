@@ -128,7 +128,7 @@ export const updateEmployeeById = async (req, res) => {
         droitsToAdd.push({
           employee: id,
           type: 'maternite',
-          joursAutorisee: 14,
+          joursAutorisee: 98,
           estPaye: true
         });
       }
