@@ -33,6 +33,7 @@ export const empRegister = async (req, res) => {
     }
 
     // Créer le nouvel employé avec rôle forcé
+    const organisation = req.user.organisation;
     const employee = new employeeModel({
       nom,
       prenom,
@@ -41,6 +42,7 @@ export const empRegister = async (req, res) => {
       role: 'employe', // FORCÉ
       verificationEmail,
       department,
+      organisation,
       sexe
     });
 

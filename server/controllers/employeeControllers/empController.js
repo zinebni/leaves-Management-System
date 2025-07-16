@@ -1,41 +1,130 @@
 import DroitConge from '../../models/droitCongeModel.js';
 import employeeModel from '../../models/employeeModel.js';
+import departmentModel from '../../models/departmentModel.js';
 
-//get all employees
+
+//get all employees for an organisation
 export const getEmployees = async (req, res) => {
+    const org_id = req.user.organisation;
     try {
-      const employees = await employeeModel.find();
+      const employees = await employeeModel.find({organisation: org_id},{password:0,resetOtp:0,verifyOtp:0,verifyOtpExpireAt:0,resetOtpExpiredAt:0,isAccountVerified:0,createdAt:0,updatedAt:0,__v:0,deleted:0}).populate("department").populate("organisation");
       res.status(200).json({ success: true, employees });
     } catch (error) {
       res.status(500).json({ success: false, message: error.message });
     }
   };
 
-//get employee by id
+//get employee by id for an organisation
 export const getEmployeeById = async (req, res) => {
     const { id } = req.params;
+    const org_id = req.user.organisation;
     try {
-      const employee = await employeeModel.findById(id);
+      const employee = await employeeModel.findById({ _id: id, organisation: org_id },{password:0,resetOtp:0,verifyOtp:0,verifyOtpExpireAt:0,resetOtpExpiredAt:0,createdAt:0,updatedAt:0,__v:0,deleted:0}).populate("department").populate("organisation");
       res.status(200).json({ success: true, employee });
     } catch (error) {
       res.status(500).json({ success: false, message: error.message });
     }
   };
 
-//delete employee by id
+//get employees for an organisation by role
+export const getEmployeesByRole = async (req, res) => {
+    const { role } = req.params;
+    const org_id = req.user.organisation;
+    try {
+      const employees = await employeeModel.find({organisation: org_id, role},{password:0,resetOtp:0,verifyOtp:0,verifyOtpExpireAt:0,resetOtpExpiredAt:0,createdAt:0,updatedAt:0,__v:0,deleted:0}).populate("department");
+      res.status(200).json({ success: true, employees });
+    } catch (error) {
+      res.status(500).json({ success: false, message: error.message });
+    }
+  };
+
+//get employees for an organisation by department id
+export const getEmployeesByDepartment = async (req, res) => {
+    const { departmentId } = req.params;
+    const org_id = req.user.organisation;
+    try {
+      const employees = await employeeModel.find({organisation: org_id, department: departmentId},{password:0,resetOtp:0,verifyOtp:0,verifyOtpExpireAt:0,resetOtpExpiredAt:0,createdAt:0,updatedAt:0,__v:0,deleted:0 });
+      res.status(200).json({ success: true, employees });
+    } catch (error) {
+      res.status(500).json({ success: false, message: error.message });
+    }
+  };
+//get employees for an organisation by department name 
+export const getEmployeesByDepartmentName = async (req, res) => {
+  const { departmentName } = req.params;
+  const org_id = req.user.organisation;
+
+  try {
+    // Étape 1 : chercher le département par son nom et organisation
+    const department = await departmentModel.findOne({ nom: departmentName, organisation: org_id });
+    if (!department) {
+      return res.status(404).json({ success: false, message: "Département introuvable." });
+    }
+
+    // Étape 2 : chercher les employés liés à ce département
+    const employees = await employeeModel.find(
+      { organisation: org_id, department: department._id },{ password: 0, resetOtp: 0, verifyOtp: 0, verifyOtpExpireAt: 0, resetOtpExpiredAt: 0,createdAt:0,updatedAt:0,__v:0,deleted:0 }
+    );
+
+    res.status(200).json({ success: true, employees });
+
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+
+//get employees for an organisation by department id  and role
+export const getEmployeesByDepartmentAndRole = async (req, res) => {
+    const { departmentId, role } = req.params;
+    const org_id = req.user.organisation;
+    try {
+      const employees = await employeeModel.find({organisation: org_id, department: departmentId, role},{password:0,resetOtp:0,verifyOtp:0,verifyOtpExpireAt:0,resetOtpExpiredAt:0, createdAt:0,updatedAt:0,__v:0,deleted:0 });
+      res.status(200).json({ success: true, employees });
+    } catch (error) {
+      res.status(500).json({ success: false, message: error.message });
+      }
+  };
+//get employees for an organisation by department name and role
+export const getEmployeesByDepartmentNameAndRole = async (req, res) => {
+   const { departmentName , role } = req.params;
+  const org_id = req.user.organisation;
+
+  try {
+    // Étape 1 : chercher le département par son nom et organisation
+    const department = await departmentModel.findOne({ nom: departmentName, organisation: org_id });
+    if (!department) {
+      return res.status(404).json({ success: false, message: "Département introuvable." });
+    }
+
+    // Étape 2 : chercher les employés liés à ce département
+    const employees = await employeeModel.find(
+      { role,organisation: org_id, department: department._id },
+      { password: 0, resetOtp: 0, verifyOtp: 0, verifyOtpExpireAt: 0, resetOtpExpiredAt: 0,createdAt:0,updatedAt:0,__v:0,deleted:0 }
+    );
+
+    res.status(200).json({ success: true, employees });
+
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+  };
+//delete employee by id for an organisation
 export const deleteEmployeeById = async (req, res) => {
     const { id } = req.params;
+    const org_id = req.user.organisation;
     try {
-      await employeeModel.findByIdAndDelete(id);
+      await employeeModel.findByIdAndDelete({ _id: id, organisation: org_id });
       res.status(200).json({ success: true, message: 'Employé supprimé avec succès.' });
     } catch (error) {
       res.status(500).json({ success: false, message: error.message });
     }
   };
 
-//update employee by id
+//update employee by id for an organisation
 export const updateEmployeeById = async (req, res) => {
   const { id } = req.params;
+  const org_id = req.user.organisation;
   const {
     nom,
     prenom,
@@ -49,7 +138,7 @@ export const updateEmployeeById = async (req, res) => {
   } = req.body;
 
   try {
-    const oldEmployee = await employeeModel.findById(id);
+    const oldEmployee = await employeeModel.findById({ _id: id, organisation: org_id });
     if (!oldEmployee) {
       return res.status(404).json({ success: false, message: "Employé introuvable." });
     }

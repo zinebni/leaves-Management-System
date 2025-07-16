@@ -48,7 +48,8 @@ export const orgRegister = async (req, res) => {
         // Générer le token
         const payload = {
             id: org._id,
-            role: org.role
+            role: org.role,
+            organisation : org._id
         };
         const secretKey = process.env.JWT_SECRET;
         const token = jwt.sign(payload, secretKey, { expiresIn: '7d' });
@@ -65,7 +66,10 @@ export const orgRegister = async (req, res) => {
         res.status(201).json({
             success: true,
             message: "Organisation enregistrée avec succès.",
-            orgID // important pour que le frontend le récupère s’il veut l’afficher
+            id: org._id,
+            orgID : org.orgID ,// important pour que le frontend le récupère s’il veut l’afficher
+            nom: org.nom,
+            role: org.role
         });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });

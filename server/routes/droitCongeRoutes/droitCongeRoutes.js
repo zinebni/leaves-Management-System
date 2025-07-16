@@ -1,5 +1,5 @@
 import express from 'express';
-import { createCustomRight, createCustomRightForAllEmployees, getLeaveRightsByEmployee, getLeaveRightsByType, updateLeaveRight } from '../../controllers/leaveControllers/droitCongeController.js';
+import { createCustomRight, createCustomRightForAllEmployees, deleteCustomRightForAllEmployees, deleteRightsForEmployee, getLeaveRightsByEmployee, getLeaveRightsByType, updateLeaveRight } from '../../controllers/leaveControllers/droitCongeController.js';
 import authMiddleware from '../../middleware/auth.js';
 import isRhMiddleware from '../../middleware/isRh.js';
 
@@ -12,6 +12,8 @@ droitCongeRouter.get('/getLeaveRightsByType/:employeeId/:type',authMiddleware,ge
 droitCongeRouter.put('/updateLeaveRight/:employeeId/:droitId',authMiddleware,isRhMiddleware,updateLeaveRight);
 droitCongeRouter.post('/createCustomRights/:employeeId',authMiddleware,isRhMiddleware,createCustomRight);
 droitCongeRouter.post('/createCustomRightsForAllEmployees',authMiddleware,isRhMiddleware,createCustomRightForAllEmployees);
+droitCongeRouter.delete('/deleteCustomRightsForAllEmployees',authMiddleware,isRhMiddleware,deleteCustomRightForAllEmployees);
+droitCongeRouter.delete('/deleteRightsForEmployee/:employeeId/:droitId',authMiddleware,isRhMiddleware,deleteRightsForEmployee);
 
 //3-exportation du routeur
 export default droitCongeRouter;

@@ -2,14 +2,15 @@ import bcrypt from 'bcryptjs';
 import { v4 as uuidv4 } from 'uuid';
 import transporter from '../../config/nodemailer.js';
 import employeeModel from '../../models/employeeModel.js';
+import { createDefaultLeaveRights } from '../leaveControllers/droitCongeController.js';
 
 
 
 //RH register
 export const rhRegister = async(req,res)=>{
-    const   {nom,prenom,verificationEmail,department,sexe} = req.body;  //recuperer les infos chargées dans la requet http
+    const   {nom,prenom,verificationEmail,sexe} = req.body;  //recuperer les infos chargées dans la requet http
 
-    if(!nom||!prenom ||!verificationEmail||!department||!sexe){
+    if(!nom||!prenom ||!verificationEmail||!sexe){
         return res.status(400).json({
             success:false,
             message:'Informations incomplètes.'
@@ -39,7 +40,7 @@ export const rhRegister = async(req,res)=>{
             password:hashedPassword,
             role:"RH", // FORCÉ
             verificationEmail,
-            department,
+            organisation: req.user.id, //id de l'organisation grace au middleware auth
             sexe
         })
 

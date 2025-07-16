@@ -36,6 +36,7 @@ export const login = async (req,res)=>{
         const payload= {
             id:employee._id,
             role:employee.role,
+            organisation:employee.organisation
         };
         const  secretKey = process.env.JWT_SECRET;
         const token = jwt.sign(payload,secretKey,{expiresIn:'7d'});
@@ -58,6 +59,9 @@ export const login = async (req,res)=>{
             nom: employee.nom,
             prenom: employee.prenom,
             role: employee.role,
+            email: employee.email,
+            organisation: employee.organisation,
+            department: employee.department,
             dateDeRecrutement: employee.dateDeRecrutement,
             isEligibleForLeave: eligible
             }

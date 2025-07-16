@@ -43,9 +43,9 @@ const employeeSchema = new mongoose.Schema(
     },
     dateDeRecrutement:{type:Date, default:Date.now},
     dateDeDepart:{type:Date,default: null},
-    department:[{
+    department:{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Department"}],
+        ref: "Department"},
     organisation:{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Organisation",

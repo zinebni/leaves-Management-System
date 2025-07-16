@@ -2,7 +2,7 @@ import express from 'express';
 import authMiddleware from '../../middleware/auth.js';
 import isOrgMiddleware from '../../middleware/isOrg.js';
 import isRhMiddleware from '../../middleware/isRh.js';
-import {deleteEmployeeById, getEmployeeById, getEmployees, updateEmployeeById } from '../../controllers/employeeControllers/empController.js';
+import {deleteEmployeeById, getEmployeeById, getEmployees, getEmployeesByDepartment, getEmployeesByDepartmentAndRole, getEmployeesByDepartmentName, getEmployeesByDepartmentNameAndRole, getEmployeesByRole, updateEmployeeById } from '../../controllers/employeeControllers/empController.js';
 
 //1- utiliser express pour creer un routeur 
 const employeeRouter = express.Router(); 
@@ -10,6 +10,11 @@ const employeeRouter = express.Router();
 //2-definition des routes
 employeeRouter.get('/getEmployees',authMiddleware,getEmployees);
 employeeRouter.get('/getEmployeeById/:id',authMiddleware,getEmployeeById);
+employeeRouter.get('/getEmployeesByRole/:role',authMiddleware,getEmployeesByRole);
+employeeRouter.get('/getEmployeesByDepartment/:departmentId',authMiddleware,getEmployeesByDepartment);
+employeeRouter.get('/getEmployeesByDepartmentAndRole/:departmentId/:role',authMiddleware,getEmployeesByDepartmentAndRole);
+employeeRouter.get('/getEmployeesByDepartmentName/:departmentName',authMiddleware,getEmployeesByDepartmentName);
+employeeRouter.get('/getEmployeesByDepartmentNameAndRole/:departmentName/:role',authMiddleware,getEmployeesByDepartmentNameAndRole);
 employeeRouter.delete('/deleteEmployeeById/:id',authMiddleware,isRhMiddleware,deleteEmployeeById);
 employeeRouter.put('/updateEmployeeById/:id',authMiddleware,updateEmployeeById);
 

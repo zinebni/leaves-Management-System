@@ -7,7 +7,7 @@ import { isEligibleForLeave } from '../../utils/isEligibleForLeave.js';
 export const getLeaveRightsByEmployee = async (req, res) => {
   const { employeeId } = req.params;
   try {
-    const droits = await DroitConge.find({ employee: employeeId });
+    const droits = await DroitConge.find({ employee: employeeId },{createdAt:0,updatedAt:0,__v:0}).populate("employee");
     res.status(200).json({ success: true, droits });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -18,7 +18,7 @@ export const getLeaveRightsByEmployee = async (req, res) => {
 export const getLeaveRightsByType = async (req, res) => {
   const { employeeId, type } = req.params;
   try {
-    const droits = await DroitConge.find({ employee: employeeId, type });
+    const droits = await DroitConge.find({ employee: employeeId, type },{createdAt:0,updatedAt:0,__v:0}).populate("employee");
     res.status(200).json({ success: true, droits });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -166,6 +166,7 @@ export const createCustomRight = async (req, res) => {
     const {type,joursAutorisee,estPaye} = req.body;
 
     if (type && joursAutorisee && estPaye ) {
+        await DroitConge.deleteMany({ employee: employeeId, type });
         const droits = new DroitConge({
             employee: employeeId,
             type,
@@ -185,6 +186,7 @@ export const createCustomRight = async (req, res) => {
   }
 };
 
+// creer un droit  au congé pour tous les employés
 export const createCustomRightForAllEmployees = async (req, res) => {
   try {
     const {type,joursAutorisee,estPaye} = req.body;
@@ -193,6 +195,8 @@ export const createCustomRightForAllEmployees = async (req, res) => {
         const employees = await Employee.find({});
 
         for (const employee of employees) {
+            await DroitConge.deleteMany({ employee: employee._id, type });
+
             const droits = new DroitConge({
                 employee: employee._id,
                 type,
@@ -203,7 +207,7 @@ export const createCustomRightForAllEmployees = async (req, res) => {
             await droits.save();
         }
 
-        res.status(201).json({ success: true, message: `Droits au congé ${droits.type} créés pour tous les employés.` });
+        res.status(201).json({ success: true, message: `Droits au congé ${type} créés pour tous les employés.` });
     } else {
         res.status(400).json({ success: false, message: 'Informations incomplètes.' });
     }
@@ -213,5 +217,38 @@ export const createCustomRightForAllEmployees = async (req, res) => {
   }
 }; 
 
+//delete droitConge by id à tous les employés
+export const deleteCustomRightForAllEmployees = async (req, res) => {
+  try {
+    const { type } = req.body;
+
+    if (type) {
+      await DroitConge.deleteMany({ type });
+
+      res.status(200).json({ success: true, message: `Droits au congé ${type} supprimés pour tous les employés.` });
+    } else {
+      res.status(400).json({ success: false, message: 'Informations incomplètes.' });
+    }
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
+
+//delet droitConge by id à un employé
+export const deleteRightsForEmployee = async (req, res) => {
+  const { employeeId, droitId } = req.params;
+  const droit = await DroitConge.findOne({_id:droitId, employee: employeeId});
+  if (!droit) {
+    return res.status(404).json({ success: false, message: "Droit de congé introuvable pour cet employé." });
+  }
+  try {
+    
+    await DroitConge.findOneAndDelete({_id:droitId, employee: employeeId});
+
+    res.status(200).json({ success: true, message: 'Droit au congé supprimé.' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
 
 

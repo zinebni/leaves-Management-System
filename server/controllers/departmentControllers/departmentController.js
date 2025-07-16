@@ -19,7 +19,7 @@ export const createDepartment = async (req, res) => {
       const department = new departmentModel({
         nom,
         description,
-        organisation: req.user.id //id de l'organisation grace au middleware auth
+        organisation: req.user.organisation //id de l'organisation grace au middleware auth
       });
   
       await department.save();
@@ -33,8 +33,8 @@ export const createDepartment = async (req, res) => {
 //get all departments by organisation
 export const getDepartments = async (req, res) => {
   try {
-      const org_id = req.user.id; //id de l'organisation grace au middleware auth
-      const departments = await departmentModel.find({organisation: org_id}).populate(); //populate pour recuperer les employes de chaque department
+      const org_id = req.user.organisation; //id de l'organisation grace au middleware auth
+      const departments = await departmentModel.find({organisation: org_id},{createdAt:0,updatedAt:0,__v:0,deleted:0});
       res.status(200).json({ success: true, departments });
   } catch (error) {
       res.status(500).json({ success: false, message: error.message });
@@ -43,7 +43,7 @@ export const getDepartments = async (req, res) => {
 
 //update department by id
 export const updateDepartment = async (req, res) => {
-  const org_id = req.user.id;
+  const org_id = req.user.organisation;
   const { id } = req.params;
   const { nom, description } = req.body;
   try {
@@ -63,7 +63,7 @@ export const updateDepartment = async (req, res) => {
 
 //supprimer un department d'une organisation
 export const deleteDepartment = async (req, res) => {
-  const org_id = req.user.id;
+  const org_id = req.user.organisation;
   const { id } = req.params;
   try {
     await departmentModel.findByIdAndDelete({ _id: id, organisation: org_id });

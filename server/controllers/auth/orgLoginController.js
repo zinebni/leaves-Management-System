@@ -29,8 +29,8 @@ export const orgLogin = async (req,res)=>{
         //4-generer un token JWT
         const payload= {
             id:org._id,
-            orgID:org.orgID,
             role:org.role,
+            organisation:org._id
         };
         const  secretKey = process.env.JWT_SECRET;
         const token = jwt.sign(payload,secretKey,{expiresIn:'7d'});
@@ -45,7 +45,7 @@ export const orgLogin = async (req,res)=>{
             });
         
         //6-envoyer la reponse (ou le role de l'utilisateur pour le rederiger correctement  dans le frontend)
-        res.status(200).json({success:true,message:"Connexion réussie.",id:`${org._id}`,role:`${org.role}`,orgID: `${org.orgID}`});
+        res.status(200).json({success:true,message:"Connexion réussie.",id:`${org._id}`,orgID: `${org.orgID}`,nom:`${org.nom}`,role:`${org.role}`});
     } catch (error) {
         res.status(500).json({success:false, message:error.message})
     }
