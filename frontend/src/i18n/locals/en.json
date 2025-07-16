@@ -29,6 +29,12 @@
   "orgAccountCreated": "Account successfully created. Logging in…",
   "emailAlreadyExists": "An account with this email already exists.",
   "loginSuccess": "Login successful. Redirecting…",
-  "invalidCredentials": "Incorrect email or password."
+  "invalidCredentials": "Incorrect email or password.",
+  "department": "Department",
+  "add_department": "Add",
+  "view_departments": "View",
+  "rh": "HR",
+  "add_rh": "Add",
+  "view_rh": "View"
 
 }

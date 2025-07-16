@@ -3,7 +3,8 @@
 @theme {
   --color-lightBlue: #6191f9;
   --color-mediumBlue: #2f51eb;
-  --color-darkBlue: #1e36d7;
+  --color-darkBlue: #000b78;
+  --color-politeBlue: #D6EAF8;
 }
 
 @custom-variant dark (&:where(.dark, .dark *));

@@ -30,5 +30,11 @@
   "orgAccountCreated": "Compte créé avec succès. Connexion en cours…",
   "emailAlreadyExists": "Un compte avec cet e-mail existe déjà.",
   "loginSuccess": "Connexion réussie. Redirection en cours…",
-  "invalidCredentials": "E-mail ou mot de passe incorrect."
+  "invalidCredentials": "E-mail ou mot de passe incorrect.",
+  "department": "Département",
+  "add_department": "Ajouter",
+  "view_departments": "Afficher",
+  "rh": "RH",
+  "add_rh": "Ajouter",
+  "view_rh": "Afficher"
 }
