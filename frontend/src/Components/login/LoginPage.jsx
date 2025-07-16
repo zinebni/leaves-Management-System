@@ -147,7 +147,7 @@ export default function LoginPage() {
             </>
           </div>
           <p className='pl-5 text-red-700'>
-            {role === 'Organisation' ? error.orgId : error.email}
+            {error.email}
           </p>
         </div>
         <div className='text-base text-[17px] w-3xs sm:w-xs mb-10'>
