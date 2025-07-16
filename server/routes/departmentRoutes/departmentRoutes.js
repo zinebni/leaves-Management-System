@@ -8,7 +8,7 @@ const departmentRouter = express.Router();
 
 //2-definition des routes
 departmentRouter.post('/createDepartment',authMiddleware,isOrgMiddleware,createDepartment);
-departmentRouter.get('/getDepartments',getDepartments);
+departmentRouter.get('/getDepartments',authMiddleware,getDepartments);
 departmentRouter.delete('/deleteDepartment/:id',authMiddleware,isOrgMiddleware,deleteDepartment);
 
 //3-exportation du routeur
