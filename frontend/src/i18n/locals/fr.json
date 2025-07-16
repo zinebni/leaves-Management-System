@@ -44,5 +44,8 @@
   "deptAddSuccess": "Département ajouté avec succès",
   "last_name_placeholder": "Nom",
   "first_name_placeholder": "Prénom",
-  "add_rh_title": "Ajouter un RH"
+  "add_rh_title": "Ajouter un RH",
+  "last_name_required": "Nom requis",
+  "first_name_required": "Prénom requis",
+  "rhAddSuccess": "RH ajouté avec succès"
 }

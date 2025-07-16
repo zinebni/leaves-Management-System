@@ -39,40 +39,55 @@ export default function AddHR() {
 
   const add = async () => {
     let isValid = true;
+    const newError = {};
 
+    if(!lastName.trim()){
+      isValid = false;
+      newError.lastName = t('last_name_required');
+    }
     if(!firstName.trim()){
       isValid = false;
-      setError({name: t('deptNameRequired')});
+      newError.firstName = t('first_name_required')
+    }
+    if(!email.trim()){
+      isValid = false;
+      newError.email = t('emailRequired');
     }
 
-    const dept = {
-      nom: name,
-      description
+    const rh = {
+      nom: lastName,
+      prenom: firstName,
+      verificationEmail: email
     };
 
-    if(isValid){
-      try{
-        const res = await axios.post('http://localhost:4000/api/department/createDepartment', dept,
-          {
-            withCredentials: true
-          }
-        );
-        setName('');
-        setDescription('');
-        toast.success(t('deptAddSuccess'), {
-          position: "top-center",           // Positionne le toast en haut et centré horizontalement
-          autoClose: 3000,                  // Ferme automatiquement le toast après 3000 ms (3 secondes)
-          hideProgressBar: true,           // Affiche la barre de progression (temps restant)
-          closeOnClick: true,               // Ferme le toast si l’utilisateur clique dessus
-          pauseOnHover: true,               // Met en pause la fermeture automatique si la souris survole le toast
-          draggable: true,                  // Permet de déplacer le toast avec la souris
-          progress: undefined,              // Laisse la progression automatique par défaut
-          icon: <CheckCircle color="#2f51eb" />,
-        });
-      } catch(error){
-        console.log(error);
-      }
+    if(!isValid){
+      setError(newError);
+      return;
     }
+
+    try{
+      /* const res = await axios.post('http://localhost:4000/api/department/createDepartment', rh,
+        {
+          withCredentials: true
+        }
+      ); */
+      setLastName('');
+      setFirstName('');
+      setEmail('');
+      toast.success(t('rhAddSuccess'), {
+        position: "top-center",           // Positionne le toast en haut et centré horizontalement
+        autoClose: 3000,                  // Ferme automatiquement le toast après 3000 ms (3 secondes)
+        hideProgressBar: true,           // Affiche la barre de progression (temps restant)
+        closeOnClick: true,               // Ferme le toast si l’utilisateur clique dessus
+        pauseOnHover: true,               // Met en pause la fermeture automatique si la souris survole le toast
+        draggable: true,                  // Permet de déplacer le toast avec la souris
+        progress: undefined,              // Laisse la progression automatique par défaut
+        icon: <CheckCircle color="#2f51eb" />,
+      });
+    } catch(error){
+      console.log(error);
+    }
+    
   }
 
   return (
@@ -118,6 +133,9 @@ export default function AddHR() {
               className="pl-10 pr-4 py-3 rounded-xl sm:rounded-2xl bg-zinc-200 border-gray-700 w-full"
             />
           </div>
+          <p className='pl-5 text-red-700'>
+            {error.firstName}
+          </p>
         </div>
         <div className='text-sm sm:text-[17px] w-3xs sm:w-xs mb-10'>
           {/* relative: This makes the container a reference point for absolutely positioning elements inside it. */}
