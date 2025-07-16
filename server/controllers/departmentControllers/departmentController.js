@@ -34,7 +34,7 @@ export const createDepartment = async (req, res) => {
 export const getDepartments = async (req, res) => {
   try {
       const org_id = req.user.id; //id de l'organisation grace au middleware auth
-      const departments = await departmentModel.findById({organisation: org_id}).populate(); //populate pour recuperer les employes de chaque department
+      const departments = await departmentModel.find({organisation: org_id}).populate(); //populate pour recuperer les employes de chaque department
       res.status(200).json({ success: true, departments });
   } catch (error) {
       res.status(500).json({ success: false, message: error.message });
