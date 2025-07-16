@@ -9,7 +9,7 @@ export default function LanguageSwitcher() {
   const [openList, setOpenList] = useState(false);
 
   const Dropdown = (
-    <ul className="fixed top-14 right-5 bg-white dark:bg-blue-900 dark:text-zinc-200 border-zinc-700 dark:border-2 border rounded shadow-md  z-50">
+    <ul className="fixed top-14 right-12 sm:right-5 bg-white dark:bg-blue-900 dark:text-zinc-100 border-zinc-700 dark:border-2 border rounded shadow-md  z-50">
       <li
         onClick={() => {
           i18n.changeLanguage('fr');
@@ -41,7 +41,7 @@ export default function LanguageSwitcher() {
         className="cursor-pointer p-1"
         onClick={() => setOpenList(prev => !prev)}
       >
-        <Globe className="w-6 h-6 dark:text-zinc-300" />
+        <Globe className="w-6 h-6 dark:text-zinc-100" />
       </div>
 
       {openList && createPortal(Dropdown, document.body)}

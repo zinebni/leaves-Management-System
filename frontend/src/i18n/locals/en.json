@@ -35,6 +35,13 @@
   "view_departments": "View",
   "rh": "HR",
   "add_rh": "Add",
-  "view_rh": "View"
-
+  "view_rh": "View",
+  "department_name_placeholder": "Department name",
+  "department_desc_placeholder": "Department description",
+  "add_department_title": "Add Department", 
+  "deptNameRequired": "Department name is required",
+  "deptAddSuccess": "Department added successfully",
+  "last_name_placeholder": "Last Name",
+  "first_name_placeholder": "First Name",
+  "add_rh_title": "Add RH"
 }
