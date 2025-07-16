@@ -43,5 +43,8 @@
   "deptAddSuccess": "Department added successfully",
   "last_name_placeholder": "Last Name",
   "first_name_placeholder": "First Name",
-  "add_rh_title": "Add RH"
+  "add_rh_title": "Add HR",
+  "last_name_required": "Last Name is required",
+  "first_name_required": "First Name is required",
+  "rhAddSuccess": "HR added successfully"
 }
