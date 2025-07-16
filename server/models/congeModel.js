@@ -21,7 +21,17 @@ const congeSchema = new mongoose.Schema(
             type: String,
             enum: ["en attente", "approuve", "refuse"],
             default: "en attente",
-        }
+        },
+        commentaire:{type:String, required:false},
+        approuvePar:{
+             type: mongoose.Schema.Types.ObjectId,
+             ref: "Employee"
+        },
+        refusePar:{
+             type: mongoose.Schema.Types.ObjectId,
+             ref: "Employee"
+        },
+
     },
     //b-ajouter les timestamps
     {
