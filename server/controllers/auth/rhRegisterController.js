@@ -8,7 +8,7 @@ import { createDefaultLeaveRights } from '../leaveControllers/droitCongeControll
 
 //RH register
 export const rhRegister = async(req,res)=>{
-    const   {nom,prenom,verificationEmail,sexe,numeroDeContact,dateDeRecrutement,situationFamiliale,nombreEnfants} = req.body;  //recuperer les infos chargées dans la requet http
+    const   {nom,prenom,verificationEmail,sexe,numeroDeContact,dateDeRecrutement,situationFamiliale,nombreEnfants,department} = req.body;  //recuperer les infos chargées dans la requet http
 
     if(!nom||!prenom ||!verificationEmail||!sexe){
         return res.status(400).json({
@@ -42,7 +42,7 @@ export const rhRegister = async(req,res)=>{
             verificationEmail,
             organisation: req.user.id, //id de l'organisation grace au middleware auth
             sexe,
-            department : "RH",
+            department ,
             numeroDeContact,
             dateDeRecrutement,
             situationFamiliale,
