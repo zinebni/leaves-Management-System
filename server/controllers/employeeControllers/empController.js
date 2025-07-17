@@ -114,7 +114,7 @@ export const deleteEmployeeById = async (req, res) => {
     const { id } = req.params;
     const org_id = req.user.organisation;
     try {
-      await employeeModel.findByIdAndDelete({ _id: id, organisation: org_id });
+      await employeeModel.delete({ _id: id, organisation: org_id });
       res.status(200).json({ success: true, message: 'Employé supprimé avec succès.' });
     } catch (error) {
       res.status(500).json({ success: false, message: error.message });

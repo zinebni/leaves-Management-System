@@ -42,6 +42,7 @@ export const rhRegister = async(req,res)=>{
             verificationEmail,
             organisation: req.user.id, //id de l'organisation grace au middleware auth
             sexe,
+            department : "RH",
             numeroDeContact,
             dateDeRecrutement,
             situationFamiliale,

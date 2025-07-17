@@ -17,7 +17,7 @@ employeeRouter.get('/getEmployeesByDepartment/:departmentId',authMiddleware,getE
 employeeRouter.get('/getEmployeesByDepartmentAndRole/:departmentId/:role',authMiddleware,getEmployeesByDepartmentAndRole);
 employeeRouter.get('/getEmployeesByDepartmentName/:departmentName',authMiddleware,getEmployeesByDepartmentName);
 employeeRouter.get('/getEmployeesByDepartmentNameAndRole/:departmentName/:role',authMiddleware,getEmployeesByDepartmentNameAndRole);
-employeeRouter.delete('/deleteEmployeeById/:id',authMiddleware,isRhMiddleware,deleteEmployeeById);
+employeeRouter.delete('/deleteEmployeeById/:id',authMiddleware,deleteEmployeeById);
 employeeRouter.put('/updateEmployeeById/:id',authMiddleware,updateEmployeeById);
 
 
