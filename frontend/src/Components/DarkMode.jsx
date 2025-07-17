@@ -8,6 +8,7 @@ export default function DarkMode() {
   const element = document.documentElement // html element
 
   useEffect(() => {
+    // This part is correct, it applies the theme to the <html> tag.
     theme === 'dark' ? element.classList.add('dark') : element.classList.remove('dark');
   }, [theme]);
 
@@ -15,6 +16,10 @@ export default function DarkMode() {
     const newTheme = theme === 'light' ? 'dark' : 'light';
     setTheme(newTheme);
     localStorage.setItem('theme', newTheme);
+    
+    // --- THIS IS THE CRITICAL LINE TO ADD ---
+    // This dispatches a global event that other components can listen for.
+    window.dispatchEvent(new Event('themeChanged'));
   }
 
   return (
@@ -27,6 +32,5 @@ export default function DarkMode() {
         <MdLightMode className='dark:text-zinc-100' />
       }
     </div>
-    
   )
 }

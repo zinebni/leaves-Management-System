@@ -10,6 +10,7 @@ export default function AddHR() {
   const [lastName, setLastName] = useState('');
   const [firstName, setFirstName] = useState('');
   const [email, setEmail] = useState('');
+  const [sexe, setSexe] = useState('');
   const [error, setError] = useState({});
 
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
@@ -54,23 +55,30 @@ export default function AddHR() {
       newError.email = t('emailRequired');
     }
 
-    const rh = {
-      nom: lastName,
-      prenom: firstName,
-      verificationEmail: email
-    };
+    if (!sexe) {
+      isValid = false;
+      newError.sexe = t('gender_required');
+    }
 
     if(!isValid){
       setError(newError);
       return;
     }
+    const rh = {
+      nom: lastName,
+      prenom: firstName,
+      verificationEmail: email,
+      sexe
+    };
+
+    console.log(rh);
 
     try{
-      /* const res = await axios.post('http://localhost:4000/api/department/createDepartment', rh,
+      const res = await axios.post('http://localhost:4000/api/auth/rhRegister', rh,
         {
           withCredentials: true
         }
-      ); */
+      );
       setLastName('');
       setFirstName('');
       setEmail('');
@@ -91,7 +99,7 @@ export default function AddHR() {
   }
 
   return (
-    <div className={`flex justify-center items-center mt-20 sm:mt-25`}>
+    <div className={`flex justify-center items-center mt-8 sm:mt-15`}>
         <div className='bg-lightBlue/60 dark:bg-blue-950/90 shadow-xl ring-1 ring-white/10  border-2 border-zinc-400 w-fit flex flex-col items-center justify-center px-5 sm:px-10 py-8 sm:py-10 rounded-2xl dark:border-none'>
         <h2 className='mb-8 font-semibold text-lg sm:text-xl dark:text-gray-200'>
           {t('add_rh_title')}
@@ -162,6 +170,39 @@ export default function AddHR() {
             {error.email}
           </p>
         </div>
+        <div className="text-sm sm:text-[17px] w-3xs sm:w-xs mb-6">
+          <label className="block mb-2 font-medium text-gray-800 dark:text-gray-200">{t('gender')}</label>
+          
+          <div className="flex gap-6">
+            <label className="inline-flex items-center">
+              <input
+                type="radio"
+                name="sexe"
+                value="Homme"
+                checked={sexe === 'Homme'}
+                onChange={(e) => setSexe(e.target.value)}
+                className="accent-blue-600"
+              />
+              <span className="ml-2 text-gray-800 dark:text-gray-200">{t('male')}</span>
+            </label>
+
+            <label className="inline-flex items-center">
+              <input
+                type="radio"
+                name="sexe"
+                value="Femme"
+                checked={sexe === 'Femme'}
+                onChange={(e) => setSexe(e.target.value)}
+                className="accent-pink-600"
+              />
+              <span className="ml-2 text-gray-800 dark:text-gray-200">{t('female')}</span>
+            </label>
+            <p className='pl-1 text-red-700'>
+              {error.sexe}
+            </p>
+          </div>
+        </div>
+
         <button className='text-base sm:text-lg font-semibold bg-mediumBlue dark:bg-mediumBlue/70 dark:hover:bg-mediumBlue w-3xs sm:w-xs py-2 text-white rounded-lg sm:rounded-xl mb-2 cursor-pointer hover:bg-darkBlue'
           onClick={add}
         >

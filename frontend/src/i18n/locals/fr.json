@@ -47,5 +47,15 @@
   "add_rh_title": "Ajouter un RH",
   "last_name_required": "Nom requis",
   "first_name_required": "Prénom requis",
-  "rhAddSuccess": "RH ajouté avec succès"
+  "rhAddSuccess": "RH ajouté avec succès",
+  "department_list": "Liste des Départements",
+  "delete_confirm": "Êtes-vous sûr de vouloir supprimer ce département ?",
+  "delete": "Supprimer",
+  "no_description": "Aucune description.",
+  "no_departments": "Aucun département disponible",
+  "dashboard_title": "Tableau de bord",
+  "dashboard_welcome": "Bienvenue sur le tableau de bord de votre organisation.",
+  "department_already_exists": "Un département avec ce nom existe déjà.",
+  "save": "Enregistrer",
+  "cancel": "Annuler"
 }

@@ -1,79 +1,74 @@
 import axios from 'axios';
 import { Boxes, CheckCircle, FileText } from 'lucide-react';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-
 export default function AddDept() {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [error, setError] = useState({});
+  const [message, setMessage] = useState('');
+  const [statusMessage, setStatusMessage] = useState(false);
 
+  // --- START OF THE FIX ---
+
+  // 1. Get the initial theme directly from localStorage.
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
 
   useEffect(() => {
-    // Crée un nouvel observateur qui surveille les changements sur l'attribut 'class' de l'élément HTML <html>
-    const observer = new MutationObserver(() => {
-      // Récupère la classe actuelle de <html> (soit "light", "dark", etc.)
-      const htmlTheme = document.documentElement.className;
+    // This is the stable theme-handling logic.
+    // It will not crash the component on navigation.
+    const handleThemeChange = () => {
+      const storedTheme = localStorage.getItem('theme') || 'light';
+      setTheme(storedTheme);
+    };
 
-      // Met à jour le state React 'theme' (ex: "dark" ou "light")
-      // Si aucune classe n'est trouvée, on garde 'light' par défaut
-      setTheme(htmlTheme || 'light');
-    });
+    // Listen for the custom event that our DarkMode toggle now dispatches.
+    window.addEventListener('themeChanged', handleThemeChange);
 
-    // Lance l'observateur : on demande à observer les changements d'attributs sur <html>
-    observer.observe(document.documentElement, {
-      attributes: true,              // On veut écouter les changements d'attributs
-      attributeFilter: ['class'],   // Mais uniquement si c’est l’attribut "class" qui change
-    });
+    // Cleanup: remove the event listener when the component unmounts.
+    return () => {
+      window.removeEventListener('themeChanged', handleThemeChange);
+    };
+  }, []); // Empty dependency array ensures this runs only once on mount.
 
-    // Cette fonction de retour sera exécutée lorsque le composant est démonté
-    // Elle permet d'arrêter l'observation pour éviter des fuites mémoire
-    return () => observer.disconnect();
-
-  }, []);
+  // --- END OF THE FIX ---
 
   const add = async () => {
+    // ... your existing add logic is fine ...
     let isValid = true;
-
     if(!name.trim()){
       isValid = false;
       setError({name: t('deptNameRequired')});
     }
-
-    const dept = {
-      nom: name,
-      description
-    };
-
+    const dept = { nom: name, description };
     if(isValid){
       try{
-        const res = await axios.post('http://localhost:4000/api/department/createDepartment', dept,
-          {
-            withCredentials: true
-          }
-        );
+        const res = await axios.post('http://localhost:4000/api/department/createDepartment', dept, { withCredentials: true });
+        console.log(res.status);
         setName('');
         setDescription('');
         toast.success(t('deptAddSuccess'), {
-          position: "top-center",           // Positionne le toast en haut et centré horizontalement
-          autoClose: 3000,                  // Ferme automatiquement le toast après 3000 ms (3 secondes)
-          hideProgressBar: true,           // Affiche la barre de progression (temps restant)
-          closeOnClick: true,               // Ferme le toast si l’utilisateur clique dessus
-          pauseOnHover: true,               // Met en pause la fermeture automatique si la souris survole le toast
-          draggable: true,                  // Permet de déplacer le toast avec la souris
-          progress: undefined,              // Laisse la progression automatique par défaut
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
           icon: <CheckCircle color="#2f51eb" />,
         });
       } catch(error){
-        console.log(error);
+        if(error.status){
+          setMessage(t('department_already_exists'));
+          setStatusMessage(false);
+        }
       }
     }
-  }
+  };
 
   return (
     <div className={`flex justify-center items-center mt-20 sm:mt-25`}>
@@ -81,15 +76,9 @@ export default function AddDept() {
         <h2 className='mb-8 font-semibold text-lg sm:text-xl dark:text-gray-200'>
           {t('add_department_title')}
         </h2>
+        {/* ... Rest of your JSX ... */}
         <div className='text-sm sm:text-[17px] w-3xs sm:w-xs mb-4'>
-          {/* relative: This makes the container a reference point for absolutely positioning elements inside it. */}
           <div className="relative mb-2">
-            {/* 
-                *top-1/2 sets the top edge of the icon to 50% of the height of its container.
-                *But that puts the top edge in the middle — so the icon appears slightly lower than centered.
-                *-translate-y-1/2 shifts the icon up by 50% of its own height, which repositions it to be truly centered.
-                * the first - in translate mean negative
-             */}
             <>
               <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600">
                 <Boxes size={20} />
@@ -102,9 +91,7 @@ export default function AddDept() {
               />
             </>
           </div>
-          <p className='pl-5 text-red-700'>
-            {error.name}
-          </p>
+          <p className='pl-5 text-red-700'>{error.name}</p>
         </div>
         <div className='text-sm sm:text-[17px] w-3xs sm:w-xs mb-10'>
           <div className="relative  mb-2">
@@ -119,6 +106,9 @@ export default function AddDept() {
             />
           </div>
         </div>
+        <p className={`mb-5 text-base font-semibold ${statusMessage ? 'text-darkBlue' : 'text-red-600'}`}>
+          {message}
+        </p>
         <button className='text-base sm:text-lg font-semibold bg-mediumBlue dark:bg-mediumBlue/70 dark:hover:bg-mediumBlue w-3xs sm:w-xs py-2 text-white rounded-lg sm:rounded-xl mb-2 cursor-pointer hover:bg-darkBlue'
           onClick={add}
         >
