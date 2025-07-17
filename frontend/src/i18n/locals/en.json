@@ -56,5 +56,18 @@
   "dashboard_welcome": "Welcome to your organization dashboard.",
   "department_already_exists": "A department with this name already exists.",
   "save": "Save",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "gender_required": "Please select a gender.",
+  "gender": "Gender",
+  "male": "Male",
+  "female": "Female",
+  "select_family_situation": "Select family situation",
+  "single": "Single",
+  "married": "Married",
+  "divorced": "Divorced",
+  "child_number_placeholder": "Number of children",
+  "contact_placeholder": "Contact number",
+  "invalid_phone_number": "Invalid phone number",
+  "no_hr_message": "No HR is currently assigned.",
+  "hr_list_title": "HR List"
 }
