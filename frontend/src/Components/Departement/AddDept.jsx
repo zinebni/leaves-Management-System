@@ -48,7 +48,6 @@ export default function AddDept() {
     if(isValid){
       try{
         const res = await axios.post('http://localhost:4000/api/department/createDepartment', dept, { withCredentials: true });
-        console.log(res.status);
         setName('');
         setDescription('');
         toast.success(t('deptAddSuccess'), {
@@ -72,7 +71,7 @@ export default function AddDept() {
 
   return (
     <div className={`flex justify-center items-center mt-20 sm:mt-25`}>
-        <div className='bg-lightBlue/60 dark:bg-blue-950/90 shadow-xl ring-1 ring-white/10  border-2 border-zinc-400 w-fit flex flex-col items-center justify-center px-5 sm:px-10 py-8 sm:py-10 rounded-2xl dark:border-none'>
+        <div className='bg-lightBlue/60 dark:bg-blue-950/50 shadow-xl ring-1 ring-white/10  border-2 border-zinc-400 w-fit flex flex-col items-center justify-center px-5 sm:px-10 py-8 sm:py-10 rounded-2xl dark:border-none'>
         <h2 className='mb-8 font-semibold text-lg sm:text-xl dark:text-gray-200'>
           {t('add_department_title')}
         </h2>
@@ -109,7 +108,7 @@ export default function AddDept() {
         <p className={`mb-5 text-base font-semibold ${statusMessage ? 'text-darkBlue' : 'text-red-600'}`}>
           {message}
         </p>
-        <button className='text-base sm:text-lg font-semibold bg-mediumBlue dark:bg-mediumBlue/70 dark:hover:bg-mediumBlue w-3xs sm:w-xs py-2 text-white rounded-lg sm:rounded-xl mb-2 cursor-pointer hover:bg-darkBlue'
+        <button className='text-base sm:text-lg font-semibold bg-mediumBlue dark:bg-darkBlue dark:hover:bg-blue-900 w-3xs sm:w-xs py-2 text-white rounded-lg sm:rounded-xl mb-2 cursor-pointer hover:bg-darkBlue'
           onClick={add}
         >
           {t('add_department')}

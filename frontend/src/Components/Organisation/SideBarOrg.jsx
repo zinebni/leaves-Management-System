@@ -14,7 +14,7 @@ export default function SideBarOrg({ name, open, setOpen }) {
   const activeLinkClass = "text-mediumBlue dark:text-blue-300";
 
   return (
-    <aside className={`h-fit sm:h-screen fixed sm:static top-0 left-0 z-50 w-full sm:w-64 bg-lightBlue/50 text-gray-800  dark:text-gray-200 sm:dark:bg-blue-950/90  p-6 shadow-lg ${open ? 'block bg-politeBlue dark:bg-blue-950' : 'hidden'} sm:block`}>
+    <aside className={`inset-y-0 fixed sm:static top-0 left-0 z-50 w-full sm:w-64 bg-lightBlue/50 text-gray-800  dark:text-gray-200 sm:dark:bg-blue-950/90  p-6 shadow-lg ${open ? 'block bg-politeBlue dark:bg-blue-950' : 'hidden'} sm:block`}>
 
       <h2 className="hidden sm:block text-2xl font-bold mb-10">Admin</h2>
       <div className='flex justify-end sm:hidden dark:text-white'>
@@ -59,7 +59,7 @@ export default function SideBarOrg({ name, open, setOpen }) {
             {t('add_rh')}
           </NavLink>
           <NavLink
-            to="HR"
+            to="HRs"
             className={({ isActive }) => `${baseLinkClass} ${isActive ? activeLinkClass : ''}`}
             // Use 'end' prop for parent routes to prevent it from matching child routes (like HR/Add)
             end 

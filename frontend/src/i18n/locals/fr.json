@@ -57,5 +57,18 @@
   "dashboard_welcome": "Bienvenue sur le tableau de bord de votre organisation.",
   "department_already_exists": "Un département avec ce nom existe déjà.",
   "save": "Enregistrer",
-  "cancel": "Annuler"
+  "cancel": "Annuler",
+  "gender_required": "Veuillez sélectionner un genre.",
+  "gender": "Sexe",
+  "male": "Homme",
+  "female": "Femme",
+  "select_family_situation": "Situation familiale",
+  "single": "Célibataire",
+  "married": "Marié(e)",
+  "divorced": "Divorcé(e)",
+  "child_number_placeholder": "Nombre d'enfants",
+  "contact_placeholder": "Numéro de contact",
+  "invalid_phone_number": "Numéro de téléphone invalide",
+  "no_hr_message": "Aucun RH n’est actuellement assigné.",
+  "hr_list_title": "Liste des RH"
 }
