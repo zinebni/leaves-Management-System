@@ -1,7 +1,5 @@
 import express from 'express';
 import authMiddleware from '../../middleware/auth.js';
-import isOrgMiddleware from '../../middleware/isOrg.js';
-import isRhMiddleware from '../../middleware/isRh.js';
 import {deleteEmployeeById, getEmployeeById, getEmployees, getEmployeesByDepartment, getEmployeesByDepartmentAndRole, getEmployeesByDepartmentName, getEmployeesByDepartmentNameAndRole, getEmployeesByRole, updateEmployeeById } from '../../controllers/employeeControllers/empController.js';
 
 //1- utiliser express pour creer un routeur 
