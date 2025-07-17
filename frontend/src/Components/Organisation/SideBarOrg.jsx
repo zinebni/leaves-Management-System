@@ -1,11 +1,18 @@
 import { Eye, Plus, Users, X } from 'lucide-react';
-import React from 'react'
+import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+// 1. Import NavLink instead of Link
+import { NavLink } from 'react-router-dom';
 
-export default function SideBarOrg({currentPage, name, open, setOpen}) {
+// 2. Remove currentPage from the props
+export default function SideBarOrg({ name, open, setOpen }) {
 
-  const {t} = useTranslation();
+  const { t } = useTranslation();
+
+  // 3. Define a function or string for our base and active classes to keep it DRY
+  const baseLinkClass = "flex items-center gap-2 hover:bg-lightBlue dark:hover:bg-blue-800 p-2 rounded transition font-semibold";
+  const activeLinkClass = "text-mediumBlue dark:text-blue-300";
+
   return (
     <aside className={`h-fit sm:h-screen fixed sm:static top-0 left-0 z-50 w-full sm:w-64 bg-lightBlue/50 text-gray-800  dark:text-gray-200 sm:dark:bg-blue-950/90  p-6 shadow-lg ${open ? 'block bg-politeBlue dark:bg-blue-950' : 'hidden'} sm:block`}>
 
@@ -20,21 +27,21 @@ export default function SideBarOrg({currentPage, name, open, setOpen}) {
           {t('department')}
         </h3>
         <nav className="flex flex-col gap-2">
-          <Link
-            to={`/Departement/Add/${name}`}
-            className={`flex items-center gap-2 hover:bg-lightBlue dark:hover:bg-blue-800 p-2 rounded transition font-semibold 
-                        ${currentPage === 'DeptAdd' ? 'text-mediumBlue dark:text-blue-300' : ''}`}
+          {/* 4. Use NavLink and its className function */}
+          <NavLink
+            to='Departement/Add'
+            className={({ isActive }) => `${baseLinkClass} ${isActive ? activeLinkClass : ''}`}
           >
             <Plus size={18}/>
             {t('add_department')}
-          </Link>
-          <Link
-            to="/afficher-departements"
-            className="flex items-center gap-2 hover:bg-lightBlue p-2 rounded transition dark:hover:bg-blue-800 font-semibold"
+          </NavLink>
+          <NavLink
+            to='Departements'
+            className={({ isActive }) => `${baseLinkClass} ${isActive ? activeLinkClass : ''}`}
           >
             <Eye size={18} />
             {t('view_departments')}
-          </Link>
+          </NavLink>
         </nav>
       </div>
 
@@ -44,24 +51,24 @@ export default function SideBarOrg({currentPage, name, open, setOpen}) {
           {t('rh')}
         </h3>
         <nav className="flex flex-col gap-2">
-          <Link
-            to={`/HR/Add/${name}`}
-            className={`flex items-center gap-2 hover:bg-lightBlue dark:hover:bg-blue-800 p-2 rounded transition font-semibold 
-                        ${currentPage === 'HRAdd' ? 'text-mediumBlue dark:text-blue-300' : ''}`}
+          <NavLink
+            to='HR/Add'
+            className={({ isActive }) => `${baseLinkClass} ${isActive ? activeLinkClass : ''}`}
           >
             <Plus size={18} />
             {t('add_rh')}
-          </Link>
-          <Link
-            to="/afficher-rh"
-            className="flex items-center gap-2 hover:bg-lightBlue p-2 rounded transition dark:hover:bg-blue-800 font-semibold"
+          </NavLink>
+          <NavLink
+            to="HR"
+            className={({ isActive }) => `${baseLinkClass} ${isActive ? activeLinkClass : ''}`}
+            // Use 'end' prop for parent routes to prevent it from matching child routes (like HR/Add)
+            end 
           >
             <Users size={18} />
             {t('view_rh')}
-          </Link>
+          </NavLink>
         </nav>
       </div>
     </aside>
   );
-
 }

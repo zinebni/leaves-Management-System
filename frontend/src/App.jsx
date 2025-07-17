@@ -9,10 +9,13 @@ import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import LoginPage from './Components/login/LoginPage';
 import RegisterOrg from './Components/Organisation/RegisterOrg';
 import Otp from './Components/login/Otp';
-import DashboardOrg from './Components/Organisation/dashboardOrg';
+import DashboardOrg from './Components/Organisation/DashboardOrg';
 import Dashbord from './Components/Dashbord';
-import AddDeptPage from './Components/Departement/AddDeptPage';
-import AddHRPage from './Components/HR/AddHRPage';
+import OrgLayout from './Components/Organisation/OrgLayout';
+import AddDept from './Components/Departement/AddDept';
+import DisplayDept from './Components/Departement/DisplayDept';
+import AddHR from './Components/HR/AddHR';
+import DisplayHR from './Components/HR/DisplayHR';
 
 function App() {
 
@@ -33,14 +36,16 @@ function App() {
         />
         <Route path='/Login/Otp' element={<Otp />}
         />
-        <Route path='/Organisation/:orgID' element={<DashboardOrg />}
-        />
         <Route path='/Dashbord' element={<Dashbord />}
         />
-        <Route path='/Departement/Add/:orgID'  element={<AddDeptPage />}
-        />
-        <Route path='/HR/Add/:orgID' element={<AddHRPage />}
-        />
+        {/* ORG Layout with sidebar/nav */}
+        <Route path="/Organisation/:orgID" element={<OrgLayout />}>
+          <Route index element={<DashboardOrg />} />
+          <Route path="Departement/Add" element={<AddDept />} />
+          <Route path="Departements" element={<DisplayDept />} />
+          <Route path="HR/Add" element={<AddHR />} />
+          <Route path="HRs" element={<DisplayHR />} />
+        </Route>
       </Routes>  
     </Router>
   );
