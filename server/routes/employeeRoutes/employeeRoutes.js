@@ -8,6 +8,8 @@ import {deleteEmployeeById, getEmployeeById, getEmployees, getEmployeesByDepartm
 const employeeRouter = express.Router(); 
 
 //2-definition des routes
+
+//Employee RH dashboard inforation and some RH fonctionalities routes
 employeeRouter.get('/getEmployees',authMiddleware,getEmployees);
 employeeRouter.get('/getEmployeeById/:id',authMiddleware,getEmployeeById);
 employeeRouter.get('/getEmployeesByRole/:role',authMiddleware,getEmployeesByRole);
@@ -17,6 +19,7 @@ employeeRouter.get('/getEmployeesByDepartmentName/:departmentName',authMiddlewar
 employeeRouter.get('/getEmployeesByDepartmentNameAndRole/:departmentName/:role',authMiddleware,getEmployeesByDepartmentNameAndRole);
 employeeRouter.delete('/deleteEmployeeById/:id',authMiddleware,isRhMiddleware,deleteEmployeeById);
 employeeRouter.put('/updateEmployeeById/:id',authMiddleware,updateEmployeeById);
+
 
 //3-exportation du routeur
 export default employeeRouter;
