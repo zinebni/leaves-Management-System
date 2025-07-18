@@ -13,6 +13,7 @@ export default function LanguageSwitcher() {
       <li
         onClick={() => {
           i18n.changeLanguage('fr');
+          localStorage.setItem('i18nextLng', 'fr');
           setOpenList(false);
         }} 
         className={`cursor-pointer px-4 py-2 hover:bg-gray-300 dark:hover:bg-blue-800 ${
@@ -24,6 +25,7 @@ export default function LanguageSwitcher() {
       <li
         onClick={() => {
           i18n.changeLanguage('en');
+          localStorage.setItem('i18nextLng', 'en');
           setOpenList(false);
         }}
         className={`cursor-pointer px-4 py-2 hover:bg-gray-300 dark:hover:bg-blue-800  ${

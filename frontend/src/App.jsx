@@ -1,10 +1,10 @@
 import { useState } from 'react'
-import './App.css'
+import './App.css';
+import './i18n/i18n';
 import Home from "./Components/Home";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { useEffect } from 'react';
-import './i18n/i18n';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import LoginPage from './Components/login/LoginPage';
 import RegisterOrg from './Components/Organisation/RegisterOrg';
@@ -16,6 +16,7 @@ import AddDept from './Components/Departement/AddDept';
 import DisplayDept from './Components/Departement/DisplayDept';
 import AddHR from './Components/HR/AddHR';
 import DisplayHR from './Components/HR/DisplayHR';
+import EditHR from './Components/HR/EditHR';
 
 function App() {
 
@@ -45,6 +46,7 @@ function App() {
           <Route path="Departements" element={<DisplayDept />} />
           <Route path="HR/Add" element={<AddHR />} />
           <Route path="HRs" element={<DisplayHR />} />
+          <Route path="HRs/Edit/:id" element={<EditHR />} />
         </Route>
       </Routes>  
     </Router>

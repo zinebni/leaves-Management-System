@@ -57,6 +57,7 @@
   "department_already_exists": "A department with this name already exists.",
   "save": "Save",
   "cancel": "Cancel",
+  "edit": "Edit",
   "gender_required": "Please select a gender.",
   "gender": "Gender",
   "male": "Male",
@@ -69,5 +70,10 @@
   "contact_placeholder": "Contact number",
   "invalid_phone_number": "Invalid phone number",
   "no_hr_message": "No HR is currently assigned.",
-  "hr_list_title": "HR List"
+  "hr_list_title": "HR List",
+  "invalid_email": "Invalid email address",
+  "invalid_child_number": "Invalid number of children",
+  "edit_rh_title": "Edit HR",
+  "rh_edited_success": "HR edited successfully",
+  "loading": "Loading..."
 }

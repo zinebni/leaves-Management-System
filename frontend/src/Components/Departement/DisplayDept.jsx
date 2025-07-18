@@ -8,6 +8,7 @@ export default function DisplayDept({open}) {
   const { t } = useTranslation();
   const [editable, setEditable] = useState(-1);
   const [newDept, setNewDept] = useState({});
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     fetchDepartments();
@@ -19,6 +20,7 @@ export default function DisplayDept({open}) {
         withCredentials: true
       });
       setDepartments(res.data.departments);
+      setIsLoading(false)
     } catch (error) {
       console.error('Error fetching departments:', error);
     }
@@ -54,11 +56,30 @@ export default function DisplayDept({open}) {
     }
   };
 
-  
+  if(isLoading){
+    return(
+      <div className="flex items-center justify-center text-gray-600 dark:text-gray-300 text-lg italic mt-10 gap-2">
+        {/* Spinner element: a div shaped as a circle with a spinning border */}
+        <div 
+          className="
+            w-5 h-5                
+            border-4                
+            border-gray-400         
+            border-t-transparent    
+            rounded-full           
+            animate-spin            
+          "
+        ></div>
+
+        {/* Loading text translated */}
+        {t('loading')}
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen p-6 flex flex-col items-center">
-      <h2 className="text-2xl font-bold text-mediumBlue dark:text-politeBlue mb-10 mt-5">
+      <h2 className="text-xl sm:text-2xl font-bold text-mediumBlue dark:text-politeBlue mb-10 mt-5">
         {t("department_list")}
       </h2>
 
@@ -79,17 +100,17 @@ export default function DisplayDept({open}) {
           type="text"
           defaultValue={dept.nom}
           onChange={(e) => setNewDept(prev => ({...prev, nom:e.target.value}))}
-          className="text-lg p-2 rounded border dark:bg-blue-900 dark:text-white"
+          className="text-lg p-2 rounded border dark:bg-politeBlue/10 dark:text-white"
         />
         <textarea
           defaultValue={dept.description}
           onChange={(e) => setNewDept(prev => ({...prev, description:e.target.value}))}
-          className="text-sm p-2 rounded border dark:bg-blue-900 dark:text-white"
+          className="text-sm p-2 rounded border dark:bg-politeBlue/10 dark:text-white"
         />
         <div className="flex justify-end gap-3 mt-2">
           <button
             onClick={() => handleUpdate(dept._id, newDept)}
-            className="bg-mediumBlue hover:bg-darkBlue dark:bg-mediumBlue dark:hover:bg-mediumBlue/80 cursor-pointer text-white px-4 py-1 rounded"
+            className="bg-mediumBlue dark:bg-darkBlue dark:hover:bg-blue-900 hover:bg-darkBlue cursor-pointer text-white px-4 py-1 rounded"
           >
             {t("save")}
           </button>

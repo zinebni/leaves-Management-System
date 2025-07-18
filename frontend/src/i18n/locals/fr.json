@@ -58,6 +58,7 @@
   "department_already_exists": "Un département avec ce nom existe déjà.",
   "save": "Enregistrer",
   "cancel": "Annuler",
+  "edit": "Modifier",
   "gender_required": "Veuillez sélectionner un genre.",
   "gender": "Sexe",
   "male": "Homme",
@@ -70,5 +71,10 @@
   "contact_placeholder": "Numéro de contact",
   "invalid_phone_number": "Numéro de téléphone invalide",
   "no_hr_message": "Aucun RH n’est actuellement assigné.",
-  "hr_list_title": "Liste des RH"
+  "hr_list_title": "Liste des RH",
+  "invalid_email": "Adresse e-mail invalide",
+  "invalid_child_number": "Nombre d’enfants invalide",
+  "edit_rh_title": "Modifier un RH",
+  "rh_edited_success": "RH modifié avec succès",
+  "loading": "Chargement..."
 }
