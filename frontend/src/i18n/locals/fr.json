@@ -76,5 +76,8 @@
   "invalid_child_number": "Nombre d’enfants invalide",
   "edit_rh_title": "Modifier un RH",
   "rh_edited_success": "RH modifié avec succès",
-  "loading": "Chargement..."
+  "loading": "Chargement...",
+  "emp": "Employés",
+  "add_emp": "Ajouter",
+  "view_emps": "Afficher"
 }

@@ -1,19 +1,14 @@
-// Components/Organisation/OrgLayout.js
-import React, { useState } from 'react'
-import { Outlet, useParams } from 'react-router-dom'
-import NavBar from './NavBar';
-import { Eye, Plus, Users } from 'lucide-react';
-import SideBar from './SideBar';
+import React from 'react'
 
-export default function OrgLayout() {
+export default function HRLayout() {
   const { orgID } = useParams();
   const [open, setOpen] = useState(false);
   const sidebarLinks = [
     {
-      section: 'department',
+      section: 'emp',
       items: [
-        { to: 'Departement/Add', icon: <Plus size={18} />, label: 'add_department' },
-        { to: 'Departements', icon: <Eye size={18} />, label: 'view_departments' },
+        { to: '', icon: <Plus size={18} />, label: 'add_emp' },
+        { to: '', icon: <Eye size={18} />, label: 'view_emps' },
       ],
     },
     {

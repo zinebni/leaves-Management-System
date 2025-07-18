@@ -30,7 +30,7 @@
   "emailAlreadyExists": "An account with this email already exists.",
   "loginSuccess": "Login successful. Redirecting…",
   "invalidCredentials": "Incorrect email or password.",
-  "department": "Department",
+  "department": "Departments",
   "add_department": "Add",
   "view_departments": "View",
   "rh": "HR",
@@ -75,5 +75,8 @@
   "invalid_child_number": "Invalid number of children",
   "edit_rh_title": "Edit HR",
   "rh_edited_success": "HR edited successfully",
-  "loading": "Loading..."
+  "loading": "Loading...",
+  "emp": "Employees",
+  "add_emp": "Add",
+  "view_emps": "View"
 }

@@ -87,6 +87,8 @@ export default function LoginPage() {
             email,
             password
           };
+
+          console.log(user);
             try {
             // 1. Login: Set token in HTTP-only cookie
             const res = await axios.post('http://localhost:4000/api/auth/login', user, {
