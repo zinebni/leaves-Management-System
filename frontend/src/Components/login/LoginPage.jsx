@@ -87,6 +87,8 @@ export default function LoginPage() {
             email,
             password
           };
+
+          console.log(user);
             try {
             // 1. Login: Set token in HTTP-only cookie
             const res = await axios.post('http://localhost:4000/api/auth/login', user, {
@@ -106,6 +108,10 @@ export default function LoginPage() {
 
           } catch (error) {
             console.error("Login or OTP failed:", error?.response?.data || error.message);
+            if(error.status === 401) {
+              setMessage(t('invalid_info'));
+              setStatusMessage(false);
+            }
           }
     }
     

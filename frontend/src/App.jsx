@@ -10,13 +10,15 @@ import LoginPage from './Components/login/LoginPage';
 import RegisterOrg from './Components/Organisation/RegisterOrg';
 import Otp from './Components/login/Otp';
 import DashboardOrg from './Components/Organisation/DashboardOrg';
-import Dashbord from './Components/Dashbord';
+import Dashbord from './Components/HR/DashbordHR';
 import OrgLayout from './Components/Organisation/OrgLayout';
 import AddDept from './Components/Departement/AddDept';
 import DisplayDept from './Components/Departement/DisplayDept';
 import AddHR from './Components/HR/AddHR';
 import DisplayHR from './Components/HR/DisplayHR';
 import EditHR from './Components/HR/EditHR';
+import HRLayout from './Components/HR/HRLayout';
+import DashbordHR from './Components/HR/DashbordHR';
 
 function App() {
 
@@ -47,6 +49,10 @@ function App() {
           <Route path="HR/Add" element={<AddHR />} />
           <Route path="HRs" element={<DisplayHR />} />
           <Route path="HRs/Edit/:id" element={<EditHR />} />
+        </Route>
+        {/* HR Layout with sidebar/nav */}
+        <Route path="/HR/:orgID" element={<HRLayout />}>
+          <Route index element={<DashbordHR />} />
         </Route>
       </Routes>  
     </Router>
