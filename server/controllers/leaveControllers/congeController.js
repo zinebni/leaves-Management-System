@@ -112,7 +112,7 @@ export const getMyLeaveRequestsByStatus = async (req, res) => {
   }
 };
 //RH------------------------------------------------------RH :
-// getAllLeaveRequests() 
+// getAllLeaveRequests() of an organisation
 export const getAllLeaveRequests = async (req, res) => {
   const organisationId =  new mongoose.Types.ObjectId(req.user.organisation);
   if(!organisationId){
@@ -152,13 +152,49 @@ export const getAllLeaveRequests = async (req, res) => {
 // getLeaveRequestById(id conge)
 export const getLeaveRequestById = async (req, res) => {
   const { id } = req.params;
-  const organisation = req.user.organisation;
   try {
+    //chercher le conge avec id
     const conge = await Conge.findOne({ _id: id}, {createdAt:0, updatedAt:0, __v:0, deleted:0}).populate({path: 'motif', select: 'type'}).populate({path: 'employee', select: 'nom prenom department'});
     if (!conge) {
       return res.status(404).json({ success: false, message: 'Demande de congé non trouvée.' });
     }
-    res.status(200).json({ success: true, conge });
+    //chercher les conges dans la même organisation avec statue "approuve" pour le  memme employee (historique)
+    const congesHistorique = await Conge.find({ employee: conge.employee, /* status: "approuve" ,*/ _id: { $ne: id }}, {createdAt:0, updatedAt:0, __v:0, deleted:0}).populate({path: 'motif', select: 'type'});
+    //chercher les employees de la meme organisation qui ont le meme departement que l'employee du conge avec un conge "approuve" dans la meme periode
+    const organisation = new mongoose.Types.ObjectId(req.user.organisation);
+    const id_conge = new mongoose.Types.ObjectId(id);
+    const departmentId = new mongoose.Types.ObjectId(conge.employee.department);
+
+    const employeesConge = await Conge.aggregate([
+        {
+          $lookup: {
+            from: 'employees', 
+            localField: 'employee',
+            foreignField: '_id',
+            as: 'employee'
+          }
+        },
+        { $unwind: '$employee' },
+        {
+          $match: {
+            'employee.organisation': organisation,
+            'employee.department': departmentId,
+            status: "approuve",
+            _id: { $ne: id_conge },
+            date_debut: { $lte: new Date(conge.date_fin) },
+            date_fin: { $gte: new Date(conge.date_debut) }
+          }
+        },
+        {
+          $project: {
+            createdAt: 0,
+            updatedAt: 0,
+            __v: 0
+          }
+        }
+      ])
+    //=>envoyer la reponse
+    res.status(200).json({ success: true, data : {conge , congesHistorique , employeesConge , nbrchevauchemt : employeesConge.length} });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
@@ -320,5 +356,44 @@ export const getAllLeaveRequestsByDepartmentAndStatus = async (req, res) => {
 
 };
 // approveLeaveRequest(id) 
+export const approveLeaveRequest = async (req, res) => {
+  const { id } = req.params;
+  const employeeId = req.user.id;
+  if (!employeeId) {
+    res.status(400).json({ success: false, message: 'utilisateur non trouvé.' });
+  }
+  try {
+    const conge = await Conge.findOneAndUpdate(
+      { _id: id, status: "en attente" },
+      { status: "approuve", approuvePar: employeeId },
+      { new: true }
+    );
+    if (!conge) {
+      return res.status(404).json({ success: false, message: 'Demande de congé non trouvée.' });
+    }
+    res.status(200).json({ success: true, message: 'Demande de congé approuvée avec succès.', conge });
+    } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
 // rejectLeaveRequest(id) 
-
+export const rejectLeaveRequest = async (req, res) => {
+  const { id } = req.params;
+  const employeeId = req.user.id;
+  if (!employeeId) {
+    res.status(400).json({ success: false, message: 'utilisateur non trouvé.' });
+  }
+  try {
+    const conge = await Conge.findOneAndUpdate(
+      { _id: id, status: "en attente" },
+      { status: "refuse", refusePar: employeeId },
+      { new: true }
+    );
+    if (!conge) {
+      return res.status(404).json({ success: false, message: 'Demande de congé non trouvée.' });
+    }
+    res.status(200).json({ success: true, message: 'Demande de congé refusée avec succès.', conge });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
