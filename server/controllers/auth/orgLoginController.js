@@ -30,7 +30,7 @@ export const orgLogin = async (req,res)=>{
         const payload= {
             id:org._id,
             role:org.role,
-            organisation:org._id
+            organisation:org._id,
         };
         const  secretKey = process.env.JWT_SECRET;
         const token = jwt.sign(payload,secretKey,{expiresIn:'7d'});

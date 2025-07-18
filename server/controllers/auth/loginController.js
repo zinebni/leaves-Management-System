@@ -36,7 +36,7 @@ export const login = async (req,res)=>{
         const payload= {
             id:employee._id,
             role:employee.role,
-            organisation:employee.organisation
+            organisation:employee.organisation,
         };
         const  secretKey = process.env.JWT_SECRET;
         const token = jwt.sign(payload,secretKey,{expiresIn:'7d'});
@@ -72,7 +72,7 @@ export const login = async (req,res)=>{
     
 }
 
-//logout
+
 // logout
 export const logout = async (req, res) => {
     try {
@@ -208,7 +208,8 @@ export const verifyEmail = async (req,res)=>{
         // on envoie la reponse
         return res.status(200).json({
             success:true,
-            message:'compte verifié avec succès.'
+            message:'compte verifié avec succès.',
+            data : {employee, orgID: employee.organisation.orgID}
         });
      } catch (error) {
         return res.status(500).json({ success: false, message: error.message });
