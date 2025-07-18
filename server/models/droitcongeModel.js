@@ -16,7 +16,7 @@ const droitCongeSchema = new mongoose.Schema(
             required:true,
         },
 
-        joursAutorisee:{type:Number, default:0},
+        joursAutorisee:{type:Number},
 
         joursPris:{type:Number, default:0},
 
