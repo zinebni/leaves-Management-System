@@ -16,6 +16,8 @@ export default function AddHR() {
   const [childNumber, setChildNumber] = useState(null);
   const [recruitmentDate, setRecruitmentDate] = useState(Date.now());
   const [error, setError] = useState({});
+  const [message, setMessage] = useState('');
+  const [statusMessage, setStatusMessage] = useState(false);
 
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
 
@@ -64,8 +66,13 @@ export default function AddHR() {
       isValid = false;
       newError.sexe = t('gender_required');
     }
+
+    if(childNumber && childNumber < 0) {
+      isValid = false;
+      newError.childNumber = t('invalid_child_number');
+    }
     
-    if (!regexPhoneMaroc.test(contact)){
+    if (contact && !regexPhoneMaroc.test(contact)){
       isValid = false;
       newError.contact = t('invalid_phone_number');
     }
@@ -97,6 +104,10 @@ export default function AddHR() {
       setLastName('');
       setFirstName('');
       setEmail('');
+      setContact('');
+      setChildNumber(null);
+      setFamilySitu('');
+      setMessage('');
       toast.success(t('rhAddSuccess'), {
         position: "top-center",           // Positionne le toast en haut et centré horizontalement
         autoClose: 3000,                  // Ferme automatiquement le toast après 3000 ms (3 secondes)
@@ -108,14 +119,17 @@ export default function AddHR() {
         icon: <CheckCircle color="#2f51eb" />,
       });
     } catch(error){
+      if(error.status === 500) {
+        setMessage(t('invalid_email'));
+      }
       console.log(error);
     }
     
   }
 
   return (
-    <div className={`flex justify-center items-center mt-5 sm:mt-10`}>
-        <div className='bg-lightBlue/60 dark:bg-blue-950/50 shadow-xl ring-1 ring-white/10  border-2 border-zinc-400 w-fit flex flex-col items-center justify-center px-5 sm:px-10 py-8 sm:py-10 rounded-2xl dark:border-none'>
+    <div className={`flex justify-center items-center mt-5 sm:mt-10 mb-5`}>
+        <div className='bg-lightBlue/60 dark:bg-blue-950/50 shadow-xl ring-1 ring-white/10  border-2 border-zinc-400 w-fit flex flex-col items-center justify-center px-8 sm:px-10 py-6 sm:py-10 rounded-2xl dark:border-none'>
         <h2 className='mb-8 font-semibold text-lg sm:text-xl dark:text-gray-200'>
           {t('add_rh_title')}
         </h2>
@@ -230,7 +244,7 @@ export default function AddHR() {
               >
                 <option value="">{t('select_family_situation')}</option>
                 <option value="célibataire">{t('single')}</option>
-                <option value="marié(e">{t('married')}</option>
+                <option value="marié(e)">{t('married')}</option>
                 <option value="divorcé(e)">{t('divorced')}</option>
               </select>
             </div>
@@ -264,6 +278,9 @@ export default function AddHR() {
                 className="pl-10 pr-4 py-3 rounded-2xl bg-zinc-200 border-gray-700 w-full"
               />
             </div>
+            <p className='pl-5 text-red-700'>
+              {error.childNumber}
+            </p>
           </div>
           <div className='text-sm sm:text-[17px] w-3xs sm:w-xs'>
             <div className="relative mb-2">
@@ -279,6 +296,9 @@ export default function AddHR() {
             </div>
           </div>
         </div>
+        <p className={`mb-3 text-base font-semibold ${statusMessage ? 'text-darkBlue' : 'text-red-600'}`}>
+          {message}
+        </p>
         <div className='flex justify-end w-full mt-8'>
           <button className='text-base sm:text-lg font-semibold bg-mediumBlue dark:bg-darkBlue dark:hover:bg-blue-900 w-3xs sm:w-xs py-2 text-white rounded-lg sm:rounded-xl mb-2 cursor-pointer hover:bg-darkBlue'
             onClick={add}

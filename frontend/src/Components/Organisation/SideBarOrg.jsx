@@ -30,6 +30,7 @@ export default function SideBarOrg({ name, open, setOpen }) {
           {/* 4. Use NavLink and its className function */}
           <NavLink
             to='Departement/Add'
+            onClick={() => setOpen(false)}
             className={({ isActive }) => `${baseLinkClass} ${isActive ? activeLinkClass : ''}`}
           >
             <Plus size={18}/>
@@ -37,6 +38,7 @@ export default function SideBarOrg({ name, open, setOpen }) {
           </NavLink>
           <NavLink
             to='Departements'
+            onClick={() => setOpen(false)}
             className={({ isActive }) => `${baseLinkClass} ${isActive ? activeLinkClass : ''}`}
           >
             <Eye size={18} />
@@ -53,6 +55,7 @@ export default function SideBarOrg({ name, open, setOpen }) {
         <nav className="flex flex-col gap-2">
           <NavLink
             to='HR/Add'
+            onClick={() => setOpen(false)}
             className={({ isActive }) => `${baseLinkClass} ${isActive ? activeLinkClass : ''}`}
           >
             <Plus size={18} />
@@ -60,6 +63,7 @@ export default function SideBarOrg({ name, open, setOpen }) {
           </NavLink>
           <NavLink
             to="HRs"
+            onClick={() => setOpen(false)}
             className={({ isActive }) => `${baseLinkClass} ${isActive ? activeLinkClass : ''}`}
             // Use 'end' prop for parent routes to prevent it from matching child routes (like HR/Add)
             end 

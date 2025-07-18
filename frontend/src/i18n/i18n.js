@@ -11,7 +11,7 @@ i18n.use(initReactI18next).init({
     fr: {translation: fr},
     en: {translation: en}
   },
-  lng: 'fr', // default language
+  lng: localStorage.getItem('i18nextLng') || 'fr', // default language , use localstorage so all page take the language from the localstorge because it can be render before the configuration of i18n finish
   fallbackLng: 'fr', //fallback if translation key missing for example we don't have the key 'login' in the english file so we will use the frensh version
   interpolation: {
     escapeValue: false, //to escape variable inside values in the translation files like {{name}}
