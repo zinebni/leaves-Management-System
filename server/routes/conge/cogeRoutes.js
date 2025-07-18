@@ -1,6 +1,6 @@
 import express from 'express';
 import upload from '../../middleware/upload.js';
-import { cancelLeaveRequest, createLeaveRequest , getAllLeaveRequests, getAllLeaveRequestsByDepartment, getAllLeaveRequestsByDepartmentAndStatus, getAllLeaveRequestsByEmployee, getAllLeaveRequestsByStatus, getLeaveRequestById, getMyLeaveRequests, getMyLeaveRequestsByStatus, getMyLeaveRequestsDeleted} from '../../controllers/leaveControllers/congeController.js';
+import { approveLeaveRequest, cancelLeaveRequest, createLeaveRequest , getAllLeaveRequests, getAllLeaveRequestsByDepartment, getAllLeaveRequestsByDepartmentAndStatus, getAllLeaveRequestsByEmployee, getAllLeaveRequestsByStatus, getLeaveRequestById, getMyLeaveRequests, getMyLeaveRequestsByStatus, getMyLeaveRequestsDeleted, rejectLeaveRequest} from '../../controllers/leaveControllers/congeController.js';
 import authMiddleware from '../../middleware/auth.js';
 import isRhMiddleware from '../../middleware/isRh.js';
 
@@ -24,6 +24,8 @@ congeRouter.get('/getLeaveRequestById/:id',authMiddleware,isRhMiddleware,getLeav
 congeRouter.get('/getAllLeaveRequestsByEmployee/:employeeId',authMiddleware,isRhMiddleware,getAllLeaveRequestsByEmployee);
 congeRouter.get('/getAllLeaveRequestsByDepartment/:departmentId',authMiddleware,isRhMiddleware,getAllLeaveRequestsByDepartment);
 congeRouter.get('/getAllLeaveRequestsByDepartmentAndStatus/:departmentId/:status',authMiddleware,isRhMiddleware,getAllLeaveRequestsByDepartmentAndStatus);
+congeRouter.put('/approveLeaveRequest/:id',authMiddleware,isRhMiddleware,approveLeaveRequest);
+congeRouter.put('/rejectLeaveRequest/:id',authMiddleware,isRhMiddleware,rejectLeaveRequest);
 
 //3-exportation du routeur
 export default congeRouter;
