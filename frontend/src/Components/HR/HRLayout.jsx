@@ -1,4 +1,8 @@
-import React from 'react'
+import { Eye, Plus } from 'lucide-react';
+import React, { useState } from 'react'
+import { Outlet, useParams } from 'react-router-dom';
+import NavBar from '../Organisation/NavBar';
+import SideBar from '../Organisation/SideBar';
 
 export default function HRLayout() {
   const { orgID } = useParams();
@@ -10,14 +14,7 @@ export default function HRLayout() {
         { to: '', icon: <Plus size={18} />, label: 'add_emp' },
         { to: '', icon: <Eye size={18} />, label: 'view_emps' },
       ],
-    },
-    {
-      section: 'rh',
-      items: [
-        { to: 'HR/Add', icon: <Plus size={18} />, label: 'add_rh' },
-        { to: 'HRs', icon: <Users size={18} />, label: 'view_rh', end: true },
-      ],
-    },
+    }
   ];
 
   return (

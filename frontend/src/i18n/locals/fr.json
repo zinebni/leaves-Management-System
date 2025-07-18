@@ -79,5 +79,6 @@
   "loading": "Chargement...",
   "emp": "Employés",
   "add_emp": "Ajouter",
-  "view_emps": "Afficher"
+  "view_emps": "Afficher",
+  "invalid_info": "Email ou mot de passe incorrects"
 }

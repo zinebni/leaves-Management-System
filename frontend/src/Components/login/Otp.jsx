@@ -59,7 +59,7 @@ export default function Otp() {
           withCredentials: true
         });
         console.log(res);
-        navigate('/HR/');
+        navigate('/HR/test');
       } catch (error) {
         console.error("verify failed:", error?.response?.data || error.message);
       }

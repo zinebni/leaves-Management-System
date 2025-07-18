@@ -78,5 +78,6 @@
   "loading": "Loading...",
   "emp": "Employees",
   "add_emp": "Add",
-  "view_emps": "View"
+  "view_emps": "View",
+  "invalid_info": "Invalid email or password"
 }

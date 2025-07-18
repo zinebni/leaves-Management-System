@@ -108,6 +108,10 @@ export default function LoginPage() {
 
           } catch (error) {
             console.error("Login or OTP failed:", error?.response?.data || error.message);
+            if(error.status === 401) {
+              setMessage(t('invalid_info'));
+              setStatusMessage(false);
+            }
           }
     }
     
