@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-export default function AddHR() {
+export default function AddEmp() {
   const {t} = useTranslation();
   const [lastName, setLastName] = useState('');
   const [firstName, setFirstName] = useState('');

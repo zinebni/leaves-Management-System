@@ -23,7 +23,7 @@
   "register": "S'inscrire",
   "noAccount": "Vous n'avez pas de compte ?",
   "otp": {
-    "enter": "Entrez le code OTP",
+    "enter": "Entrez le code",
     "verify": "Vérifier",
     "error": "Veuillez entrer le code complet"
   },

@@ -11,8 +11,8 @@ export default function HRLayout() {
     {
       section: 'emp',
       items: [
-        { to: '', icon: <Plus size={18} />, label: 'add_emp' },
-        { to: '', icon: <Eye size={18} />, label: 'view_emps' },
+        { to: 'Employees/Add', icon: <Plus size={18} />, label: 'add_emp' },
+        { to: 'Employees', icon: <Eye size={18} />, label: 'view_emps', end:true } // ❌ Sans "end", ce lien sera aussi actif pour les sous-routes comme 'Employees/Add',
       ],
     }
   ];

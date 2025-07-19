@@ -58,7 +58,7 @@ export default function Otp() {
         const res = await axios.post('http://localhost:4000/api/auth/verify-account', {otp: finalOtp}, {
           withCredentials: true
         });
-        console.log(res);
+        console.log(res.data);
         navigate('/HR/test');
       } catch (error) {
         console.error("verify failed:", error?.response?.data || error.message);

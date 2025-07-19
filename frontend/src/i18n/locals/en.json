@@ -22,9 +22,9 @@
   "register": "Register",
   "noAccount": "Don't have an account?",
   "otp": {
-    "enter": "Enter OTP",
+    "enter": "Enter the code",
     "verify": "Verify",
-    "error": "Please enter the full OTP"
+    "error": "Please enter the full code"
   },
   "orgAccountCreated": "Account successfully created. Logging in…",
   "emailAlreadyExists": "An account with this email already exists.",
