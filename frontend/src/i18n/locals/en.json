@@ -22,7 +22,7 @@
   "register": "Register",
   "noAccount": "Don't have an account?",
   "otp": {
-    "enter": "Enter the code",
+    "enter": "Enter the code sent to your verify email",
     "verify": "Verify",
     "error": "Please enter the full code"
   },
@@ -74,10 +74,20 @@
   "invalid_email": "Invalid email address",
   "invalid_child_number": "Invalid number of children",
   "edit_rh_title": "Edit HR",
+  "emp_edited_success": "Employee edited successfully",
   "rh_edited_success": "HR edited successfully",
   "loading": "Loading...",
   "emp": "Employees",
   "add_emp": "Add",
   "view_emps": "View",
-  "invalid_info": "Invalid email or password"
+  "invalid_info": "Invalid email or password",
+  "select_dept": "Select department",
+  "dept_required": "Please select a department.",
+  "empAddSuccess": "Employee added successfully",
+  "add_emp_title": "Add Employee",
+  "emp_list_title": "Employees List",
+  "no_emp_message": "No Employee is currently assigned.",
+  "no_matching_employees": "No employees found for these filters.",
+  "search_by_name": "Search by name",
+  "all_departments": "All departments"
 }

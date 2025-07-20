@@ -14,6 +14,9 @@ function Home() {
   const navigate = useNavigate();
   const {t} = useTranslation();
 
+  const element = document.documentElement;
+  element.classList.remove('dark');
+
   useEffect(() => {
     if(!vantaEffect) {
       setVantaEffect(

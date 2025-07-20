@@ -11,8 +11,8 @@ export default function HRLayout() {
     {
       section: 'emp',
       items: [
-        { to: 'Employees/Add', icon: <Plus size={18} />, label: 'add_emp' },
-        { to: 'Employees', icon: <Eye size={18} />, label: 'view_emps', end:true } // ❌ Sans "end", ce lien sera aussi actif pour les sous-routes comme 'Employees/Add',
+        { to: 'Employee/Add', icon: <Plus size={18} />, label: 'add_emp' },
+        { to: 'Employees', icon: <Eye size={18} />, label: 'view_emps' } // ❌ Sans "end", ce lien sera aussi actif pour les sous-routes comme 'Employees/Add',
       ],
     }
   ];
@@ -21,7 +21,7 @@ export default function HRLayout() {
     <div className='w-full overflow-x-hidden'>
       <NavBar name={orgID} open={open} setOpen={setOpen} />
       <div className='flex flex-col min-h-screen sm:flex-row'>
-        <SideBar name={orgID} open={open} setOpen={setOpen} links={sidebarLinks} />
+        <SideBar name={orgID} open={open} setOpen={setOpen} links={sidebarLinks} role='rh' />
         <div className='flex-grow bg-gradient-to-br from-gray-300 to-white dark:bg-blue-950/60 dark:from-blue-950/60 dark:to-blue-950/60'>
           <Outlet />
         </div>

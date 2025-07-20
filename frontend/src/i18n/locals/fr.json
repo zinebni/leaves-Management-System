@@ -23,7 +23,7 @@
   "register": "S'inscrire",
   "noAccount": "Vous n'avez pas de compte ?",
   "otp": {
-    "enter": "Entrez le code",
+    "enter": "Entrez le code envoyé par email",
     "verify": "Vérifier",
     "error": "Veuillez entrer le code complet"
   },
@@ -75,10 +75,20 @@
   "invalid_email": "Adresse e-mail invalide",
   "invalid_child_number": "Nombre d’enfants invalide",
   "edit_rh_title": "Modifier un RH",
+  "emp_edited_success": "Employé modifié avec succès",
   "rh_edited_success": "RH modifié avec succès",
   "loading": "Chargement...",
   "emp": "Employés",
   "add_emp": "Ajouter",
   "view_emps": "Afficher",
-  "invalid_info": "Email ou mot de passe incorrects"
+  "invalid_info": "Email ou mot de passe incorrects",
+  "select_dept": "sélectionner un département",
+  "dept_required": "Veuillez sélectionner un département.",
+  "empAddSuccess": "Employé ajouté avec succès",
+  "add_emp_title": "Ajouter un Employé",
+  "emp_list_title": "Liste des Employés",
+  "no_emp_message": "Aucun Employé n’est actuellement assigné.",
+  "no_matching_employees": "Aucun employé trouvé pour ces critères.",
+  "search_by_name": "Rechercher par nom",
+  "all_departments": "Tous les départements"
 }

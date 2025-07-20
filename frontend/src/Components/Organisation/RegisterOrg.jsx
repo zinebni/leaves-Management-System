@@ -97,22 +97,22 @@ export default function RegisterOrg() {
       if(res.status === 201){
         setMessage(t('orgAccountCreated'));
         setStatusMessage(true);
-        setTimeout(async () => {
-          const org = {
-            email,
-            password
-          };
-          //login
-          try {
-            const res = await axios.post('http://localhost:4000/api/auth/orgLogin', org, {
-              withCredentials: true
-            });
-            const orgID = res.data.orgID;
+        const org = {
+          email,
+          password
+        };
+        //login
+        try {
+          const res = await axios.post('http://localhost:4000/api/auth/orgLogin', org, {
+            withCredentials: true
+          });
+          const orgID = res.data.orgID;
+          setTimeout(async () => {
             navigate(`/Organisation/${orgID}`);
-          } catch (error) {
-            console.error("Login failed:", error?.response?.data || error.message);
-          }
-        }, 3000);
+          }, 3000);
+        } catch (error) {
+          console.error("Login failed:", error?.response?.data || error.message);
+        }
       } else {
         setMessage(t('emailAlreadyExists'));
         setStatusMessage(false);

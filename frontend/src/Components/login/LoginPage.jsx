@@ -75,7 +75,7 @@ export default function LoginPage() {
         const orgID = res.data.orgID;
         setMessage(t('loginSuccess'));
         setStatusMessage(true);
-        setInterval(() => { 
+        setTimeout(() => { 
           navigate(`/Organisation/${orgID}`);
         }, 2000);
       } catch (error) {

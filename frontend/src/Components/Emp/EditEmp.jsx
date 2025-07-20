@@ -1,26 +1,27 @@
 import axios from 'axios';
-import { Boxes, Calendar, CheckCircle, Hash, Mail, Phone, User } from 'lucide-react';
+import { Boxes, CheckCircle, Hash, Mail, Phone, User } from 'lucide-react';
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-export default function AddEmp() {
+export default function EditEmp() {
+  const {id} = useParams();
   const {t} = useTranslation();
+  const [employee, setEmployee] = useState({});
   const [department, setDepartment] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [firstName, setFirstName] = useState('');
   const [email, setEmail] = useState('');
-  const [sexe, setSexe] = useState('');
   const [contact, setContact] = useState('');
   const [familySitu, setFamilySitu] = useState('');
   const [childNumber, setChildNumber] = useState('');
-  const [recruitmentDate, setRecruitmentDate] = useState(Date.now());
   const [error, setError] = useState({});
   const [message, setMessage] = useState('');
   const [statusMessage, setStatusMessage] = useState(false);
   const [depts, setDepts] = useState([]);
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
+  const {orgID} = useParams();
+  const navigate = useNavigate();
 
   const fetchDepts = async () => {
     try{
@@ -33,8 +34,93 @@ export default function AddEmp() {
     }
   }
 
+  const edit = async () => {
+    let isValid = true;
+    const newError = {};
+    const regexPhoneMaroc = /^(06|07)[0-9]{8}$/;
+
+    if(!department){
+      isValid = false;
+      newError.department = t('dept_required');
+    }
+
+    if(!email.trim()){
+      isValid = false;
+      newError.email = t('emailRequired');
+    }
+    if(childNumber && childNumber < 0) {
+      isValid = false;
+      newError.childNumber = t('invalid_child_number');
+    }
+    
+    if (contact && !regexPhoneMaroc.test(contact)){
+      isValid = false;
+      newError.contact = t('invalid_phone_number');
+    }
+
+    if(!isValid){
+      setError(newError);
+      return;
+    }
+
+    setError({});
+    const editInfo = {
+      verificationEmail: email,
+      numeroDeContact: contact,
+      situationFamiliale: familySitu,
+      nombreEnfants: childNumber,
+      department
+    };
+
+    try{
+      const res = await axios.put(`http://localhost:4000/api/employee/updateEmployeeById/${id}`, editInfo, {
+        withCredentials: true
+      });
+
+      console.log(res);
+      toast.success(t('emp_edited_success'), {
+        position: "top-center",           // Positionne le toast en haut et centré horizontalement
+        autoClose: 3000,                  // Ferme automatiquement le toast après 3000 ms (3 secondes)
+        hideProgressBar: true,           // Affiche la barre de progression (temps restant)
+        closeOnClick: true,               // Ferme le toast si l’utilisateur clique dessus
+        pauseOnHover: true,               // Met en pause la fermeture automatique si la souris survole le toast
+        draggable: true,                  // Permet de déplacer le toast avec la souris
+        progress: undefined,              // Laisse la progression automatique par défaut
+        icon: <CheckCircle color="#2f51eb" />,
+      });
+      setTimeout(() => {
+        navigate(`/HR/${orgID}/Employees`);
+      }, (4000));
+    } catch(error) {
+      console.log(error);
+    }
+  }
+
+  const fetchEmployee = async () => {
+    try{
+      const res = await axios.get(`http://localhost:4000/api/employee/getEmployeeById/${id}`, {
+        withCredentials:true
+      });
+
+      setEmployee(res.data.employee);
+    } catch(error) {
+      console.log(error);
+    }
+  }
+
   useEffect(() => {
+    fetchEmployee();
     fetchDepts();
+  }, []);
+
+  useEffect(() => {
+    if (employee) {
+      setEmail(employee.verificationEmail || '');
+      setContact(employee.numeroDeContact || '');
+      setFamilySitu(employee.situationFamiliale || '');
+      setChildNumber(employee.nombreEnfants || '');
+      setDepartment(employee.department?._id || '');
+    }
     // Crée un nouvel observateur qui surveille les changements sur l'attribut 'class' de l'élément HTML <html>
     const observer = new MutationObserver(() => {
       // Récupère la classe actuelle de <html> (soit "light", "dark", etc.)
@@ -54,106 +140,17 @@ export default function AddEmp() {
     // Cette fonction de retour sera exécutée lorsque le composant est démonté
     // Elle permet d'arrêter l'observation pour éviter des fuites mémoire
     return () => observer.disconnect();
-
-  }, []);
-
-  const add = async () => {
-    let isValid = true;
-    const newError = {};
-    const regexPhoneMaroc = /^(06|07)[0-9]{8}$/;
-
-    if(!department){
-      isValid = false;
-      newError.department = t('dept_required');
-    }
-
-    if(!lastName.trim()){
-      isValid = false;
-      newError.lastName = t('last_name_required');
-    }
-    if(!firstName.trim()){
-      isValid = false;
-      newError.firstName = t('first_name_required')
-    }
-    if(!email.trim()){
-      isValid = false;
-      newError.email = t('emailRequired');
-    }
-
-    if (!sexe) {
-      isValid = false;
-      newError.sexe = t('gender_required');
-    }
-
-    if(childNumber && childNumber < 0) {
-      isValid = false;
-      newError.childNumber = t('invalid_child_number');
-    }
-    
-    if (contact && !regexPhoneMaroc.test(contact)){
-      isValid = false;
-      newError.contact = t('invalid_phone_number');
-    }
-
-    if(!isValid){
-      setError(newError);
-      return;
-    }
-    const emp = {
-      nom: lastName,
-      prenom: firstName,
-      verificationEmail: email,
-      sexe,
-      numeroDeContact: contact,
-      dateDeRecrutement: recruitmentDate,
-      situationFamiliale: familySitu,
-      nombreEnfants: childNumber,
-      department
-    };
-
-    try{
-      setError({});
-      const res = await axios.post('http://localhost:4000/api/auth/empRegister', emp,
-        {
-          withCredentials: true
-        }
-      );
-      console.log(res);
-
-      setLastName('');
-      setFirstName('');
-      setEmail('');
-      setContact('');
-      setChildNumber('');
-      setFamilySitu('');
-      setDepartment('');
-      setMessage('');
-      toast.success(t('empAddSuccess'), {
-        position: "top-center",           // Positionne le toast en haut et centré horizontalement
-        autoClose: 3000,                  // Ferme automatiquement le toast après 3000 ms (3 secondes)
-        hideProgressBar: true,           // Affiche la barre de progression (temps restant)
-        closeOnClick: true,               // Ferme le toast si l’utilisateur clique dessus
-        pauseOnHover: true,               // Met en pause la fermeture automatique si la souris survole le toast
-        draggable: true,                  // Permet de déplacer le toast avec la souris
-        progress: undefined,              // Laisse la progression automatique par défaut
-        icon: <CheckCircle color="#2f51eb" />,
-      });
-    } catch(error){
-      if(error.status === 500) {
-        setMessage(t('invalid_email'));
-      }
-      console.log(error);
-    }
-    
-  }
+  }, [employee])
 
   return (
-    <div className={`flex justify-center items-center mt-5 sm:mt-10 mb-5`}>
-        <div className='bg-lightBlue/60 dark:bg-blue-950/50 shadow-xl ring-1 ring-white/10  border-2 border-zinc-400 w-fit flex flex-col items-center justify-center px-8 sm:px-10 py-5 sm:py-8 rounded-2xl dark:border-none'>
-        <h2 className='mb-8 font-semibold text-lg sm:text-xl dark:text-gray-200'>
-          {t('add_emp_title')}
-        </h2>
-        <div className='grid grid-cols-1 sm:grid-cols-2 gap-5'>
+    <div className={`flex justify-center items-center mt-5 sm:mt-10`}>
+        <div className='bg-lightBlue/60 dark:bg-blue-950/50 shadow-xl ring-1 ring-white/10  border-2 border-zinc-400 w-fit flex flex-col items-center justify-center px-5 sm:px-10 py-10 sm:py-13 rounded-2xl dark:border-none'>
+        <div className='flex justify-start items-center w-full pl-5'>
+          <p className="text-xl mb-5 font-semibold text-gray-700 dark:text-gray-200">
+            {employee.prenom} {employee.nom}
+          </p>
+        </div>
+        <div className='grid grid-cols-1 gap-5'>
           <div className="text-sm sm:text-[17px] w-3xs sm:w-xs">
             <div className="relative mb-2">
               <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600">
@@ -185,47 +182,6 @@ export default function AddEmp() {
               */}
               <>
                 <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600">
-                  <User size={20} />
-                </span>
-                <input 
-                  placeholder={t('last_name_placeholder')}
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                  className="pl-10 pr-4 py-3 rounded-xl sm:rounded-2xl bg-zinc-200 border-gray-700 w-full"
-                />
-              </>
-            </div>
-            <p className='pl-5 text-red-700'>
-              {error.lastName}
-            </p>
-          </div>
-          <div className='text-sm sm:text-[17px] w-3xs sm:w-xs'>
-            <div className="relative  mb-2">
-              <span className="absolute left-3 pt-4 text-gray-600">
-                <User size={20} />
-              </span>
-              <input 
-                placeholder={t('first_name_placeholder')}
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-                className="pl-10 pr-4 py-3 rounded-xl sm:rounded-2xl bg-zinc-200 border-gray-700 w-full"
-              />
-            </div>
-            <p className='pl-5 text-red-700'>
-              {error.firstName}
-            </p>
-          </div>
-          <div className='text-sm sm:text-[17px] w-3xs sm:w-xs'>
-            {/* relative: This makes the container a reference point for absolutely positioning elements inside it. */}
-            <div className="relative mb-2">
-              {/* 
-                  *top-1/2 sets the top edge of the icon to 50% of the height of its container.
-                  *But that puts the top edge in the middle — so the icon appears slightly lower than centered.
-                  *-translate-y-1/2 shifts the icon up by 50% of its own height, which repositions it to be truly centered.
-                  * the first - in translate mean negative
-              */}
-              <>
-                <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600">
                   <Mail size={20} />
                 </span>
                 <input 
@@ -238,38 +194,6 @@ export default function AddEmp() {
             </div>
             <p className='pl-5 text-red-700'>
               {error.email}
-            </p>
-          </div>
-          <div className="text-sm sm:text-[17px] w-3xs sm:w-xs pl-5">
-            <label className="block mb-3 font-medium text-gray-800 dark:text-gray-200">{t('gender')}</label>
-            
-            <div className="flex gap-6">
-              <label className="inline-flex items-center">
-                <input
-                  type="radio"
-                  name="sexe"
-                  value="Homme"
-                  checked={sexe === 'Homme'}
-                  onChange={(e) => setSexe(e.target.value)}
-                  className="accent-blue-600"
-                />
-                <span className="ml-2 text-gray-800 dark:text-gray-200">{t('male')}</span>
-              </label>
-
-              <label className="inline-flex items-center">
-                <input
-                  type="radio"
-                  name="sexe"
-                  value="Femme"
-                  checked={sexe === 'Femme'}
-                  onChange={(e) => setSexe(e.target.value)}
-                  className="accent-pink-600"
-                />
-                <span className="ml-2 text-gray-800 dark:text-gray-200">{t('female')}</span>
-              </label>
-            </div>
-            <p className='pl-1 text-red-700'>
-              {error.sexe}
             </p>
           </div>
           <div className="text-sm sm:text-[17px] w-3xs sm:w-xs">
@@ -322,28 +246,20 @@ export default function AddEmp() {
               {error.childNumber}
             </p>
           </div>
-          <div className='text-sm sm:text-[17px] w-3xs sm:w-xs'>
-            <div className="relative mb-2">
-              <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600">
-                <Calendar size={20} />
-              </span>
-              <input 
-                type="date"
-                value={new Date(recruitmentDate).toISOString().split('T')[0]}
-                onChange={(e) => setRecruitmentDate(new Date(e.target.value))}
-                className="pl-10 pr-4 py-3 rounded-2xl bg-zinc-200 border-gray-700 w-full"
-              />
-            </div>
-          </div>
         </div>
-        <p className={`mb-3 text-base font-semibold ${statusMessage ? 'text-darkBlue' : 'text-red-600'}`}>
+        <p className={`mb-5 text-base font-semibold ${statusMessage ? 'text-darkBlue' : 'text-red-600'}`}>
           {message}
         </p>
-        <div className='flex justify-end w-full mt-8'>
-          <button className='text-base sm:text-lg font-semibold bg-mediumBlue dark:bg-darkBlue dark:hover:bg-blue-900 w-3xs sm:w-xs py-2 text-white rounded-lg sm:rounded-xl mb-2 cursor-pointer hover:bg-darkBlue'
-            onClick={add}
+        <div className='grid grid-cols-1 sm:grid-cols-2 gap-5 w-full mt-8'>
+          <button className='text-base sm:text-lg font-semibold bg-gray-600 hover:bg-gray-700 dark:bg-gray-500 dark:hover:bg-gray-400 py-2 text-white rounded-lg sm:rounded-xl mb-2 cursor-pointer'
+            onClick={() => window.location.href = `/HR/${orgID}/Employees`}
           >
-            {t('add_emp')}
+            {t('cancel')}
+          </button>
+          <button className='text-base sm:text-lg font-semibold bg-mediumBlue dark:bg-darkBlue dark:hover:bg-blue-900  py-2 text-white rounded-lg sm:rounded-xl mb-2 cursor-pointer hover:bg-darkBlue'
+            onClick={edit}
+          >
+            {t('edit')}
           </button>
         </div>
       </div>
