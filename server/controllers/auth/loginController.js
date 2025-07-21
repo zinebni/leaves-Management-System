@@ -166,7 +166,7 @@ export const verifyEmail = async (req,res)=>{
      }
 
      try {
-        const employee = await employeeModel.findById(employeeId);
+        const employee = await employeeModel.findById(employeeId).populate({path:'organisation',select:'orgID'});
 
         if(!employee){
             return res.status(404).json({
@@ -206,6 +206,7 @@ export const verifyEmail = async (req,res)=>{
         // on sauvegarde
         await employee.save();
         // on envoie la reponse
+        console.log(employee.organisation.orgID);
         return res.status(200).json({
             success:true,
             message:'compte verifié avec succès.',
