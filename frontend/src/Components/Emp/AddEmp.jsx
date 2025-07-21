@@ -1,12 +1,13 @@
 import axios from 'axios';
-import { Calendar, CheckCircle, Hash, Mail, Phone, User } from 'lucide-react';
+import { Boxes, Calendar, CheckCircle, Hash, Mail, Phone, User } from 'lucide-react';
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-export default function AddHR() {
+export default function AddEmp() {
   const {t} = useTranslation();
+  const [department, setDepartment] = useState('');
   const [lastName, setLastName] = useState('');
   const [firstName, setFirstName] = useState('');
   const [email, setEmail] = useState('');
@@ -18,10 +19,22 @@ export default function AddHR() {
   const [error, setError] = useState({});
   const [message, setMessage] = useState('');
   const [statusMessage, setStatusMessage] = useState(false);
-
+  const [depts, setDepts] = useState([]);
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
 
+  const fetchDepts = async () => {
+    try{
+      const res = await axios.get('http://localhost:4000/api/department/getDepartments', {
+        withCredentials: true
+      });
+      setDepts(res.data.departments);
+    } catch(error){
+      console.log(error.message);
+    }
+  }
+
   useEffect(() => {
+    fetchDepts();
     // Crée un nouvel observateur qui surveille les changements sur l'attribut 'class' de l'élément HTML <html>
     const observer = new MutationObserver(() => {
       // Récupère la classe actuelle de <html> (soit "light", "dark", etc.)
@@ -48,6 +61,11 @@ export default function AddHR() {
     let isValid = true;
     const newError = {};
     const regexPhoneMaroc = /^(06|07)[0-9]{8}$/;
+
+    if(!department){
+      isValid = false;
+      newError.department = t('dept_required');
+    }
 
     if(!lastName.trim()){
       isValid = false;
@@ -81,7 +99,7 @@ export default function AddHR() {
       setError(newError);
       return;
     }
-    const rh = {
+    const emp = {
       nom: lastName,
       prenom: firstName,
       verificationEmail: email,
@@ -89,26 +107,28 @@ export default function AddHR() {
       numeroDeContact: contact,
       dateDeRecrutement: recruitmentDate,
       situationFamiliale: familySitu,
-      nombreEnfants: childNumber
+      nombreEnfants: childNumber,
+      department
     };
-
-    console.log(rh);
 
     try{
       setError({});
-      const res = await axios.post('http://localhost:4000/api/auth/rhRegister', rh,
+      const res = await axios.post('http://localhost:4000/api/auth/empRegister', emp,
         {
           withCredentials: true
         }
       );
+      console.log(res);
+
       setLastName('');
       setFirstName('');
       setEmail('');
       setContact('');
-      setChildNumber(null);
+      setChildNumber('');
       setFamilySitu('');
+      setDepartment('');
       setMessage('');
-      toast.success(t('rhAddSuccess'), {
+      toast.success(t('empAddSuccess'), {
         position: "top-center",           // Positionne le toast en haut et centré horizontalement
         autoClose: 3000,                  // Ferme automatiquement le toast après 3000 ms (3 secondes)
         hideProgressBar: true,           // Affiche la barre de progression (temps restant)
@@ -129,11 +149,31 @@ export default function AddHR() {
 
   return (
     <div className={`flex justify-center items-center mt-5 sm:mt-10 mb-5`}>
-        <div className='bg-lightBlue/60 dark:bg-blue-950/50 shadow-xl ring-1 ring-white/10  border-2 border-zinc-400 w-fit flex flex-col items-center justify-center px-8 sm:px-10 py-6 sm:py-10 rounded-2xl dark:border-none'>
+        <div className='bg-lightBlue/60 dark:bg-blue-950/50 shadow-xl ring-1 ring-white/10  border-2 border-zinc-400 w-fit flex flex-col items-center justify-center px-8 sm:px-10 py-5 sm:py-8 rounded-2xl dark:border-none'>
         <h2 className='mb-8 font-semibold text-lg sm:text-xl dark:text-gray-200'>
-          {t('add_rh_title')}
+          {t('add_emp_title')}
         </h2>
         <div className='grid grid-cols-1 sm:grid-cols-2 gap-5'>
+          <div className="text-sm sm:text-[17px] w-3xs sm:w-xs">
+            <div className="relative mb-2">
+              <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600">
+                <Boxes size={20} />
+              </span>
+              <select
+                value={department}
+                onChange={(e) => setDepartment(e.target.value)}
+                className="pl-10 pr-4 py-3 rounded-2xl bg-zinc-200 border-gray-700 w-full text-gray-700"
+              >
+                <option value="">{t('select_dept')}</option>
+                {depts.map((dept, i) => (
+                  <option key={i} value={dept._id}>{dept.nom}</option>
+                ))}
+              </select>
+            </div>
+            <p className='pl-5 text-red-700'>
+              {error.department}
+            </p>
+          </div>
           <div className='text-sm sm:text-[17px] w-3xs sm:w-xs'>
             {/* relative: This makes the container a reference point for absolutely positioning elements inside it. */}
             <div className="relative mb-2">
@@ -303,7 +343,7 @@ export default function AddHR() {
           <button className='text-base sm:text-lg font-semibold bg-mediumBlue dark:bg-darkBlue dark:hover:bg-blue-900 w-3xs sm:w-xs py-2 text-white rounded-lg sm:rounded-xl mb-2 cursor-pointer hover:bg-darkBlue'
             onClick={add}
           >
-            {t('add_rh')}
+            {t('add_emp')}
           </button>
         </div>
       </div>

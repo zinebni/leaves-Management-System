@@ -19,6 +19,11 @@ import DisplayHR from './Components/HR/DisplayHR';
 import EditHR from './Components/HR/EditHR';
 import HRLayout from './Components/HR/HRLayout';
 import DashbordHR from './Components/HR/DashbordHR';
+import AddEmp from './Components/Emp/AddEmp';
+import DisplayEmp from './Components/Emp/DisplayEmp';
+import EditEmp from './Components/Emp/EditEmp';
+import EmpLayout from './Components/Emp/EmpLayout';
+import DashbordEmp from './Components/Emp/DashbordEmp';
 
 function App() {
 
@@ -53,6 +58,13 @@ function App() {
         {/* HR Layout with sidebar/nav */}
         <Route path="/HR/:orgID" element={<HRLayout />}>
           <Route index element={<DashbordHR />} />
+          <Route path='Employee/Add' element={<AddEmp />}/>
+          <Route path='Employees' element={<DisplayEmp  />}/>
+          <Route path='Employees/Edit/:id' element={<EditEmp />} />
+        </Route>
+        {/* Employee Layout with sidebar/nav */}
+        <Route path='/Employee/:orgID' element={<EmpLayout />}>
+          <Route index element={<DashbordEmp />} />
         </Route>
       </Routes>  
     </Router>

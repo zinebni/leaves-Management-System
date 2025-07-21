@@ -14,6 +14,9 @@ function Home() {
   const navigate = useNavigate();
   const {t} = useTranslation();
 
+  const element = document.documentElement;
+  element.classList.remove('dark');
+
   useEffect(() => {
     if(!vantaEffect) {
       setVantaEffect(
@@ -31,6 +34,7 @@ function Home() {
           gyroControls: false,      // Don’t move the background when the user tilts the phone.
           minHeight: 200.0,
           minWidth: 200.0, //Minimum size for the animation to activate.
+          vertexColors: false
         })
       )      
     }   

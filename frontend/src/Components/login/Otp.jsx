@@ -58,7 +58,7 @@ export default function Otp() {
         const res = await axios.post('http://localhost:4000/api/auth/verify-account', {otp: finalOtp}, {
           withCredentials: true
         });
-        console.log(res);
+        console.log(res.data);
         navigate('/HR/test');
       } catch (error) {
         console.error("verify failed:", error?.response?.data || error.message);
@@ -67,6 +67,30 @@ export default function Otp() {
       setError(t('otp.error'));
     }
   };
+
+  const handlePaste = (e) => {
+    // Empêche le comportement par défaut du collage
+    e.preventDefault();
+
+    // Récupère les données collées et supprime tout caractère non numérique
+    const pasteData = e.clipboardData.getData('Text').replace(/\D/g, '');
+
+    // Vérifie si exactement 6 chiffres sont collés
+    if (pasteData.length === 6) {
+      // Transforme la chaîne en tableau de chiffres
+      const newOtp = pasteData.split('');
+
+      // Met à jour l'état OTP avec les nouveaux chiffres
+      setOtp(newOtp);
+
+      // Déplace le focus sur le dernier champ pour signaler que le collage est terminé
+      setTimeout(() => {
+        inputRefs.current[5]?.focus(); // ? permet d’éviter une erreur si l’élément n’existe pas encore
+      }, 0);
+    }
+  };
+
+
 
 
    useEffect(() => {
@@ -112,6 +136,7 @@ export default function Otp() {
             value={digit}
             onChange={(e) => handleChange(e, i)}
             onKeyDown={(e) => handleKeyDown(e, i)}
+            onPaste={handlePaste}
             ref={(el) => (inputRefs.current[i] = el)}
             className="w-12 h-12 text-center text-xl border-2 border-gray-700 rounded bg-gray-100"
           />

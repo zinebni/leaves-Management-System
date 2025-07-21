@@ -1,7 +1,7 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next';
 
-export default function DashbordHR() {
+export default function DashbordEmp() {
   const { t } = useTranslation();
   
   return (
