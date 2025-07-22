@@ -17,6 +17,7 @@ import employeeRouter from './routes/employeeRoutes/employeeRoutes.js';
 import rhRouter from './routes/rhRoutes/rhRoutes.js';
 import droitCongeRouter from './routes/droitCongeRoutes/droitCongeRoutes.js';
 import congeRouter from './routes/conge/cogeRoutes.js';
+import evenementRouter from './routes/evenementRoutes/evenementRoutes.js';
 
 //IV-initialisation  du server----------------
 const app =express();//initialiser l'application
@@ -38,6 +39,7 @@ app.use('/api/employee', employeeRouter);
 app.use('/api/rh', rhRouter);
 app.use('/api/droits', droitCongeRouter);
 app.use('/api/conge', congeRouter);
+app.use('/api/evenement', evenementRouter);
 
 //route de test
 app.get('/',(req,res)=> res.send(`api is working fine on ${port} :)`));
