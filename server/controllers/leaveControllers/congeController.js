@@ -359,23 +359,38 @@ export const getAllLeaveRequestsByDepartmentAndStatus = async (req, res) => {
 export const approveLeaveRequest = async (req, res) => {
   const { id } = req.params;
   const employeeId = req.user.id;
+
   if (!employeeId) {
-    res.status(400).json({ success: false, message: 'utilisateur non trouvé.' });
+    return res.status(400).json({ success: false, message: 'Utilisateur non trouvé.' });
   }
+
   try {
-    const conge = await Conge.findOneAndUpdate(
-      { _id: id, status: "en attente" },
-      { status: "approuve", approuvePar: employeeId },
-      { new: true }
-    );
+    const conge = await Conge.findOne({ _id: id, status: "en attente" });
     if (!conge) {
       return res.status(404).json({ success: false, message: 'Demande de congé non trouvée.' });
     }
-    res.status(200).json({ success: true, message: 'Demande de congé approuvée avec succès.', conge });
-    } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+
+    const droitConge = await DroitConge.findOne({ _id: conge.motif, employee: conge.employee });
+    if (!droitConge) {
+      return res.status(404).json({ success: false, message: "Droit de congé introuvable." });
+    }
+
+    // Mise à jour des jours pris
+    droitConge.joursPris += conge.nombreDeJours;
+    await droitConge.save();
+
+    // Mise à jour du congé
+    conge.status = "approuve";
+    conge.approuvePar = employeeId;
+    await conge.save();
+
+    return res.status(200).json({ success: true, message: 'Demande de congé approuvée avec succès.', conge });
+
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
   }
 };
+
 // rejectLeaveRequest(id) 
 export const rejectLeaveRequest = async (req, res) => {
   const { id } = req.params;

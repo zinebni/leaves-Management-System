@@ -217,7 +217,7 @@ export const createCustomRightForAllEmployees = async (req, res) => {
   }
 }; 
 
-//delete droitConge by id à tous les employés
+//delete droitConge by type à tous les employés
 export const deleteCustomRightForAllEmployees = async (req, res) => {
   try {
     const { type } = req.body;
