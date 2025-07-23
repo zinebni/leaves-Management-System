@@ -24,7 +24,8 @@
   "otp": {
     "enter": "Enter the code sent to your verify email",
     "verify": "Verify",
-    "error": "Please enter the full code"
+    "error": "Please enter the full code",
+    "invalid": "Invalid verification code."
   },
   "orgAccountCreated": "Account successfully created. Logging in…",
   "emailAlreadyExists": "An account with this email already exists.",
@@ -71,7 +72,7 @@
   "invalid_phone_number": "Invalid phone number",
   "no_hr_message": "No HR is currently assigned.",
   "hr_list_title": "HR List",
-  "invalid_email": "Invalid email address",
+  "error_general": "An error occurred. Please try again later.",
   "invalid_child_number": "Invalid number of children",
   "edit_rh_title": "Edit HR",
   "emp_edited_success": "Employee edited successfully",
@@ -89,5 +90,39 @@
   "no_emp_message": "No Employee is currently assigned.",
   "no_matching_employees": "No employees found for these filters.",
   "search_by_name": "Search by name",
-  "all_departments": "All departments"
+  "all_departments": "All departments",
+  "leaves": "Leaves",
+  "request_leave": "Request Leave",
+  "holidays": {
+    "new_year": "New Year's Day",
+    "labour_day": "Labour Day",
+    "throne_day": "Throne Day",
+    "oued_eddahab": "Oued Eddahab Day",
+    "revolution_day": "Revolution of the King and the People",
+    "youth_day": "Youth Day",
+    "green_march": "Green March",
+    "independence_day": "Independence Day"
+  },
+  "today": "Today",
+  "month": "Month",
+  "agenda": "Agenda",
+  "no_events": "There are no events in this range.",
+  "selected_period": "Selected Period",
+  "start_date": "Start Date",
+  "end_date": "End Date",
+  "none": "None",
+  "selection": "Your Selection",
+  "select_leave_type": "Select a leave type...",
+  "leave_types": {
+    "annual_leave": "Annual leave",
+    "maternity": "Maternity Leave",
+    "unpaid": "Unpaid Leave",
+    "sickness": "Sick Leave",
+    "study_exam": "Study / Exam Leave",
+    "bereavement_close_family": "Bereavement (Spouse, Parent, Child)",
+    "bereavement_extended_family": "Bereavement (Sibling, Parent-in-law)"
+  },
+  "authorized_days": "Authorized days",
+  "annual_leave_requirement": "You must have worked for 6 months to be eligible for annual leave."
+
 }

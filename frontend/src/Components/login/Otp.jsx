@@ -5,9 +5,10 @@ import * as THREE from 'three';
 import NET from 'vanta/dist/vanta.net.min';
 import LanguageSwitcher from '../../i18n/LanguageSwitcher';
 import WebSiteName from '../WebSiteName';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export default function Otp() {
+  const {role} = useParams();
   const {t} = useTranslation();
   const vantaRef = useRef(null);
   const [vantaEffect, setVantaEffect] = useState(null);
@@ -58,10 +59,18 @@ export default function Otp() {
         const res = await axios.post('http://localhost:4000/api/auth/verify-account', {otp: finalOtp}, {
           withCredentials: true
         });
-        console.log(res.data.orgID);
-        navigate(`/HR/${orgID}`);
+        const orgID = res.data.data.orgID;
+        const employeeId = res.data.data.employee._id;
+
+        if(role === 'RH'){
+          navigate(`/HR/${orgID}`);
+        } else {
+          navigate(`/Employee/${orgID}/${employeeId}`);
+        }
+        
       } catch (error) {
         console.error("verify failed:", error?.response?.data || error.message);
+        setError(t('otp.invalid'))
       }
     } else {
       setError(t('otp.error'));
