@@ -1,4 +1,4 @@
-import DroitConge from "../models/droitCongeModel";
+import DroitConge from "../models/droitCongeModel.js";
 
 export const checkAndResetDroitCongeAnnuel = async (employee) => {
   const dateActuelle = new Date();
