@@ -118,7 +118,6 @@ export default function AddEmp() {
           withCredentials: true
         }
       );
-      console.log(res);
 
       setLastName('');
       setFirstName('');
