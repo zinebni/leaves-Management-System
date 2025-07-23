@@ -25,7 +25,8 @@
   "otp": {
     "enter": "Entrez le code envoyé par email",
     "verify": "Vérifier",
-    "error": "Veuillez entrer le code complet"
+    "error": "Veuillez entrer le code complet",
+    "invalid": "Code de vérification invalide."
   },
   "orgAccountCreated": "Compte créé avec succès. Connexion en cours…",
   "emailAlreadyExists": "Un compte avec cet e-mail existe déjà.",
@@ -72,7 +73,7 @@
   "invalid_phone_number": "Numéro de téléphone invalide",
   "no_hr_message": "Aucun RH n’est actuellement assigné.",
   "hr_list_title": "Liste des RH",
-  "invalid_email": "Adresse e-mail invalide",
+  "error_general": "Une erreur s'est produite. Veuillez réessayer plus tard.",
   "invalid_child_number": "Nombre d’enfants invalide",
   "edit_rh_title": "Modifier un RH",
   "emp_edited_success": "Employé modifié avec succès",
@@ -90,5 +91,38 @@
   "no_emp_message": "Aucun Employé n’est actuellement assigné.",
   "no_matching_employees": "Aucun employé trouvé pour ces critères.",
   "search_by_name": "Rechercher par nom",
-  "all_departments": "Tous les départements"
+  "all_departments": "Tous les départements",
+  "leaves" : "Congés",
+  "request_leave": "Demander un congé",
+  "holidays": {
+    "new_year": "Nouvel an",
+    "labour_day": "Fête du travail",
+    "throne_day": "Fête du Trône",
+    "oued_eddahab": "Fête de Oued Eddahab",
+    "revolution_day": "Révolution du Roi et du Peuple",
+    "youth_day": "Fête de la Jeunesse",
+    "green_march": "Marche Verte",
+    "independence_day": "Fête de l'Indépendance"
+  },
+  "today": "Aujourd'hui",
+  "month": "Mois",
+  "agenda": "Agenda",
+  "no_events": "Aucun événement dans cette plage.",
+  "selected_period": "Période Sélectionnée",
+  "start_date": "Date de début",
+  "end_date": "Date de fin",
+  "none": "Aucune",
+  "selection": "Votre Sélection",
+  "select_leave_type": "Sélectionnez un type de congé...",
+  "leave_types": {
+    "annual_leave": "Congé annuel",
+    "maternity": "Maternité",
+    "unpaid": "Congé sans solde",
+    "sickness": "Congé maladie",
+    "study_exam": "Congé pour examen",
+    "bereavement_close_family": "Décès (conjoint, parent, enfant)",
+    "bereavement_extended_family": "Décès (frère, sœur, beau-parent)"
+  },
+  "authorized_days": "Jours autorisés",
+    "annual_leave_requirement": "Vous devez avoir travaillé 6 mois pour bénéficier d’un congé annuel."
 }

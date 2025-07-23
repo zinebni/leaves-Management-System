@@ -86,13 +86,11 @@ export default function AddHR() {
       prenom: firstName,
       verificationEmail: email,
       sexe,
-      numeroDeContact: contact,
       dateDeRecrutement: recruitmentDate,
-      situationFamiliale: familySitu,
-      nombreEnfants: childNumber
+      ...(contact && { numeroDeContact: contact }),
+      ...(familySitu && { situationFamiliale: familySitu }),
+      ...(childNumber !== undefined && childNumber !== null && { nombreEnfants: childNumber })
     };
-
-    console.log(rh);
 
     try{
       setError({});
@@ -105,7 +103,7 @@ export default function AddHR() {
       setFirstName('');
       setEmail('');
       setContact('');
-      setChildNumber(null);
+      setChildNumber('');
       setFamilySitu('');
       setMessage('');
       toast.success(t('rhAddSuccess'), {
@@ -120,9 +118,9 @@ export default function AddHR() {
       });
     } catch(error){
       if(error.status === 500) {
-        setMessage(t('invalid_email'));
+        setMessage(t('error_general'));
       }
-      console.log(error);
+      
     }
     
   }

@@ -24,6 +24,7 @@ import DisplayEmp from './Components/Emp/DisplayEmp';
 import EditEmp from './Components/Emp/EditEmp';
 import EmpLayout from './Components/Emp/EmpLayout';
 import DashbordEmp from './Components/Emp/DashbordEmp';
+import RequestLeave from './Components/Leaves/RequestLeave';
 
 function App() {
 
@@ -42,7 +43,7 @@ function App() {
         />
         <Route path='/Register/Organisation' element={<RegisterOrg />}
         />
-        <Route path='/Login/Otp' element={<Otp />}
+        <Route path='/Login/Otp/:role' element={<Otp />}
         />
         <Route path='/Dashbord' element={<Dashbord />}
         />
@@ -63,8 +64,9 @@ function App() {
           <Route path='Employees/Edit/:id' element={<EditEmp />} />
         </Route>
         {/* Employee Layout with sidebar/nav */}
-        <Route path='/Employee/:orgID' element={<EmpLayout />}>
+        <Route path='/Employee/:orgID/:employeeId' element={<EmpLayout />}>
           <Route index element={<DashbordEmp />} />
+          <Route path='Request-leave' element={<RequestLeave />} />
         </Route>
       </Routes>  
     </Router>
