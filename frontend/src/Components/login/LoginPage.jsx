@@ -87,14 +87,11 @@ export default function LoginPage() {
             email,
             password
           };
-
-          console.log(user);
             try {
             // 1. Login: Set token in HTTP-only cookie
             const res = await axios.post('http://localhost:4000/api/auth/login', user, {
               withCredentials: true
             });
-            console.log("Login success", res.data);
 
             // 2. Call OTP API (token is sent automatically via cookie)
             const otpRes = await axios.post('http://localhost:4000/api/auth/send-verify-otp', null, {
@@ -102,9 +99,8 @@ export default function LoginPage() {
             });
 
             setTimeout(() => {
-              navigate('/Login/Otp');
+              navigate(`/Login/Otp/${role}`);
             }, 2000);
-            console.log("OTP sent:", otpRes.data);
 
           } catch (error) {
             console.error("Login or OTP failed:", error?.response?.data || error.message);
@@ -127,7 +123,11 @@ export default function LoginPage() {
         <LanguageSwitcher />
       </div>
       <div className='flex justify-center items-center mt-20 sm:mt-25'>
-        <div className='bg-lightBlue/60 border-2 border-zinc-600 w-fit flex flex-col items-center justify-center px-5 sm:px-10 py-10 rounded-2xl'>
+        <div  className='bg-lightBlue/60 border-2 border-zinc-600 w-fit flex flex-col items-center justify-center px-5 sm:px-10 py-10 rounded-2xl'
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') login();
+        }}
+        tabIndex="0"> {/* nécessaire pour que le div puisse capter les touches */}
         <h2 className='mb-8 font-semibold text-xl'>
           {t("login")}
         </h2>

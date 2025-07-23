@@ -104,11 +104,11 @@ export default function AddEmp() {
       prenom: firstName,
       verificationEmail: email,
       sexe,
-      numeroDeContact: contact,
       dateDeRecrutement: recruitmentDate,
-      situationFamiliale: familySitu,
-      nombreEnfants: childNumber,
-      department
+      department,
+      ...(contact && { numeroDeContact: contact }),
+      ...(familySitu && { situationFamiliale: familySitu }),
+      ...(childNumber !== undefined && childNumber !== null && { nombreEnfants: childNumber })
     };
 
     try{
@@ -140,7 +140,7 @@ export default function AddEmp() {
       });
     } catch(error){
       if(error.status === 500) {
-        setMessage(t('invalid_email'));
+        setMessage(t('error_general'));
       }
       console.log(error);
     }
