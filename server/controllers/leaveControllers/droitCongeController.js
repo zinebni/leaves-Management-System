@@ -77,7 +77,7 @@ export const createDefaultLeaveRights = async (employee) => {
     }
 
     //droit maternité
-    if (employee.sexe === 'Femme' && employee.nombreEnfants > 0) {
+    if (employee.sexe === 'Femme' && employee.situationFamiliale === 'marié(e)') {
       droits.push({
         employee: employee._id,
         type: 'maternite',
@@ -86,7 +86,7 @@ export const createDefaultLeaveRights = async (employee) => {
       });
     }
     //droit paternité
-    if (employee.sexe === 'Homme' && employee.nombreEnfants > 0) {
+    if (employee.sexe === 'Homme' && employee.situationFamiliale === 'marié(e)') {
       droits.push({
         employee: employee._id,
         type: 'paternite',
@@ -137,13 +137,6 @@ export const createDefaultLeaveRights = async (employee) => {
       type: 'Décès (frère, sœur, beau-parent)',
       joursAutorisee: 2,
       estPaye: false
-    });
-
-    //droit exceptionnel
-    droits.push({
-      employee: employee._id,
-      type: 'exceptionnel',
-      estPaye: true
     });
 
     //pour eviter les doublants

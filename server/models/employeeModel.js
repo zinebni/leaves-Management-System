@@ -42,6 +42,7 @@ const employeeSchema = new mongoose.Schema(
         }
     },
     dateDeRecrutement:{type:Date, default:Date.now},
+    anneeDerniereMiseAJour: {type: Number, default: null},
     dateDeDepart:{type:Date,default: null},
     department:{
         type: mongoose.Schema.Types.ObjectId,
