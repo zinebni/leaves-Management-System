@@ -10,7 +10,7 @@ export const createLeaveRequest = async (req, res) => {
   const { date_debut, date_fin, motif, commentaire} = req.body;
   const justificatifs = req.files ? req.files.map(f => f.filename) : [];  //passer par multer
 
-  if (!date_debut || !date_fin  || !motif || !commentaire) {
+  if (!date_debut || !date_fin  || !motif ) {
     return res.status(400).json({ success: false, message: 'Informations incomplètes.' });
   } 
   if (date_debut > date_fin) {

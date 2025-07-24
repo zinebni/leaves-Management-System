@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import transporter from '../../config/nodemailer.js';
 import employeeModel from '../../models/employeeModel.js';
 import { isEligibleForLeave } from '../../utils/isEligibleForLeave.js';
-import { checkAndResetDroitCongeAnnuel } from '../../utils/checkAndResetDroitCongeAnnuel.js';
+
 
 //login
 export const login = async (req,res)=>{
@@ -32,10 +32,6 @@ export const login = async (req,res)=>{
 
         //savoir s'il a droit au conge 
         const eligible = isEligibleForLeave(employee.dateDeRecrutement); //pour envoyer alert dans le frontend "vous n'avez pas le droit au conge annuel"
-        if(eligible){
-            await checkAndResetDroitCongeAnnuel(employee);
-        }
-
         //4-generer un token JWT
         const payload= {
             id:employee._id,

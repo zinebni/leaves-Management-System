@@ -5,6 +5,7 @@ import 'dotenv/config';
 import express from 'express';
 import path from 'path';
 import './cron/updateLeaveRights.js';
+import './cron/resetDroitsCongesTousLesEmployes.js';
 
 
 //II-importation de la base de données----------------
