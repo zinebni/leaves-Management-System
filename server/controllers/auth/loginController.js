@@ -138,7 +138,7 @@ export const sendVerifyOtp = async (req, res) => {
             from: process.env.SENDER_EMAIL,
             to: employee.verificationEmail,
             subject: 'Verification de compte',
-            text: `Votre code de verification est: ${otp}. verifiez votre compte en cliquant sur le lien suivant: http://localhost:3000/verify-account/${employee._id}`,
+            text: `Verifiez votre compte en utilisant ce code: ${otp}`,
           };
         
         await transporter.sendMail(mailOptions);
