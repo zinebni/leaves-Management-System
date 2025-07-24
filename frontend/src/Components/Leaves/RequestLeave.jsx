@@ -44,6 +44,7 @@ export default function RequestLeave() {
   const [comment, setComment] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
   const selectedDroit = droits.find(droit => droit.type === selectedLeave);
+  const [error, setError] = useState({});
 
 
   const fetchDroitsGonges = async () => {
@@ -59,30 +60,75 @@ export default function RequestLeave() {
     fetchDroitsGonges();
   }, []);
 
+  const addRequest = async (remainingDays) => {
+    let isValid = true;
+    const newError = {};
+
+    if(!startDate){
+      isValid = false;
+      newError.slot = t('select_date_range');
+    }
+
+    const nbrOfDaysNum = Number(nbrOfDays);
+
+    if (nbrOfDays === '' || Number.isNaN(nbrOfDaysNum)) {
+      isValid = false;
+      newError.nbrOfDays = t('days_required');
+    } else if (nbrOfDaysNum <= 0) {
+      isValid = false;
+      newError.nbrOfDays = t('days_negative');
+    } else if (!Number.isNaN(remainingDays) && nbrOfDaysNum > remainingDays) {
+      isValid = false;
+      newError.nbrOfDays = t('days_exceed_remaining');
+    }
+
+    if(!isValid) {
+      setError(newError);
+      return;
+    }
+
+    setError({});
+    setStartDate(null);
+    setEndDate(null);
+    setSelectedLeave('');
+    setNbrOfDays('');
+    setComment('');
+    setSelectedFile(null);
+
+    const request = {
+      date_debut: startDate,
+      date_fin: endDate,
+      motif: selectedDroit._id,
+      ...(comment && {commentaire : comment}),
+      ...(selectedFile && {justificatif: selectedFile})
+    }
+
+    console.log(request);
+
+  }
+
   // --- ÉTAPE 3: Créer le gestionnaire de sélection ---
   const handleSelectSlot = (slotInfo) => {
-    // slotInfo contient { start, end, slots, action }
     const clickedDate = slotInfo.start;
 
-    // Logique pour gérer les clics
-    // Si une plage est déjà sélectionnée (début et fin), on recommence
+    // Si les deux dates sont déjà sélectionnées, on recommence avec la nouvelle date
     if (startDate && endDate) {
       setStartDate(clickedDate);
-      setEndDate(null); // Réinitialise la date de fin
+      setEndDate(clickedDate); // Initialise aussi la date de fin
     }
     // Si seule la date de début est définie
     else if (startDate && !endDate) {
-      // Si l'utilisateur clique sur une date antérieure, on la définit comme nouvelle date de début
       if (clickedDate < startDate) {
         setStartDate(clickedDate);
+        setEndDate(clickedDate); // Fin = début aussi ici
       } else {
-        // Sinon, on définit la date de fin
         setEndDate(clickedDate);
       }
     }
-    // Si aucune date n'est sélectionnée, on définit la date de début
+    // Si aucune date n'est sélectionnée
     else {
       setStartDate(clickedDate);
+      setEndDate(clickedDate); // ← Ici on initialise les deux directement
     }
   };
 
@@ -191,35 +237,40 @@ export default function RequestLeave() {
         </div>
       </div>
 
-      <Calendar
-        localizer={localizer}
-        events={allEvents} // Utilise la liste combinée
-        startAccessor="start"
-        endAccessor="end"
-        style={{ height: 600 }}
-        view={view}
-        onView={setView}
-        date={date}
-        onNavigate={setDate}
-        views={['month', 'agenda']}
-        className='dark:text-white'
-        messages={{
-          today: t('today'),
-          next: '›',
-          previous: '‹',
-          month: t('month'),
-          agenda: t('agenda'),
-          noEventsInRange: t('no_events'),
-        }}
-        culture={i18n.language}
-        
-        // --- ÉTAPE 2 & 3: Activer la sélection et lier le gestionnaire ---
-        selectable={true}
-        onSelectSlot={handleSelectSlot}
+      <div>
+        <Calendar
+          localizer={localizer}
+          events={allEvents} // Utilise la liste combinée
+          startAccessor="start"
+          endAccessor="end"
+          style={{ height: 600 }}
+          view={view}
+          onView={setView}
+          date={date}
+          onNavigate={setDate}
+          views={['month', 'agenda']}
+          className='dark:text-white'
+          messages={{
+            today: t('today'),
+            next: '›',
+            previous: '‹',
+            month: t('month'),
+            agenda: t('agenda'),
+            noEventsInRange: t('no_events'),
+          }}
+          culture={i18n.language}
+          
+          // --- ÉTAPE 2 & 3: Activer la sélection et lier le gestionnaire ---
+          selectable={true}
+          onSelectSlot={handleSelectSlot}
 
-        // --- ÉTAPE 6: Appliquer le style conditionnel ---
-        eventPropGetter={eventStyleGetter}
-      />
+          // --- ÉTAPE 6: Appliquer le style conditionnel ---
+          eventPropGetter={eventStyleGetter}
+        />
+        <p className='mt-3 text-red-500'>
+          {error.slot}
+        </p>
+      </div>
       <div className='mt-10 mb-56'>
         <div className='mb-5 pl-5'>
           {
@@ -248,38 +299,45 @@ export default function RequestLeave() {
           }
         </div>
         <div className='grid grid-cols-1 sm:grid-cols-2 gap-10'>
-          <select 
-            id="leave-type-select"
-            value={selectedLeave}
-            onChange={(e) => setSelectedLeave(e.target.value)}
-            className='w-full px-4 py-2 border border-mediumBlue rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-mediumBlue focus:border-transparent text-gray-800 dark:text-white bg-white dark:bg-blue-950/80 placeholder-gray-400 transition duration-200 dark:border-slate-600'
-          >
-            {/* Option par défaut */}
-            <option value="" disabled>
-              {t('select_leave_type')}
-            </option>
-            
-            {/* Boucle sur les types de congé pour créer les options */}
-            {droits.map((droit) => (
-              <option key={droit._id} value={droit.type}>
-                {t(`${droit.type}`)}
+          <div className='flex justify-start items-start'>
+            <select 
+              id="leave-type-select"
+              value={selectedLeave}
+              onChange={(e) => setSelectedLeave(e.target.value)}
+              className='w-full px-4 py-2 border border-mediumBlue rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-mediumBlue focus:border-transparent text-gray-800 dark:text-white bg-white dark:bg-blue-950/80 placeholder-gray-400 transition duration-200 dark:border-slate-600'
+            >
+              {/* Option par défaut */}
+              <option value="" disabled>
+                {t('select_leave_type')}
               </option>
-            ))}
-          </select>
+              
+              {/* Boucle sur les types de congé pour créer les options */}
+              {droits.map((droit) => (
+                <option key={droit._id} value={droit.type}>
+                  {t(`${droit.type}`)}
+                </option>
+              ))}
+            </select>
+          </div>
           {
             (selectedLeave && ((selectedDroit.hasOwnProperty('joursAutorisee') && selectedDroit.joursAutorisee > 0) || !selectedDroit.hasOwnProperty('joursAutorisee'))) ? 
-            <input
-              type='number'
-              className='w-full px-4 py-2 border border-mediumBlue rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-mediumBlue focus:border-transparent text-gray-800 dark:text-white bg-white dark:bg-blue-950/80 placeholder-gray-400 transition duration-200 dark:border-slate-600'
-              placeholder={t('leave_days_placeholder')}
-              value={nbrOfDays}
-              onChange={(e) => setNbrOfDays(e.target.value)}
-            />
+            <div>
+              <input
+                type='number'
+                className='w-full px-4 py-2 border border-mediumBlue rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-mediumBlue focus:border-transparent text-gray-800 dark:text-white bg-white dark:bg-blue-950/80 placeholder-gray-400 transition duration-200 dark:border-slate-600'
+                placeholder={t('leave_days_placeholder')}
+                value={nbrOfDays}
+                onChange={(e) => setNbrOfDays(e.target.value)}
+              />
+              <p className='mt-3 text-red-500'>
+                {error.nbrOfDays}
+              </p>
+            </div>
             :
             null
           }
           {
-            (selectedLeave && selectedDroit.hasOwnProperty('joursAutorisee') && selectedDroit.joursAutorisee > 0) ? (
+            (selectedLeave && ((selectedDroit.hasOwnProperty('joursAutorisee') && selectedDroit.joursAutorisee > 0) || !selectedDroit.hasOwnProperty('joursAutorisee'))) ? (
               <>
                 <input
                   type='text'
@@ -294,6 +352,11 @@ export default function RequestLeave() {
                   // value={selectedFile} no for security
                   onChange={(e) => setSelectedFile(e.target.files[0])}
                 />
+                <button className='text-base sm:text-lg font-semibold bg-mediumBlue dark:bg-darkBlue dark:hover:bg-blue-900 py-2 text-white rounded-lg sm:rounded-lg mb-2 cursor-pointer hover:bg-darkBlue'
+                  onClick={() => addRequest(selectedDroit.joursAutorisee - selectedDroit.joursPris)}
+                >
+                  {t('send_request')}
+                </button>
               </>
             ) : null
           }
