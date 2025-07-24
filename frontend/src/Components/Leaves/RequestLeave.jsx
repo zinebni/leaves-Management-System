@@ -40,19 +40,11 @@ export default function RequestLeave() {
   const {employeeId} = useParams();
   const [droits, setDroits] = useState([]);
   const [selectedLeave, setSelectedLeave] = useState('');
+  const [nbrOfDays, setNbrOfDays] = useState('');
+  const [comment, setComment] = useState('');
+  const [selectedFile, setSelectedFile] = useState(null);
   const selectedDroit = droits.find(droit => droit.type === selectedLeave);
-  const [sexe, setSexe] = useState('');
 
-
-  const leaveTypes = [
-    { key: 'annual_leave', valueFromApi: 'annuel' },
-    { key: 'maternity', valueFromApi: 'maternite' },
-    { key: 'unpaid', valueFromApi: 'sans_solde' },
-    { key: 'sickness', valueFromApi: 'maladie' },
-    { key: 'study_exam', valueFromApi: 'examen' },
-    { key: 'bereavement_close_family', valueFromApi: 'Décès (conjoint, parent, enfant)' },
-    { key: 'bereavement_extended_family', valueFromApi: 'Décès (frère, sœur, beau-parent)' }
-  ];
 
   const fetchDroitsGonges = async () => {
     const res = await axios.get(`http://localhost:4000/api/droits/getLeaveRightsByEmployee/${employeeId}`, {
@@ -60,7 +52,6 @@ export default function RequestLeave() {
     });
 
     console.log(res.data.droits);
-    setSexe(res.data.droits[0].employee.sexe);
     setDroits(res.data.droits);
   }
 
@@ -229,40 +220,84 @@ export default function RequestLeave() {
         // --- ÉTAPE 6: Appliquer le style conditionnel ---
         eventPropGetter={eventStyleGetter}
       />
-      <div className='mt-15 mb-56'>
-        <select 
-          id="leave-type-select"
-          value={selectedLeave}
-          onChange={(e) => setSelectedLeave(e.target.value)}
-          className="block w-full px-3 py-2 bg-white dark:bg-blue-950/80 border border-slate-300 dark:border-slate-600 rounded-md shadow-sm focus:outline-none focus:ring-mediumBlue focus:border-mediumBlue/50 dark:text-white"
-        >
-          {/* Option par défaut */}
-          <option value="" disabled>
-            {t('select_leave_type')}
-          </option>
-          
-          {/* Boucle sur les types de congé pour créer les options */}
-          {leaveTypes.map((type) => {
-              if(type.key === 'maternity' && sexe === 'Homme'){
-                return;
-              } 
-              return(
-                <option key={type.key} value={type.valueFromApi}>
-                  {t(`leave_types.${type.key}`)}
-                </option>
+      <div className='mt-10 mb-56'>
+        <div className='mb-5 pl-5'>
+          {
+            selectedDroit ? 
+            (
+              selectedDroit.hasOwnProperty('joursAutorisee') ? 
+              (
+                selectedDroit.joursAutorisee > 0 ?
+                (
+                  <p className='dark:text-white text-lg'>
+                    <span className='font-semibold  text-mediumBlue dark:text-politeBlue'>{t('remaining_days')} : </span>
+                    {selectedDroit.joursAutorisee - selectedDroit.joursPris}
+                  </p>
+                ) : (
+                  <p className='font-semibold text-red-600'>
+                    {t('no_remaining_days')}
+                  </p>
+                )
+              ) : (
+                <p className='dark:text-white text-lg'>
+                  <span className='font-semibold text-mediumBlue dark:text-politeBlue'>{t('taken_days')} : </span>
+                  {selectedDroit.joursPris}
+                </p>
               )
-            }
-          )}
-        </select>
-        {selectedDroit ? (
-        <div>
-          {selectedDroit.joursAutorisee ? (
-                <p>{t('authorized_days')}: {selectedDroit.joursAutorisee}</p>
-              ) : null}
-            </div>
-          ) : selectedLeave === 'annuel' ? (
-            <p className="text-red-500">{t('annual_leave_requirement')}</p>
-          ) : null}
+            ) : null
+          }
+        </div>
+        <div className='grid grid-cols-1 sm:grid-cols-2 gap-10'>
+          <select 
+            id="leave-type-select"
+            value={selectedLeave}
+            onChange={(e) => setSelectedLeave(e.target.value)}
+            className='w-full px-4 py-2 border border-mediumBlue rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-mediumBlue focus:border-transparent text-gray-800 dark:text-white bg-white dark:bg-blue-950/80 placeholder-gray-400 transition duration-200 dark:border-slate-600'
+          >
+            {/* Option par défaut */}
+            <option value="" disabled>
+              {t('select_leave_type')}
+            </option>
+            
+            {/* Boucle sur les types de congé pour créer les options */}
+            {droits.map((droit) => (
+              <option key={droit._id} value={droit.type}>
+                {t(`${droit.type}`)}
+              </option>
+            ))}
+          </select>
+          {
+            (selectedLeave && ((selectedDroit.hasOwnProperty('joursAutorisee') && selectedDroit.joursAutorisee > 0) || !selectedDroit.hasOwnProperty('joursAutorisee'))) ? 
+            <input
+              type='number'
+              className='w-full px-4 py-2 border border-mediumBlue rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-mediumBlue focus:border-transparent text-gray-800 dark:text-white bg-white dark:bg-blue-950/80 placeholder-gray-400 transition duration-200 dark:border-slate-600'
+              placeholder={t('leave_days_placeholder')}
+              value={nbrOfDays}
+              onChange={(e) => setNbrOfDays(e.target.value)}
+            />
+            :
+            null
+          }
+          {
+            (selectedLeave && selectedDroit.hasOwnProperty('joursAutorisee') && selectedDroit.joursAutorisee > 0) ? (
+              <>
+                <input
+                  type='text'
+                  className='w-full px-4 py-2 border border-mediumBlue rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-mediumBlue focus:border-transparent text-gray-800 dark:text-white bg-white dark:bg-blue-950/80 placeholder-gray-400 transition duration-200 dark:border-slate-600'
+                  placeholder={t('comment_placeholder')}
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                />
+                <input
+                  type='file'
+                  className='w-full px-4 py-2 border border-mediumBlue rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-mediumBlue focus:border-transparent text-gray-800 dark:text-white bg-white dark:bg-blue-950/80 placeholder-gray-400 transition duration-200 dark:border-slate-600'
+                  // value={selectedFile} no for security
+                  onChange={(e) => setSelectedFile(e.target.files[0])}
+                />
+              </>
+            ) : null
+          }
+        </div>        
       </div>
     </div>
   );

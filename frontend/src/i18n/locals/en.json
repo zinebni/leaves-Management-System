@@ -113,16 +113,17 @@
   "none": "None",
   "selection": "Your Selection",
   "select_leave_type": "Select a leave type...",
-  "leave_types": {
-    "annual_leave": "Annual leave",
-    "maternity": "Maternity Leave",
-    "unpaid": "Unpaid Leave",
-    "sickness": "Sick Leave",
-    "study_exam": "Study / Exam Leave",
-    "bereavement_close_family": "Bereavement (Spouse, Parent, Child)",
-    "bereavement_extended_family": "Bereavement (Sibling, Parent-in-law)"
-  },
-  "authorized_days": "Authorized days",
-  "annual_leave_requirement": "You must have worked for 6 months to be eligible for annual leave."
-
+  "annuel": "Annual leave",
+  "maternite": "Maternity Leave",
+  "paternite": "Paternity",
+  "sans_solde": "Unpaid Leave",
+  "maladie": "Sick Leave",
+  "examen": "Study / Exam Leave",
+  "Décès (conjoint, parent, enfant)": "Bereavement (Spouse, Parent, Child)",
+  "Décès (frère, sœur, beau-parent)": "Bereavement (Sibling, Parent-in-law)",
+  "remaining_days": "Remaining days",
+  "taken_days": "Taken days",
+  "no_remaining_days": "You do not have any remaining days for this type of leave. Request not allowed.",
+  "leave_days_placeholder": "Enter number of leave days",
+  "comment_placeholder": "Add a comment (optional)"
 }
