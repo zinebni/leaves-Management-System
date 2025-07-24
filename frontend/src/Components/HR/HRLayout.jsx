@@ -1,4 +1,4 @@
-import { Eye, Plus } from 'lucide-react';
+import { Eye, icons, Inbox, Plus } from 'lucide-react';
 import React, { useState } from 'react'
 import { Outlet, useParams } from 'react-router-dom';
 import NavBar from '../Organisation/NavBar';
@@ -14,6 +14,11 @@ export default function HRLayout() {
         { to: 'Employee/Add', icon: <Plus size={18} />, label: 'add_emp' },
         { to: 'Employees', icon: <Eye size={18} />, label: 'view_emps' } // ❌ Sans "end", ce lien sera aussi actif pour les sous-routes comme 'Employees/Add',
       ],
+    }, {
+      section: 'request',
+      items: [
+        { to: 'Requests', icons: <Inbox size={18} />, label: 'handle_request'}
+      ]
     }
   ];
 

@@ -131,5 +131,7 @@
   "days_required": "Please enter the number of days.",
   "days_negative": "Number of days must be a positive number.",
   "days_exceed_remaining": "Number of days cannot exceed remaining days.",
-  "send_request_success": "Request sent successfully"
+  "send_request_success": "Request sent successfully",
+  "request": "Requests",
+  "handle_request": "Handle Requests"
 }
