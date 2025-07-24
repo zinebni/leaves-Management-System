@@ -126,6 +126,10 @@
   "taken_days": "Jours pris",
   "no_remaining_days": "Vous n'avez plus de jours restants pour ce type de congé. Demande non autorisée.",
   "leave_days_placeholder": "Entrez le nombre de jours de congé",
-  "comment_placeholder": "Ajouter un commentaire (optionnel)"
-
+  "comment_placeholder": "Ajouter un commentaire (optionnel)",
+  "send_request": "Envoyer la demande",
+  "select_date_range" : "Veuillez sélectionner une plage de dates avant de soumettre.",
+  "days_required": "Veuillez saisir le nombre de jours.",
+  "days_negative": "Le nombre de jours doit être un nombre positif.",
+  "days_exceed_remaining": "Le nombre de jours ne peut pas dépasser les jours restants."
 }
