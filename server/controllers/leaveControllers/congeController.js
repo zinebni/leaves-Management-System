@@ -1,7 +1,9 @@
 import dayjs from "dayjs";
+import mongoose from "mongoose";
+import transporter from '../../config/nodemailer.js';
 import Conge from "../../models/congeModel.js";
 import DroitConge from "../../models/droitCongeModel.js";
-import mongoose from "mongoose";
+import Employee from '../../models/employeeModel.js';
 //Employé---------------------------------------------------------Employé :
 
 // createLeaveRequest() 
@@ -134,6 +136,15 @@ export const getAllLeaveRequests = async (req, res) => {
         },
         { $unwind: '$employee' },
         {
+          $lookup: {
+          from: 'droitconges', 
+          localField: 'motif',
+          foreignField: '_id',
+          as: 'motif'
+          }
+        },
+        { $unwind: '$motif' },
+        {
           $match: {
             'employee.organisation': organisationId,
             status: "en attente"
@@ -172,6 +183,15 @@ export const getLeaveRequests = async (req, res) => {
         },
         { $unwind: '$employee' },
         {
+          $lookup: {
+          from: 'droitconges', 
+          localField: 'motif',
+          foreignField: '_id',
+          as: 'motif'
+          }
+        },
+        { $unwind: '$motif' },
+        {
           $match: {
             'employee.organisation': organisationId,
             status: { $ne: "en attente" }
@@ -182,7 +202,7 @@ export const getLeaveRequests = async (req, res) => {
           $project: {
             createdAt: 0,
             updatedAt: 0,
-            __v: 0
+            __v: 0,
           }
         }
       ]) 
@@ -197,7 +217,7 @@ export const getLeaveRequestById = async (req, res) => {
   const { id } = req.params;
   try {
     //chercher le conge avec id
-    const conge = await Conge.findOne({ _id: id}, {createdAt:0, updatedAt:0, __v:0, deleted:0}).populate({path: 'motif', select: 'type'}).populate({path: 'employee', select: 'nom prenom department'});
+    const conge = await Conge.findOne({ _id: id}, {createdAt:0, updatedAt:0, __v:0, deleted:0}).populate({path: 'motif', select: 'type estPaye joursAutorisee joursPris'}).populate({path: 'employee', select: 'nom prenom department'});
     if (!conge) {
       return res.status(404).json({ success: false, message: 'Demande de congé non trouvée.' });
     }
@@ -218,6 +238,15 @@ export const getLeaveRequestById = async (req, res) => {
           }
         },
         { $unwind: '$employee' },
+        {
+          $lookup: {
+          from: 'droitconges', 
+          localField: 'motif',
+          foreignField: '_id',
+          as: 'motif'
+          }
+        },
+        { $unwind: '$motif' },
         {
           $match: {
             'employee.organisation': organisation,
@@ -261,6 +290,15 @@ export const getAllLeaveRequestsByStatus = async (req, res) => {
         },
         { $unwind: '$employee' },
         {
+          $lookup: {
+          from: 'droitconges', 
+          localField: 'motif',
+          foreignField: '_id',
+          as: 'motif'
+          }
+        },
+        { $unwind: '$motif' },
+        {
           $match: {
             'employee.organisation': organisationId,
              status: status
@@ -299,6 +337,15 @@ export const getAllLeaveRequestsByEmployee = async (req, res) => {
           }
         },
         { $unwind: '$employee' },
+        {
+          $lookup: {
+          from: 'droitconges', 
+          localField: 'motif',
+          foreignField: '_id',
+          as: 'motif'
+          }
+        },
+        { $unwind: '$motif' },
         {
           $match: {
             'employee.organisation': organisationId,
@@ -339,6 +386,15 @@ export const getAllLeaveRequestsByDepartment = async (req, res) => {
         },
         { $unwind: '$employee' },
         {
+          $lookup: {
+          from: 'droitconges', 
+          localField: 'motif',
+          foreignField: '_id',
+          as: 'motif'
+          }
+        },
+        { $unwind: '$motif' },
+        {
           $match: {
             'employee.organisation': organisationId,
             'employee.department': new mongoose.Types.ObjectId(departmentId)
@@ -378,6 +434,15 @@ export const getAllLeaveRequestsByDepartmentAndStatus = async (req, res) => {
         },
         { $unwind: '$employee' },
         {
+          $lookup: {
+          from: 'droitconges', 
+          localField: 'motif',
+          foreignField: '_id',
+          as: 'motif'
+          }
+        },
+        { $unwind: '$motif' },
+        {
           $match: {
             'employee.organisation': organisationId,
             'employee.department': new mongoose.Types.ObjectId(departmentId),
@@ -408,7 +473,7 @@ export const approveLeaveRequest = async (req, res) => {
   }
 
   try {
-    const conge = await Conge.findOne({ _id: id, status: "en attente" });
+    const conge = await Conge.findOne({ _id: id, status: "en attente" }).populate({path: 'motif', select: 'type'}).populate({path: 'employee', select: 'nom prenom'});
     if (!conge) {
       return res.status(404).json({ success: false, message: 'Demande de congé non trouvée.' });
     }
@@ -426,6 +491,18 @@ export const approveLeaveRequest = async (req, res) => {
     conge.status = "approuve";
     conge.approuvePar = employeeId;
     await conge.save();
+    //envoyer mail avec nodemailer
+    const employee = await Employee.findById(conge.employee);
+    
+    const mailOptions = {
+      from: process.env.SENDER_EMAIL,
+      to: employee.verificationEmail,
+      subject: 'Demande de congé approuvée',
+      text: `Bonjour ${employee.nom} ${employee.prenom}, votre demande de congé ${conge.motif.type} a été approuvée.`,
+    };
+    await transporter.sendMail(mailOptions);
+
+    console.log("mail envoyé dans approveLeaveRequest");    
 
     return res.status(200).json({ success: true, message: 'Demande de congé approuvée avec succès.', conge });
 
@@ -450,6 +527,18 @@ export const rejectLeaveRequest = async (req, res) => {
     if (!conge) {
       return res.status(404).json({ success: false, message: 'Demande de congé non trouvée.' });
     }
+
+    const employee = await Employee.findById(conge.employee);
+      if (!employee) {
+        return res.status(404).json({ success: false, message: 'Employé non trouvé.' });
+    }
+    /*const mailOptions = {
+      from: process.env.SENDER_EMAIL,
+      to: employee.verificationEmail,
+      subject: 'Demande de congé approuvée',
+      text: `Bonjour ${employee.nom} ${employee.prenom}, votre demande de congé ${conge.motif.type} a été approuvée.`,
+    };
+    await transporter.sendMail(mailOptions);*/
     res.status(200).json({ success: true, message: 'Demande de congé refusée avec succès.', conge });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
