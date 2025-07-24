@@ -5,7 +5,7 @@ const authMiddleware = async (req, res, next) => {
     
         //1-recuperer le token dans le cookie
         const token = req.cookies.token;
-        console.log(token);
+        console.log("token read from cookie by authMiddleware: " );
         if(!token){
             return res.status(401).json({success:false, message:"Non autorisé. Veuillez vous connecter."})
         }

@@ -10,7 +10,7 @@ import Employee from '../models/employeeModel.js';
 //'0 0 * * * *' == 'S'exécute tous les jours à 00:00:00 (minuit)
 
 nodeCron.schedule('0 0 * * * *', async () => {
-  console.log("Lancement de la mise à jour automatique des droits de congé...");
+  console.log("Lancement de la mise à jour automatique des droits de congé annuel...");
   const employees = await Employee.find();
 
   //mise à jour des droits de congé annuel
