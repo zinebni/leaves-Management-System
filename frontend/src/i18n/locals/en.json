@@ -133,5 +133,7 @@
   "days_exceed_remaining": "Number of days cannot exceed remaining days.",
   "send_request_success": "Request sent successfully",
   "request": "Requests",
-  "handle_request": "Handle Requests"
+  "handle_request": "Handle Requests",
+  "request_pending_title": "Pending Leave Requests",
+  "no_pending_message": "No pending leave requests"
 }

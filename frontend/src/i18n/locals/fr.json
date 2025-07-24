@@ -134,5 +134,7 @@
   "days_exceed_remaining": "Le nombre de jours ne peut pas dépasser les jours restants.",
   "send_request_success": "Demande envoyée avec succès",
   "request": "Demandes",
-  "handle_request": "Traiter les demandes"
+  "handle_request": "Traiter les demandes",
+  "request_pending_title": "Demandes de congé en attente",
+  "no_pending_message": "Aucune demande de congé en attente"
 }
