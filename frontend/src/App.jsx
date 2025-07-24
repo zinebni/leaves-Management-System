@@ -25,6 +25,7 @@ import EditEmp from './Components/Emp/EditEmp';
 import EmpLayout from './Components/Emp/EmpLayout';
 import DashbordEmp from './Components/Emp/DashbordEmp';
 import RequestLeave from './Components/Leaves/RequestLeave';
+import HandleRequests from './Components/HR/HandleRequests';
 
 function App() {
 
@@ -62,11 +63,13 @@ function App() {
           <Route path='Employee/Add' element={<AddEmp />}/>
           <Route path='Employees' element={<DisplayEmp  />}/>
           <Route path='Employees/Edit/:id' element={<EditEmp />} />
+          <Route path='Requests' element={<HandleRequests />} />
         </Route>
         {/* Employee Layout with sidebar/nav */}
         <Route path='/Employee/:orgID/:employeeId' element={<EmpLayout />}>
           <Route index element={<DashbordEmp />} />
           <Route path='Request-leave' element={<RequestLeave />} />
+
         </Route>
       </Routes>  
     </Router>
