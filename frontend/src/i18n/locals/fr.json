@@ -131,5 +131,6 @@
   "select_date_range" : "Veuillez sélectionner une plage de dates avant de soumettre.",
   "days_required": "Veuillez saisir le nombre de jours.",
   "days_negative": "Le nombre de jours doit être un nombre positif.",
-  "days_exceed_remaining": "Le nombre de jours ne peut pas dépasser les jours restants."
+  "days_exceed_remaining": "Le nombre de jours ne peut pas dépasser les jours restants.",
+  "send_request_success": "Demande envoyée avec succès"
 }

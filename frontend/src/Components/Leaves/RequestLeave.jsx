@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 // Importation des outils nécessaires de react-big-calendar et date-fns
 import { Calendar, dateFnsLocalizer, Views } from 'react-big-calendar';
 import { format, parse, startOfWeek, getDay, addDays } from 'date-fns';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // `format`: formate un objet Date en chaîne lisible selon un format donné
 // Exemple : format(new Date(), 'dd/MM/yyyy') → "21/07/2025"
@@ -30,6 +32,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import { CheckCircle } from 'lucide-react';
 
 export default function RequestLeave() {
   const { t, i18n } = useTranslation(); // Hook de traduction
@@ -40,11 +43,11 @@ export default function RequestLeave() {
   const {employeeId} = useParams();
   const [droits, setDroits] = useState([]);
   const [selectedLeave, setSelectedLeave] = useState('');
-  const [nbrOfDays, setNbrOfDays] = useState('');
   const [comment, setComment] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
   const selectedDroit = droits.find(droit => droit.type === selectedLeave);
-  const [error, setError] = useState({});
+  const [error, setError] = useState('');
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
 
 
   const fetchDroitsGonges = async () => {
@@ -52,58 +55,84 @@ export default function RequestLeave() {
       withCredentials: true
     });
 
-    console.log(res.data.droits);
     setDroits(res.data.droits);
   }
 
   useEffect(() => {
     fetchDroitsGonges();
+    // Crée un nouvel observateur qui surveille les changements sur l'attribut 'class' de l'élément HTML <html>
+    const observer = new MutationObserver(() => {
+      // Récupère la classe actuelle de <html> (soit "light", "dark", etc.)
+      const htmlTheme = document.documentElement.className;
+
+      // Met à jour le state React 'theme' (ex: "dark" ou "light")
+      // Si aucune classe n'est trouvée, on garde 'light' par défaut
+      setTheme(htmlTheme || 'light');
+    });
+
+    // Lance l'observateur : on demande à observer les changements d'attributs sur <html>
+    observer.observe(document.documentElement, {
+      attributes: true,              // On veut écouter les changements d'attributs
+      attributeFilter: ['class'],   // Mais uniquement si c’est l’attribut "class" qui change
+    });
+
+    // Cette fonction de retour sera exécutée lorsque le composant est démonté
+    // Elle permet d'arrêter l'observation pour éviter des fuites mémoire
+    return () => observer.disconnect();
   }, []);
 
   const addRequest = async (remainingDays) => {
     let isValid = true;
-    const newError = {};
-
     if(!startDate){
       isValid = false;
-      newError.slot = t('select_date_range');
+      setError(t('select_date_range'));
+    } else {
+      const nbrOfDays = (endDate - startDate) / (1000 * 60 * 60 * 24);
+
+      if (!Number.isNaN(remainingDays) && nbrOfDays > remainingDays) {
+        isValid = false;
+        setError(t('days_exceed_remaining'));
+      }
+    }
+    
+    if(isValid) {
+      setError('');
+      setStartDate(null);
+      setEndDate(null);
+      setSelectedLeave('');
+      setComment('');
+      setSelectedFile(null);
+
+      const request = {
+        date_debut: startDate,
+        date_fin: endDate,
+        motif: selectedDroit._id,
+        ...(comment && {commentaire : comment}),
+        ...(selectedFile && {justificatif: selectedFile})
+      }
+
+
+      try{
+        const res = await axios.post('http://localhost:4000/api/conge/createLeaveRequest', request, {
+          withCredentials:true
+        });
+        
+        toast.success(t('send_request_success'), {
+          position: "top-center",           // Positionne le toast en haut et centré horizontalement
+          autoClose: 3000,                  // Ferme automatiquement le toast après 3000 ms (3 secondes)
+          hideProgressBar: true,           // Affiche la barre de progression (temps restant)
+          closeOnClick: true,               // Ferme le toast si l’utilisateur clique dessus
+          pauseOnHover: true,               // Met en pause la fermeture automatique si la souris survole le toast
+          draggable: true,                  // Permet de déplacer le toast avec la souris
+          progress: undefined,              // Laisse la progression automatique par défaut
+          icon: <CheckCircle color="#2f51eb" />,
+        });
+      } catch(error) {
+        console.log(error);
+      }
     }
 
-    const nbrOfDaysNum = Number(nbrOfDays);
-
-    if (nbrOfDays === '' || Number.isNaN(nbrOfDaysNum)) {
-      isValid = false;
-      newError.nbrOfDays = t('days_required');
-    } else if (nbrOfDaysNum <= 0) {
-      isValid = false;
-      newError.nbrOfDays = t('days_negative');
-    } else if (!Number.isNaN(remainingDays) && nbrOfDaysNum > remainingDays) {
-      isValid = false;
-      newError.nbrOfDays = t('days_exceed_remaining');
-    }
-
-    if(!isValid) {
-      setError(newError);
-      return;
-    }
-
-    setError({});
-    setStartDate(null);
-    setEndDate(null);
-    setSelectedLeave('');
-    setNbrOfDays('');
-    setComment('');
-    setSelectedFile(null);
-
-    const request = {
-      date_debut: startDate,
-      date_fin: endDate,
-      motif: selectedDroit._id,
-      ...(comment && {commentaire : comment}),
-      ...(selectedFile && {justificatif: selectedFile})
-    }
-
-    console.log(request);
+    
 
   }
 
@@ -111,26 +140,28 @@ export default function RequestLeave() {
   const handleSelectSlot = (slotInfo) => {
     const clickedDate = slotInfo.start;
 
-    // Si les deux dates sont déjà sélectionnées, on recommence avec la nouvelle date
-    if (startDate && endDate) {
+    // Si aucune date sélectionnée (premier clic)
+    if (!startDate && !endDate) {
       setStartDate(clickedDate);
-      setEndDate(clickedDate); // Initialise aussi la date de fin
+      setEndDate(clickedDate);
+      return;
     }
-    // Si seule la date de début est définie
-    else if (startDate && !endDate) {
+
+    // Si seule la date de début est définie (second clic)
+    if (startDate && endDate && startDate.getTime() === endDate.getTime()) {
       if (clickedDate < startDate) {
         setStartDate(clickedDate);
-        setEndDate(clickedDate); // Fin = début aussi ici
       } else {
         setEndDate(clickedDate);
       }
+      return;
     }
-    // Si aucune date n'est sélectionnée
-    else {
-      setStartDate(clickedDate);
-      setEndDate(clickedDate); // ← Ici on initialise les deux directement
-    }
+
+    // Sinon, on réinitialise la sélection (nouveau premier clic)
+    setStartDate(clickedDate);
+    setEndDate(clickedDate);
   };
+
 
 
   // Configuration des locales disponibles pour le calendrier
@@ -268,7 +299,7 @@ export default function RequestLeave() {
           eventPropGetter={eventStyleGetter}
         />
         <p className='mt-3 text-red-500'>
-          {error.slot}
+          {error}
         </p>
       </div>
       <div className='mt-10 mb-56'>
@@ -278,7 +309,7 @@ export default function RequestLeave() {
             (
               selectedDroit.hasOwnProperty('joursAutorisee') ? 
               (
-                selectedDroit.joursAutorisee > 0 ?
+                selectedDroit.joursAutorisee - selectedDroit.joursPris > 0 ?
                 (
                   <p className='dark:text-white text-lg'>
                     <span className='font-semibold  text-mediumBlue dark:text-politeBlue'>{t('remaining_days')} : </span>
@@ -320,24 +351,7 @@ export default function RequestLeave() {
             </select>
           </div>
           {
-            (selectedLeave && ((selectedDroit.hasOwnProperty('joursAutorisee') && selectedDroit.joursAutorisee > 0) || !selectedDroit.hasOwnProperty('joursAutorisee'))) ? 
-            <div>
-              <input
-                type='number'
-                className='w-full px-4 py-2 border border-mediumBlue rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-mediumBlue focus:border-transparent text-gray-800 dark:text-white bg-white dark:bg-blue-950/80 placeholder-gray-400 transition duration-200 dark:border-slate-600'
-                placeholder={t('leave_days_placeholder')}
-                value={nbrOfDays}
-                onChange={(e) => setNbrOfDays(e.target.value)}
-              />
-              <p className='mt-3 text-red-500'>
-                {error.nbrOfDays}
-              </p>
-            </div>
-            :
-            null
-          }
-          {
-            (selectedLeave && ((selectedDroit.hasOwnProperty('joursAutorisee') && selectedDroit.joursAutorisee > 0) || !selectedDroit.hasOwnProperty('joursAutorisee'))) ? (
+            (selectedLeave && ((selectedDroit.hasOwnProperty('joursAutorisee') && (selectedDroit.joursAutorisee - selectedDroit.joursPris) > 0) || !selectedDroit.hasOwnProperty('joursAutorisee'))) ? (
               <>
                 <input
                   type='text'
@@ -362,6 +376,7 @@ export default function RequestLeave() {
           }
         </div>        
       </div>
+      <ToastContainer theme={theme} />
     </div>
   );
 }
