@@ -114,15 +114,18 @@
   "none": "Aucune",
   "selection": "Votre Sélection",
   "select_leave_type": "Sélectionnez un type de congé...",
-  "leave_types": {
-    "annual_leave": "Congé annuel",
-    "maternity": "Maternité",
-    "unpaid": "Congé sans solde",
-    "sickness": "Congé maladie",
-    "study_exam": "Congé pour examen",
-    "bereavement_close_family": "Décès (conjoint, parent, enfant)",
-    "bereavement_extended_family": "Décès (frère, sœur, beau-parent)"
-  },
-  "authorized_days": "Jours autorisés",
-    "annual_leave_requirement": "Vous devez avoir travaillé 6 mois pour bénéficier d’un congé annuel."
+  "annuel": "Congé annuel",
+  "maternite": "Maternité",
+  "paternite": "Paternité",
+  "sans_solde": "Congé sans solde",
+  "maladie": "Congé maladie",
+  "examen": "Congé pour examen",
+  "Décès (conjoint, parent, enfant)": "Décès (conjoint, parent, enfant)",
+  "Décès (frère, sœur, beau-parent)": "Décès (frère, sœur, beau-parent)",
+  "remaining_days": "Jours restants",
+  "taken_days": "Jours pris",
+  "no_remaining_days": "Vous n'avez plus de jours restants pour ce type de congé. Demande non autorisée.",
+  "leave_days_placeholder": "Entrez le nombre de jours de congé",
+  "comment_placeholder": "Ajouter un commentaire (optionnel)"
+
 }
