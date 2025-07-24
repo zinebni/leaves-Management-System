@@ -130,5 +130,6 @@
   "select_date_range" : "Please select a date range before submitting.",
   "days_required": "Please enter the number of days.",
   "days_negative": "Number of days must be a positive number.",
-  "days_exceed_remaining": "Number of days cannot exceed remaining days."
+  "days_exceed_remaining": "Number of days cannot exceed remaining days.",
+  "send_request_success": "Request sent successfully"
 }
