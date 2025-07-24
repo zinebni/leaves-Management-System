@@ -6,7 +6,7 @@ import DroitConge from "../../models/droitCongeModel.js";
 import Employee from '../../models/employeeModel.js';
 //Employé---------------------------------------------------------Employé :
 
-// createLeaveRequest() 
+/*createLeaveRequest() */
 export const createLeaveRequest = async (req, res) => {
   const  employeeId  = req.user.id;
   const { date_debut, date_fin, motif, commentaire} = req.body;
@@ -49,7 +49,7 @@ export const createLeaveRequest = async (req, res) => {
   }
 };
 
-// getMyLeaveRequests() 
+/* getMyLeaveRequests() */
 export const getMyLeaveRequests = async (req, res) => {
   
   const employeeId = req.user.id;
@@ -65,7 +65,7 @@ export const getMyLeaveRequests = async (req, res) => {
   }
 };
 
-// cancelLeaveRequest(id) 
+/*cancelLeaveRequest(id) */
 export const cancelLeaveRequest = async (req, res) => {
   const  {id} = req.params;
   const employeeId = req.user.id;
@@ -85,7 +85,7 @@ export const cancelLeaveRequest = async (req, res) => {
   }
 };
 
-//get my  deleted leave requests
+/*get my  deleted leave requests*/
 export const getMyLeaveRequestsDeleted = async (req, res) => {
   const  employeeId = req.user.id;
   if (!employeeId) {
@@ -99,7 +99,7 @@ export const getMyLeaveRequestsDeleted = async (req, res) => {
   }
 };
 
-//get leave requests by status
+/*get leave requests by status*/
 export const getMyLeaveRequestsByStatus = async (req, res) => {
   const employeeId  = req.user.id;
   const { status } = req.params;
@@ -117,7 +117,6 @@ export const getMyLeaveRequestsByStatus = async (req, res) => {
 
 //RH------------------------------------------------------RH :
 
-
 // getAllLeaveRequests() of an organisation "leave requests en attente"
 export const getAllLeaveRequests = async (req, res) => {
   const organisationId =  new mongoose.Types.ObjectId(req.user.organisation);
@@ -126,6 +125,7 @@ export const getAllLeaveRequests = async (req, res) => {
   }
   try {
     const conges = await Conge.aggregate([
+      //join with employee
         {
           $lookup: {
             from: 'employees', 
@@ -135,6 +135,18 @@ export const getAllLeaveRequests = async (req, res) => {
           }
         },
         { $unwind: '$employee' },
+        //join with department
+        {
+          $lookup: {
+            from: 'departments',
+            localField: 'employee.department',
+            foreignField: '_id',
+            as: 'employee.department'
+          }
+        },
+        { $unwind: '$employee.department' },
+        
+        //join with motif
         {
           $lookup: {
           from: 'droitconges', 
@@ -147,7 +159,7 @@ export const getAllLeaveRequests = async (req, res) => {
         {
           $match: {
             'employee.organisation': organisationId,
-            status: "en attente"
+             status: "en attente"
 
           }
         },
@@ -155,7 +167,22 @@ export const getAllLeaveRequests = async (req, res) => {
           $project: {
             createdAt: 0,
             updatedAt: 0,
-            __v: 0
+            __v: 0,
+            "employee.password": 0,
+            "employee.resetOtp": 0,
+            "employee.verifyOtp": 0,
+            "employee.verifyOtpExpireAt": 0,
+            "employee.resetOtpExpiredAt": 0,
+            "employee.isAccountVerified": 0,
+            "employee.createdAt": 0,
+            "employee.updatedAt": 0,
+            "employee.__v": 0,
+            "employee.deleted": 0,
+            "motif.createdAt": 0,
+            "motif.updatedAt": 0,
+            "motif.__v": 0,
+            "motif.deleted": 0
+            
           }
         }
       ]) 
@@ -165,7 +192,7 @@ export const getAllLeaveRequests = async (req, res) => {
   }
 };
 
-// getAllLeaveRequests() of an organisation "leave requests satatus not  en attente"
+// getLeaveRequests() of an organisation "leave requests satatus not  en attente"
 export const getLeaveRequests = async (req, res) => {
   const organisationId =  new mongoose.Types.ObjectId(req.user.organisation);
   if(!organisationId){
@@ -173,6 +200,7 @@ export const getLeaveRequests = async (req, res) => {
   }
   try {
     const conges = await Conge.aggregate([
+      //join with employee
         {
           $lookup: {
             from: 'employees', 
@@ -182,6 +210,17 @@ export const getLeaveRequests = async (req, res) => {
           }
         },
         { $unwind: '$employee' },
+      //join with department
+        {
+          $lookup: {
+            from: 'departments',
+            localField: 'employee.department',
+            foreignField: '_id',
+            as: 'employee.department'
+          }
+        },
+        { $unwind: '$employee.department' },
+      //join with motif
         {
           $lookup: {
           from: 'droitconges', 
@@ -203,6 +242,20 @@ export const getLeaveRequests = async (req, res) => {
             createdAt: 0,
             updatedAt: 0,
             __v: 0,
+            "employee.password": 0,
+            "employee.resetOtp": 0,
+            "employee.verifyOtp": 0,
+            "employee.verifyOtpExpireAt": 0,
+            "employee.resetOtpExpiredAt": 0,
+            "employee.isAccountVerified": 0,
+            "employee.createdAt": 0,
+            "employee.updatedAt": 0,
+            "employee.__v": 0,
+            "employee.deleted": 0,
+            "motif.createdAt": 0,
+            "motif.updatedAt": 0,
+            "motif.__v": 0,
+            "motif.deleted": 0
           }
         }
       ]) 
@@ -217,12 +270,14 @@ export const getLeaveRequestById = async (req, res) => {
   const { id } = req.params;
   try {
     //chercher le conge avec id
-    const conge = await Conge.findOne({ _id: id}, {createdAt:0, updatedAt:0, __v:0, deleted:0}).populate({path: 'motif', select: 'type estPaye joursAutorisee joursPris'}).populate({path: 'employee', select: 'nom prenom department'});
+    const conge = await Conge.findOne({ _id: id}, {createdAt:0, updatedAt:0, __v:0, deleted:0}).populate({path: 'motif', select: '-employee -createdAt -updatedAt -__v -deleted'}).populate({path: 'employee', select: '-createdAt -updatedAt -__v -deleted -password -resetOtp -verifyOtp -verifyOtpExpireAt -resetOtpExpiredAt -isAccountVerified', populate: {path: 'department', select: '-description -organisation -createdAt -updatedAt -__v -deleted'}});
     if (!conge) {
       return res.status(404).json({ success: false, message: 'Demande de congé non trouvée.' });
     }
-    //chercher les conges dans la même organisation avec statue "approuve" pour le  memme employee (historique)
-    const congesHistorique = await Conge.find({ employee: conge.employee, /* status: "approuve" ,*/ _id: { $ne: id }}, {createdAt:0, updatedAt:0, __v:0, deleted:0}).populate({path: 'motif', select: 'type'});
+    //chercher les conges demander  par le  memme employee (historique)
+    const congesHistorique = await Conge.find({ employee: conge.employee, _id: { $ne: id }}, {createdAt:0, updatedAt:0, __v:0, deleted:0}).populate({path: 'motif', select: 'type'});
+    
+    
     //chercher les employees de la meme organisation qui ont le meme departement que l'employee du conge avec un conge "approuve" dans la meme periode
     const organisation = new mongoose.Types.ObjectId(req.user.organisation);
     const id_conge = new mongoose.Types.ObjectId(id);
@@ -230,6 +285,7 @@ export const getLeaveRequestById = async (req, res) => {
 
     const employeesConge = await Conge.aggregate([
         {
+          //join with employee
           $lookup: {
             from: 'employees', 
             localField: 'employee',
@@ -238,6 +294,17 @@ export const getLeaveRequestById = async (req, res) => {
           }
         },
         { $unwind: '$employee' },
+        //join with department
+        {
+          $lookup: {
+            from: 'departments',
+            localField: 'employee.department',
+            foreignField: '_id',
+            as: 'employee.department'
+          }
+        },
+        { $unwind: '$employee.department' },
+        //join with motif
         {
           $lookup: {
           from: 'droitconges', 
@@ -249,8 +316,9 @@ export const getLeaveRequestById = async (req, res) => {
         { $unwind: '$motif' },
         {
           $match: {
+            'employee._id': { $ne: conge.employee._id },
             'employee.organisation': organisation,
-            'employee.department': departmentId,
+            'employee.department._id': departmentId,
             status: "approuve",
             _id: { $ne: id_conge },
             date_debut: { $lte: new Date(conge.date_fin) },
@@ -261,7 +329,28 @@ export const getLeaveRequestById = async (req, res) => {
           $project: {
             createdAt: 0,
             updatedAt: 0,
-            __v: 0
+            __v: 0,
+            "employee.password": 0,
+            "employee.resetOtp": 0,
+            "employee.verifyOtp": 0,
+            "employee.verifyOtpExpireAt": 0,
+            "employee.resetOtpExpiredAt": 0,
+            "employee.isAccountVerified": 0,
+            "employee.createdAt": 0,
+            "employee.updatedAt": 0,
+            "employee.__v": 0,
+            "employee.deleted": 0,
+            "motif.createdAt": 0,
+            "motif.updatedAt": 0,
+            "motif.__v": 0,
+            "motif.deleted": 0,
+            "employee.department.description": 0,
+            "employee.department.organisation": 0,
+            "employee.department.createdAt": 0,
+            "employee.department.updatedAt": 0,
+            "employee.department.__v": 0,
+            "employee.department.deleted": 0
+
           }
         }
       ])
@@ -281,6 +370,7 @@ export const getAllLeaveRequestsByStatus = async (req, res) => {
   try {
     const conges = await Conge.aggregate([
         {
+          //join with employee
           $lookup: {
             from: 'employees', 
             localField: 'employee',
@@ -289,6 +379,17 @@ export const getAllLeaveRequestsByStatus = async (req, res) => {
           }
         },
         { $unwind: '$employee' },
+        //join with department
+        {
+          $lookup: {
+            from: 'departments',
+            localField: 'employee.department',
+            foreignField: '_id',
+            as: 'employee.department'
+          }
+        },
+        { $unwind: '$employee.department' },
+        //join with motif
         {
           $lookup: {
           from: 'droitconges', 
@@ -308,7 +409,21 @@ export const getAllLeaveRequestsByStatus = async (req, res) => {
           $project: {
             createdAt: 0,
             updatedAt: 0,
-            __v: 0
+            __v: 0,
+            "employee.password": 0,
+            "employee.resetOtp": 0,
+            "employee.verifyOtp": 0,
+            "employee.verifyOtpExpireAt": 0,
+            "employee.resetOtpExpiredAt": 0,
+            "employee.isAccountVerified": 0,
+            "employee.createdAt": 0,
+            "employee.updatedAt": 0,
+            "employee.__v": 0,
+            "employee.deleted": 0,
+            "motif.createdAt": 0,
+            "motif.updatedAt": 0,
+            "motif.__v": 0,
+            "motif.deleted": 0
           }
         }
       ]) 
@@ -328,6 +443,7 @@ export const getAllLeaveRequestsByEmployee = async (req, res) => {
   }
   try {
     const conges = await Conge.aggregate([
+        //join with employee
         {
           $lookup: {
             from: 'employees', 
@@ -337,6 +453,17 @@ export const getAllLeaveRequestsByEmployee = async (req, res) => {
           }
         },
         { $unwind: '$employee' },
+        //join with department
+        {
+          $lookup: {
+            from: 'departments',
+            localField: 'employee.department',
+            foreignField: '_id',
+            as: 'employee.department'
+          }
+        },
+        { $unwind: '$employee.department' },
+        //join with motif
         {
           $lookup: {
           from: 'droitconges', 
@@ -356,7 +483,21 @@ export const getAllLeaveRequestsByEmployee = async (req, res) => {
           $project: {
             createdAt: 0,
             updatedAt: 0,
-            __v: 0
+            __v: 0,
+            "employee.password": 0,
+            "employee.resetOtp": 0,
+            "employee.verifyOtp": 0,
+            "employee.verifyOtpExpireAt": 0,
+            "employee.resetOtpExpiredAt": 0,
+            "employee.isAccountVerified": 0,
+            "employee.createdAt": 0,
+            "employee.updatedAt": 0,
+            "employee.__v": 0,
+            "employee.deleted": 0,
+            "motif.createdAt": 0,
+            "motif.updatedAt": 0,
+            "motif.__v": 0,
+            "motif.deleted": 0
           }
         }
       ]) 
@@ -376,6 +517,7 @@ export const getAllLeaveRequestsByDepartment = async (req, res) => {
   }
   try {
     const conges = await Conge.aggregate([
+        //join with employee
         {
           $lookup: {
             from: 'employees',
@@ -385,6 +527,17 @@ export const getAllLeaveRequestsByDepartment = async (req, res) => {
           }
         },
         { $unwind: '$employee' },
+        //join with department
+        {
+          $lookup: {
+            from: 'departments',
+            localField: 'employee.department',
+            foreignField: '_id',
+            as: 'employee.department'
+          }
+        },
+        { $unwind: '$employee.department' },
+        //join with motif
         {
           $lookup: {
           from: 'droitconges', 
@@ -397,14 +550,28 @@ export const getAllLeaveRequestsByDepartment = async (req, res) => {
         {
           $match: {
             'employee.organisation': organisationId,
-            'employee.department': new mongoose.Types.ObjectId(departmentId)
+            'employee.department._id': new mongoose.Types.ObjectId(departmentId)
           }
         },
         {
           $project: {
             createdAt: 0,
             updatedAt: 0,
-            __v: 0
+            __v: 0,
+            "employee.password": 0,
+            "employee.resetOtp": 0,
+            "employee.verifyOtp": 0,
+            "employee.verifyOtpExpireAt": 0,
+            "employee.resetOtpExpiredAt": 0,
+            "employee.isAccountVerified": 0,
+            "employee.createdAt": 0,
+            "employee.updatedAt": 0,
+            "employee.__v": 0,
+            "employee.deleted": 0,
+            "motif.createdAt": 0,
+            "motif.updatedAt": 0,
+            "motif.__v": 0,
+            "motif.deleted": 0
           }
         }
       ])
@@ -424,6 +591,7 @@ export const getAllLeaveRequestsByDepartmentAndStatus = async (req, res) => {
   }
   try {
     const conges = await Conge.aggregate([
+      //join with employee
         {
           $lookup: {
             from: 'employees',
@@ -433,6 +601,17 @@ export const getAllLeaveRequestsByDepartmentAndStatus = async (req, res) => {
           }
         },
         { $unwind: '$employee' },
+        //join with department
+        {
+          $lookup: {
+            from: 'departments',
+            localField: 'employee.department',
+            foreignField: '_id',
+            as: 'employee.department'
+          }
+        },
+        { $unwind: '$employee.department' },
+        //join with motif
         {
           $lookup: {
           from: 'droitconges', 
@@ -445,7 +624,7 @@ export const getAllLeaveRequestsByDepartmentAndStatus = async (req, res) => {
         {
           $match: {
             'employee.organisation': organisationId,
-            'employee.department': new mongoose.Types.ObjectId(departmentId),
+            'employee.department._id': new mongoose.Types.ObjectId(departmentId),
             status: status
           }
         },
@@ -453,7 +632,21 @@ export const getAllLeaveRequestsByDepartmentAndStatus = async (req, res) => {
           $project: {
             createdAt: 0,
             updatedAt: 0,
-            __v: 0
+            __v: 0,
+            "employee.password": 0,
+            "employee.resetOtp": 0,
+            "employee.verifyOtp": 0,
+            "employee.verifyOtpExpireAt": 0,
+            "employee.resetOtpExpiredAt": 0,
+            "employee.isAccountVerified": 0,
+            "employee.createdAt": 0,
+            "employee.updatedAt": 0,
+            "employee.__v": 0,
+            "employee.deleted": 0,
+            "motif.createdAt": 0,
+            "motif.updatedAt": 0,
+            "motif.__v": 0,
+            "motif.deleted": 0
           }
         }
       ])
@@ -516,7 +709,7 @@ export const rejectLeaveRequest = async (req, res) => {
   const { id } = req.params;
   const employeeId = req.user.id;
   if (!employeeId) {
-    res.status(400).json({ success: false, message: 'utilisateur non trouvé.' });
+    return res.status(400).json({ success: false, message: 'utilisateur non trouvé.' });
   }
   try {
     const conge = await Conge.findOneAndUpdate(
@@ -532,14 +725,18 @@ export const rejectLeaveRequest = async (req, res) => {
       if (!employee) {
         return res.status(404).json({ success: false, message: 'Employé non trouvé.' });
     }
-    /*const mailOptions = {
+
+    //envoyer mail avec nodemailer
+    const mailOptions = {
       from: process.env.SENDER_EMAIL,
       to: employee.verificationEmail,
-      subject: 'Demande de congé approuvée',
-      text: `Bonjour ${employee.nom} ${employee.prenom}, votre demande de congé ${conge.motif.type} a été approuvée.`,
+      subject: 'Demande de congé refusée',
+      text: `Bonjour ${employee.nom} ${employee.prenom}, votre demande de congé ${conge.motif.type} a été refusée.`,
     };
-    await transporter.sendMail(mailOptions);*/
-    res.status(200).json({ success: true, message: 'Demande de congé refusée avec succès.', conge });
+    await transporter.sendMail(mailOptions);
+    console.log("mail envoyé dans rejectLeaveRequest");
+    //=>envoyer la reponse
+    return res.status(200).json({ success: true, message: 'Demande de congé refusée avec succès.', conge });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
