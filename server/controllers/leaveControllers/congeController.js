@@ -111,8 +111,12 @@ export const getMyLeaveRequestsByStatus = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
+
 //RH------------------------------------------------------RH :
-// getAllLeaveRequests() of an organisation
+
+
+// getAllLeaveRequests() of an organisation "leave requests en attente"
 export const getAllLeaveRequests = async (req, res) => {
   const organisationId =  new mongoose.Types.ObjectId(req.user.organisation);
   if(!organisationId){
@@ -131,7 +135,9 @@ export const getAllLeaveRequests = async (req, res) => {
         { $unwind: '$employee' },
         {
           $match: {
-            'employee.organisation': organisationId
+            'employee.organisation': organisationId,
+            status: "en attente"
+
           }
         },
         {
@@ -148,6 +154,43 @@ export const getAllLeaveRequests = async (req, res) => {
   }
 };
 
+// getAllLeaveRequests() of an organisation "leave requests satatus not  en attente"
+export const getLeaveRequests = async (req, res) => {
+  const organisationId =  new mongoose.Types.ObjectId(req.user.organisation);
+  if(!organisationId){
+    return res.status(400).json({ success: false, message: 'organisation non trouvée.' });
+  }
+  try {
+    const conges = await Conge.aggregate([
+        {
+          $lookup: {
+            from: 'employees', 
+            localField: 'employee',
+            foreignField: '_id',
+            as: 'employee'
+          }
+        },
+        { $unwind: '$employee' },
+        {
+          $match: {
+            'employee.organisation': organisationId,
+            status: { $ne: "en attente" }
+
+          }
+        },
+        {
+          $project: {
+            createdAt: 0,
+            updatedAt: 0,
+            __v: 0
+          }
+        }
+      ]) 
+    res.status(200).json({ success: true, conges , count : conges.length});
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
 
 // getLeaveRequestById(id conge)
 export const getLeaveRequestById = async (req, res) => {

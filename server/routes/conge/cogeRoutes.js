@@ -1,6 +1,6 @@
 import express from 'express';
 import upload from '../../middleware/upload.js';
-import { approveLeaveRequest, cancelLeaveRequest, createLeaveRequest , getAllLeaveRequests, getAllLeaveRequestsByDepartment, getAllLeaveRequestsByDepartmentAndStatus, getAllLeaveRequestsByEmployee, getAllLeaveRequestsByStatus, getLeaveRequestById, getMyLeaveRequests, getMyLeaveRequestsByStatus, getMyLeaveRequestsDeleted, rejectLeaveRequest} from '../../controllers/leaveControllers/congeController.js';
+import { approveLeaveRequest, cancelLeaveRequest, createLeaveRequest , getAllLeaveRequests, getAllLeaveRequestsByDepartment, getAllLeaveRequestsByDepartmentAndStatus, getAllLeaveRequestsByEmployee, getAllLeaveRequestsByStatus, getLeaveRequestById, getLeaveRequests, getMyLeaveRequests, getMyLeaveRequestsByStatus, getMyLeaveRequestsDeleted, rejectLeaveRequest} from '../../controllers/leaveControllers/congeController.js';
 import authMiddleware from '../../middleware/auth.js';
 import isRhMiddleware from '../../middleware/isRh.js';
 
@@ -18,7 +18,8 @@ congeRouter.delete('/cancelLeaveRequest/:id',authMiddleware,cancelLeaveRequest);
 
 
 //routes for RH
-congeRouter.get('/getAllLeaveRequests',authMiddleware,isRhMiddleware,getAllLeaveRequests);
+congeRouter.get('/getAllLeaveRequests',authMiddleware,isRhMiddleware,getAllLeaveRequests);//leave requests en attente
+congeRouter.get('/getLeaveRequests',authMiddleware,isRhMiddleware,getLeaveRequests);//leave requests status not en attente
 congeRouter.get('/getAllLeaveRequestsByStatus/:status',authMiddleware,isRhMiddleware,getAllLeaveRequestsByStatus);
 congeRouter.get('/getLeaveRequestById/:id',authMiddleware,isRhMiddleware,getLeaveRequestById);
 congeRouter.get('/getAllLeaveRequestsByEmployee/:employeeId',authMiddleware,isRhMiddleware,getAllLeaveRequestsByEmployee);
