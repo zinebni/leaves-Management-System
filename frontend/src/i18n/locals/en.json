@@ -64,6 +64,7 @@
   "male": "Male",
   "female": "Female",
   "select_family_situation": "Select family situation",
+  "family_situation": "Family situation",
   "single": "Single",
   "married": "Married",
   "divorced": "Divorced",
@@ -135,5 +136,11 @@
   "request": "Requests",
   "handle_request": "Handle Requests",
   "request_pending_title": "Pending Leave Requests",
-  "no_pending_message": "No pending leave requests"
+  "no_pending_message": "No pending leave requests",
+  "leave_type_label": "Requested type",
+  "view_request_button": "View request",
+  "no_matching_requests": "No matching leave requests found",
+  "fullname_label": "Full name",
+  "dept": "Department",
+  "profile_title": "Employee Profile"
 }

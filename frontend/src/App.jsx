@@ -26,6 +26,7 @@ import EmpLayout from './Components/Emp/EmpLayout';
 import DashbordEmp from './Components/Emp/DashbordEmp';
 import RequestLeave from './Components/Leaves/RequestLeave';
 import HandleRequests from './Components/HR/HandleRequests';
+import ReqDetails from './Components/HR/ReqDetails';
 
 function App() {
 
@@ -64,6 +65,7 @@ function App() {
           <Route path='Employees' element={<DisplayEmp  />}/>
           <Route path='Employees/Edit/:id' element={<EditEmp />} />
           <Route path='Requests' element={<HandleRequests />} />
+          <Route path="Requests/Details/:id" element={<ReqDetails />} />
         </Route>
         {/* Employee Layout with sidebar/nav */}
         <Route path='/Employee/:orgID/:employeeId' element={<EmpLayout />}>
