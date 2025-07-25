@@ -4,11 +4,24 @@ import transporter from '../../config/nodemailer.js';
 import Conge from "../../models/congeModel.js";
 import DroitConge from "../../models/droitCongeModel.js";
 import Employee from '../../models/employeeModel.js';
+import Notification from "../../models/notificationModel.js";
 //Employé---------------------------------------------------------Employé :
 
 /*createLeaveRequest() */
 export const createLeaveRequest = async (req, res) => {
   const  employeeId  = req.user.id;
+  
+  const existingPending = await Conge.findOne({
+    employee: employeeId,
+    status: "en attente",
+  });
+
+  if (existingPending) {
+    return res.status(400).json({
+      success: false,
+      message: "Vous avez déjà une demande en attente.",
+    });
+  }
   const { date_debut, date_fin, motif, commentaire} = req.body;
   const justificatifs = req.files ? req.files.map(f => f.filename) : [];  //passer par multer
 
@@ -42,6 +55,36 @@ export const createLeaveRequest = async (req, res) => {
     });
 
     await conge.save();
+
+    await conge.populate({path: 'motif', select: 'type'});
+
+    //envoyer la notification 
+    const notification = new Notification({
+      recipient: conge.employee,
+      conge: conge._id,
+      message: `Votre demande de congé ${conge.motif.type} a été enregistrée.`
+    });
+    await notification.save();
+    console.log("notification envoyée dans createLeaveRequest");
+
+    //envoyer mail avec nodemailer
+    const employee = await Employee.findById(conge.employee);
+    const mailOptions = {
+      from: process.env.SENDER_EMAIL,
+      to: employee.verificationEmail,
+      subject: 'Demande de congé enregistrée',
+      template: 'leave_requested', // nom du fichier sans .hbs
+      context: {
+        nom: employee.nom,
+        prenom: employee.prenom,
+        type: conge.motif.type,
+        nombreDeJours: conge.nombreDeJours,
+        date_debut: dayjs(conge.date_debut).format('DD/MM/YYYY'),
+        date_fin: dayjs(conge.date_fin).format('DD/MM/YYYY'),
+      },
+    };
+    transporter.sendMail(mailOptions);
+
 
     res.status(201).json({ success: true, message: 'Congé enregistré avec succès.', conge });
   } catch (error) {
@@ -117,7 +160,7 @@ export const getMyLeaveRequestsByStatus = async (req, res) => {
 
 //RH------------------------------------------------------RH :
 
-// getAllLeaveRequests() of an organisation "leave requests en attente"
+/*getAllLeaveRequests() of an organisation "leave requests en attente"*/
 export const getAllLeaveRequests = async (req, res) => {
   const organisationId =  new mongoose.Types.ObjectId(req.user.organisation);
   if(!organisationId){
@@ -192,7 +235,7 @@ export const getAllLeaveRequests = async (req, res) => {
   }
 };
 
-// getLeaveRequests() of an organisation "leave requests satatus not  en attente"
+/*getLeaveRequests() of an organisation "leave requests satatus not  en attente"*/
 export const getLeaveRequests = async (req, res) => {
   const organisationId =  new mongoose.Types.ObjectId(req.user.organisation);
   if(!organisationId){
@@ -265,7 +308,7 @@ export const getLeaveRequests = async (req, res) => {
   }
 };
 
-// getLeaveRequestById(id conge)
+/*getLeaveRequestById(id conge)*/
 export const getLeaveRequestById = async (req, res) => {
   const { id } = req.params;
   try {
@@ -360,7 +403,7 @@ export const getLeaveRequestById = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
-//get all leave requests by status
+/*get all leave requests by status*/
 export const getAllLeaveRequestsByStatus = async (req, res) => {
   const { status } = req.params;
   const organisationId =  new mongoose.Types.ObjectId(req.user.organisation);
@@ -434,7 +477,7 @@ export const getAllLeaveRequestsByStatus = async (req, res) => {
   
 };
 
-//get all leave requests by employee
+/*get all leave requests by employee*/
 export const getAllLeaveRequestsByEmployee = async (req, res) => {
   const { employeeId } = req.params;
   const organisationId =  new mongoose.Types.ObjectId(req.user.organisation);
@@ -508,7 +551,7 @@ export const getAllLeaveRequestsByEmployee = async (req, res) => {
   
 };  
 
-//get all leave requests by department
+/*get all leave requests by department*/
 export const getAllLeaveRequestsByDepartment = async (req, res) => {
   const { departmentId } = req.params;
   const organisationId =  new mongoose.Types.ObjectId(req.user.organisation);
@@ -582,7 +625,7 @@ export const getAllLeaveRequestsByDepartment = async (req, res) => {
 
 };
 
-//get all leave requests by department and status
+/*get all leave requests by department and status*/
 export const getAllLeaveRequestsByDepartmentAndStatus = async (req, res) => {
   const { departmentId, status } = req.params;
   const organisationId =  new mongoose.Types.ObjectId(req.user.organisation);
@@ -656,7 +699,7 @@ export const getAllLeaveRequestsByDepartmentAndStatus = async (req, res) => {
   }
 
 };
-// approveLeaveRequest(id) 
+/*approveLeaveRequest(id) */
 export const approveLeaveRequest = async (req, res) => {
   const { id } = req.params;
   const employeeId = req.user.id;
@@ -684,6 +727,18 @@ export const approveLeaveRequest = async (req, res) => {
     conge.status = "approuve";
     conge.approuvePar = employeeId;
     await conge.save();
+    
+    await conge.populate({path: 'motif', select: 'type'});
+
+    //envoyer la notification
+    const notification = new Notification({
+      recipient: conge.employee,
+      conge: conge._id,
+      message: `Votre demande de congé ${conge.motif.type} a été approuvée.`
+    });
+    await notification.save();
+    console.log("notification envoyée dans approveLeaveRequest");
+
     //envoyer mail avec nodemailer
     const employee = await Employee.findById(conge.employee);
     
@@ -691,12 +746,18 @@ export const approveLeaveRequest = async (req, res) => {
       from: process.env.SENDER_EMAIL,
       to: employee.verificationEmail,
       subject: 'Demande de congé approuvée',
-      text: `Bonjour ${employee.nom} ${employee.prenom}, votre demande de congé ${conge.motif.type} a été approuvée.`,
+      template: 'approval', // nom du fichier sans .hbs
+      context: {
+        nom: employee.nom,
+        prenom: employee.prenom,
+        type: conge.motif.type,
+      },
     };
     await transporter.sendMail(mailOptions);
+    console.log("mail envoyé dans approveLeaveRequest"); 
+    
 
-    console.log("mail envoyé dans approveLeaveRequest");    
-
+    //=>envoyer la reponse
     return res.status(200).json({ success: true, message: 'Demande de congé approuvée avec succès.', conge });
 
   } catch (error) {
@@ -704,7 +765,7 @@ export const approveLeaveRequest = async (req, res) => {
   }
 };
 
-// rejectLeaveRequest(id) 
+/*rejectLeaveRequest(id) */
 export const rejectLeaveRequest = async (req, res) => {
   const { id } = req.params;
   const employeeId = req.user.id;
@@ -717,21 +778,34 @@ export const rejectLeaveRequest = async (req, res) => {
       { status: "refuse", refusePar: employeeId },
       { new: true }
     );
+    
     if (!conge) {
       return res.status(404).json({ success: false, message: 'Demande de congé non trouvée.' });
     }
-
+    await conge.populate({path: 'motif', select: 'type'});
     const employee = await Employee.findById(conge.employee);
       if (!employee) {
         return res.status(404).json({ success: false, message: 'Employé non trouvé.' });
     }
-
+    //envoyer la notification
+    const notification = new Notification({
+      recipient: conge.employee,
+      conge: conge._id,
+      message: `Votre demande de congé ${conge.motif.type} a été refusée.`
+    });
+    await notification.save();
+    console.log("notification envoyée dans rejectLeaveRequest");
     //envoyer mail avec nodemailer
     const mailOptions = {
       from: process.env.SENDER_EMAIL,
       to: employee.verificationEmail,
       subject: 'Demande de congé refusée',
-      text: `Bonjour ${employee.nom} ${employee.prenom}, votre demande de congé ${conge.motif.type} a été refusée.`,
+      template: 'rejection', // nom du fichier sans .hbs
+      context: {
+        nom: employee.nom,
+        prenom: employee.prenom,
+        type: conge.motif.type,
+      },
     };
     await transporter.sendMail(mailOptions);
     console.log("mail envoyé dans rejectLeaveRequest");

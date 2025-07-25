@@ -60,7 +60,14 @@ export const rhRegister = async(req,res)=>{
             from: process.env.SENDER_EMAIL,
             to: verificationEmail,
             subject: 'Bienvenue !',
-            text: `Bonjour, votre compte en tant que RH à été créé par l\'email: ${email} et le mot de passe: ${randomPassword}`,
+            template: 'account_created', // nom du fichier sans .hbs
+            context: {
+              nom,
+              prenom,
+              role: 'RH',
+              email,
+              password: randomPassword,
+            },
           };
         await transporter.sendMail(mailOptions);
         

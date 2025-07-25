@@ -60,7 +60,14 @@ export const empRegister = async (req, res) => {
             from: process.env.SENDER_EMAIL,
             to: verificationEmail,
             subject: 'Bienvenue !',
-            text: `Bonjour, votre compte en tant qu\'employé à été créé par ton RH avec l\'email: ${email} et le mot de passe: ${randomPassword}`,
+            template: 'account_created', // nom du fichier sans .hbs
+            context: {
+              nom,
+              prenom,
+              role: 'employé',
+              email,
+              password: randomPassword,
+            },
           };
         await transporter.sendMail(mailOptions);
 

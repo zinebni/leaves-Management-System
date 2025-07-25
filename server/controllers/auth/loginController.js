@@ -138,7 +138,10 @@ export const sendVerifyOtp = async (req, res) => {
             from: process.env.SENDER_EMAIL,
             to: employee.verificationEmail,
             subject: 'Verification de compte',
-            text: `Verifiez votre compte en utilisant ce code: ${otp}`,
+            template: 'twoFactorCode', // nom du fichier sans .hbs
+            context: {
+              otp,
+            },
           };
         
         await transporter.sendMail(mailOptions);
@@ -259,7 +262,10 @@ export const sendResetOtp = async (req, res) => {
             from: process.env.SENDER_EMAIL,
             to: employee.verificationEmail,
             subject: 'Reset password',
-            text: `utiliser ce code de verification pour changer votre mot de passe: ${otp}`,
+            template: 'password_reset_code', // nom du fichier sans .hbs
+            context: {
+              otp,
+            },
           };
         
         await transporter.sendMail(mailOptions);
