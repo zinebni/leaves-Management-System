@@ -110,7 +110,7 @@ export default function RequestLeave() {
         ...(comment && {commentaire : comment}),
         ...(selectedFile && {justificatif: selectedFile})
       }
-
+      console.log(request);
 
       try{
         const res = await axios.post('http://localhost:4000/api/conge/createLeaveRequest', request, {

@@ -20,7 +20,7 @@ export default function EmpLayout() {
     <div className='w-full overflow-x-hidden'>
       <NavBar name={orgID} open={open} setOpen={setOpen} />
       <div className='flex flex-col min-h-screen sm:flex-row'>
-        <SideBar name={orgID} open={open} setOpen={setOpen} links={sidebarLinks} role='Employee' />
+        <SideBar name={orgID} open={open} setOpen={setOpen} links={sidebarLinks} role='Employee' gap={72} />
         <div className='flex-grow dark:bg-blue-950/83'>
           <Outlet />
         </div>

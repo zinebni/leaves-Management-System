@@ -120,10 +120,10 @@ export default function EditHR() {
   }, [employee])
 
   return (
-    <div className={`flex justify-center items-center mt-5 sm:mt-10`}>
-        <div className='bg-lightBlue/60 dark:bg-blue-950/50 shadow-xl ring-1 ring-white/10  border-2 border-zinc-400 w-fit flex flex-col items-center justify-center px-5 sm:px-10 py-10 sm:py-13 rounded-2xl dark:border-none'>
+    <div className={`flex justify-center items-center mt-5 sm:mt-5 mb-5`}>
+      <div className='bg-mediumBlue/60 dark:bg-blue-950/50 shadow-xl ring-1 ring-white/10  border-2 border-mediumBlue/50 w-fit flex flex-col items-center justify-center px-8 sm:px-10 py-5 sm:py-8 rounded-xl dark:border-none'>
         <div className='flex justify-start items-center w-full pl-5'>
-          <p className="text-xl mb-5 font-semibold text-gray-700 dark:text-gray-200">
+          <p className="text-xl mb-5 font-bold text-gray-800 dark:text-gray-300">
             {employee.prenom} {employee.nom}
           </p>
         </div>
@@ -145,7 +145,7 @@ export default function EditHR() {
                   placeholder={t("emailPlaceholder")}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="pl-10 pr-4 py-3 rounded-2xl bg-zinc-200 border-gray-700 w-full"
+                  className="pl-10 pr-4 py-3 rounded-xl sm:rounded-xl border-2 focus:border-mediumBlue outline-none bg-zinc-200 border-gray-600 w-full"
                 />
               </>
             </div>
@@ -161,9 +161,9 @@ export default function EditHR() {
               <select
                 value={familySitu}
                 onChange={(e) => setFamilySitu(e.target.value)}
-                className="pl-10 pr-4 py-3 rounded-2xl bg-zinc-200 border-gray-700 w-full text-gray-700"
+                className="pl-10 pr-4 py-3 rounded-xl sm:rounded-xl border-2 focus:border-mediumBlue outline-none bg-zinc-200 border-gray-600 w-full"
               >
-                <option value="">{t('select_family_situation')}</option>
+                <option value="" disabled>{t('select_family_situation')}</option>
                 <option value="célibataire">{t('single')}</option>
                 <option value="marié(e)">{t('married')}</option>
                 <option value="divorcé(e)">{t('divorced')}</option>
@@ -179,7 +179,7 @@ export default function EditHR() {
                 placeholder={t('contact_placeholder')}
                 value={contact}
                 onChange={(e) => setContact(e.target.value)}
-                className="pl-10 pr-4 py-3 rounded-2xl bg-zinc-200 border-gray-700 w-full"
+                className="pl-10 pr-4 py-3 rounded-xl sm:rounded-xl border-2 focus:border-mediumBlue outline-none bg-zinc-200 border-gray-600 w-full"
               />
             </div>
             <p className='pl-5 text-red-700'>
@@ -196,7 +196,7 @@ export default function EditHR() {
                 placeholder={t('child_number_placeholder')}
                 value={childNumber || ''}
                 onChange={(e) => setChildNumber(Number(e.target.value))}
-                className="pl-10 pr-4 py-3 rounded-2xl bg-zinc-200 border-gray-700 w-full"
+                className="pl-10 pr-4 py-3 rounded-xl sm:rounded-xl border-2 focus:border-mediumBlue outline-none bg-zinc-200 border-gray-600 w-full"
               />
             </div>
             <p className='pl-5 text-red-700'>
@@ -208,12 +208,12 @@ export default function EditHR() {
           {message}
         </p>
         <div className='grid grid-cols-1 sm:grid-cols-2 gap-5 w-full mt-8'>
-          <button className='text-base sm:text-lg font-semibold bg-gray-600 hover:bg-gray-700 dark:bg-gray-500 dark:hover:bg-gray-400 py-2 text-white rounded-lg sm:rounded-xl mb-2 cursor-pointer'
+          <button className='text-base sm:text-[17px] font-semibold bg-gray-700 hover:bg-gray-800 dark:bg-gray-400 dark:text-gray-900 dark:hover:bg-gray-300 py-2 text-white rounded-lg sm:rounded-lg mb-2 cursor-pointer'
             onClick={() => window.location.href = `/Organisation/${orgID}/HRs`}
           >
             {t('cancel')}
           </button>
-          <button className='text-base sm:text-lg font-semibold bg-mediumBlue dark:bg-darkBlue dark:hover:bg-blue-900  py-2 text-white rounded-lg sm:rounded-xl mb-2 cursor-pointer hover:bg-darkBlue'
+          <button className='text-base sm:text-[17px] font-semibold bg-blue-700 dark:bg-blue-800 dark:hover:bg-blue-700  py-2 text-white rounded-lg sm:rounded-lg mb-2 cursor-pointer hover:bg-blue-600'
             onClick={edit}
           >
             {t('edit')}

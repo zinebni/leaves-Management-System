@@ -126,9 +126,9 @@ export default function AddHR() {
   }
 
   return (
-    <div className={`flex justify-center items-center mt-5 sm:mt-10 mb-5`}>
-        <div className='bg-lightBlue/60 dark:bg-blue-950/50 shadow-xl ring-1 ring-white/10  border-2 border-zinc-400 w-fit flex flex-col items-center justify-center px-8 sm:px-10 py-6 sm:py-10 rounded-2xl dark:border-none'>
-        <h2 className='mb-8 font-semibold text-lg sm:text-xl dark:text-gray-200'>
+   <div className={`flex justify-center items-center mt-5 sm:mt-5 mb-5`}>
+        <div className='bg-mediumBlue/60 dark:bg-blue-950/50 shadow-xl ring-1 ring-white/10  border-2 border-mediumBlue/50 w-fit flex flex-col items-center justify-center px-8 sm:px-10 py-5 sm:py-8 rounded-xl dark:border-none'>
+        <h2 className='mb-8 font-bold text-lg sm:text-xl text-gray-900/95 dark:text-gray-200'>
           {t('add_rh_title')}
         </h2>
         <div className='grid grid-cols-1 sm:grid-cols-2 gap-5'>
@@ -149,11 +149,11 @@ export default function AddHR() {
                   placeholder={t('last_name_placeholder')}
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
-                  className="pl-10 pr-4 py-3 rounded-xl sm:rounded-2xl bg-zinc-200 border-gray-700 w-full"
+                  className="pl-10 pr-4 py-3 rounded-xl sm:rounded-xl border-2 focus:border-mediumBlue outline-none bg-zinc-200 border-gray-600 w-full"
                 />
               </>
             </div>
-            <p className='pl-5 text-red-700'>
+            <p className='pl-5 text-red-700 dark:text-red-500'>
               {error.lastName}
             </p>
           </div>
@@ -166,10 +166,10 @@ export default function AddHR() {
                 placeholder={t('first_name_placeholder')}
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
-                className="pl-10 pr-4 py-3 rounded-xl sm:rounded-2xl bg-zinc-200 border-gray-700 w-full"
+                className="pl-10 pr-4 py-3 rounded-xl sm:rounded-xl border-2 focus:border-mediumBlue outline-none bg-zinc-200 border-gray-600 w-full"
               />
             </div>
-            <p className='pl-5 text-red-700'>
+            <p className='pl-5 text-red-700 dark:text-red-500'>
               {error.firstName}
             </p>
           </div>
@@ -190,18 +190,17 @@ export default function AddHR() {
                   placeholder={t("emailPlaceholder")}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="pl-10 pr-4 py-3 rounded-2xl bg-zinc-200 border-gray-700 w-full"
+                  className="pl-10 pr-4 py-3 rounded-xl sm:rounded-xl border-2 focus:border-mediumBlue outline-none bg-zinc-200 border-gray-600 w-full"
                 />
               </>
             </div>
-            <p className='pl-5 text-red-700'>
+            <p className='pl-5 text-red-700 dark:text-red-500'>
               {error.email}
             </p>
           </div>
           <div className="text-sm sm:text-[17px] w-3xs sm:w-xs pl-5">
-            <label className="block mb-3 font-medium text-gray-800 dark:text-gray-200">{t('gender')}</label>
-            
-            <div className="flex gap-6">
+            <div className="flex items-center h-8/12 gap-6">
+              <label className="block font-medium text-gray-800 dark:text-gray-200">{t('gender')}</label>
               <label className="inline-flex items-center">
                 <input
                   type="radio"
@@ -226,7 +225,7 @@ export default function AddHR() {
                 <span className="ml-2 text-gray-800 dark:text-gray-200">{t('female')}</span>
               </label>
             </div>
-            <p className='pl-1 text-red-700'>
+            <p className='pl-1 text-red-700 dark:text-red-500'>
               {error.sexe}
             </p>
           </div>
@@ -238,9 +237,9 @@ export default function AddHR() {
               <select
                 value={familySitu}
                 onChange={(e) => setFamilySitu(e.target.value)}
-                className="pl-10 pr-4 py-3 rounded-2xl bg-zinc-200 border-gray-700 w-full text-gray-700"
+                className="pl-10 pr-4 py-3 rounded-xl sm:rounded-xl border-2 focus:border-mediumBlue outline-none bg-zinc-200 border-gray-600 w-full"
               >
-                <option value="">{t('select_family_situation')}</option>
+                <option value="" disabled>{t('select_family_situation')}</option>
                 <option value="célibataire">{t('single')}</option>
                 <option value="marié(e)">{t('married')}</option>
                 <option value="divorcé(e)">{t('divorced')}</option>
@@ -256,7 +255,7 @@ export default function AddHR() {
                 placeholder={t('contact_placeholder')}
                 value={contact}
                 onChange={(e) => setContact(e.target.value)}
-                className="pl-10 pr-4 py-3 rounded-2xl bg-zinc-200 border-gray-700 w-full"
+                className="pl-10 pr-4 py-3 rounded-xl sm:rounded-xl border-2 focus:border-mediumBlue outline-none bg-zinc-200 border-gray-600 w-full"
               />
             </div>
             <p className='pl-5 text-red-700'>
@@ -273,7 +272,7 @@ export default function AddHR() {
                 placeholder={t('child_number_placeholder')}
                 value={childNumber}
                 onChange={(e) => setChildNumber(Number(e.target.value))}
-                className="pl-10 pr-4 py-3 rounded-2xl bg-zinc-200 border-gray-700 w-full"
+                className="pl-10 pr-4 py-3 rounded-xl sm:rounded-xl border-2 focus:border-mediumBlue outline-none bg-zinc-200 border-gray-600 w-full"
               />
             </div>
             <p className='pl-5 text-red-700'>
@@ -289,16 +288,16 @@ export default function AddHR() {
                 type="date"
                 value={new Date(recruitmentDate).toISOString().split('T')[0]}
                 onChange={(e) => setRecruitmentDate(new Date(e.target.value))}
-                className="pl-10 pr-4 py-3 rounded-2xl bg-zinc-200 border-gray-700 w-full"
+                className="pl-10 pr-4 py-3 rounded-xl sm:rounded-xl border-2 focus:border-mediumBlue outline-none bg-zinc-200 border-gray-600 w-full"
               />
             </div>
           </div>
         </div>
-        <p className={`mb-3 text-base font-semibold ${statusMessage ? 'text-darkBlue' : 'text-red-600'}`}>
+        <p className={`mt-3 text-base font-semibold ${statusMessage ? 'text-darkBlue' : 'text-red-600 dark:text-red-500'}`}>
           {message}
         </p>
-        <div className='flex justify-end w-full mt-8'>
-          <button className='text-base sm:text-lg font-semibold bg-mediumBlue dark:bg-darkBlue dark:hover:bg-blue-900 w-3xs sm:w-xs py-2 text-white rounded-lg sm:rounded-xl mb-2 cursor-pointer hover:bg-darkBlue'
+        <div className='flex justify-end w-full mt-5'>
+          <button className='text-base sm:text-[17px] font-semibold bg-blue-700 dark:bg-blue-900/90 dark:hover:bg-blue-800/80 w-3xs sm:w-xs py-2 text-white rounded-md sm:rounded-lg mb-2 cursor-pointer hover:bg-blue-600'
             onClick={add}
           >
             {t('add_rh')}

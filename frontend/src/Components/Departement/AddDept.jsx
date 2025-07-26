@@ -70,9 +70,9 @@ export default function AddDept() {
   };
 
   return (
-    <div className={`flex justify-center items-center mt-20 sm:mt-25`}>
-        <div className='bg-lightBlue/60 dark:bg-blue-950/50 shadow-xl ring-1 ring-white/10  border-2 border-zinc-400 w-fit flex flex-col items-center justify-center px-5 sm:px-10 py-8 sm:py-10 rounded-2xl dark:border-none'>
-        <h2 className='mb-8 font-semibold text-lg sm:text-xl dark:text-gray-200'>
+     <div className={`flex justify-center items-center mt-15 sm:mt-10 mb-5`}>
+        <div className='bg-mediumBlue/60 dark:bg-blue-950/50 shadow-xl ring-1 ring-white/10  border-2 border-mediumBlue/50 w-fit flex flex-col items-center justify-center px-8 sm:px-10 py-5 sm:py-8 rounded-xl dark:border-none'>
+        <h2 className='mb-8 font-bold text-lg sm:text-xl text-gray-900/95 dark:text-gray-200'>
           {t('add_department_title')}
         </h2>
         {/* ... Rest of your JSX ... */}
@@ -86,7 +86,7 @@ export default function AddDept() {
                 placeholder={t('department_name_placeholder')}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="pl-10 pr-4 py-3 rounded-xl sm:rounded-2xl bg-zinc-200 border-gray-700 w-full"
+                className="pl-10 pr-4 py-3 rounded-xl sm:rounded-xl border-2 focus:border-mediumBlue outline-none bg-zinc-200 border-gray-600 w-full"
               />
             </>
           </div>
@@ -101,14 +101,14 @@ export default function AddDept() {
               placeholder={t('department_desc_placeholder')}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="pl-10 pr-4 py-3 rounded-xl sm:rounded-2xl bg-zinc-200 border-gray-700 w-full"
+              className="pl-10 pr-4 py-3 rounded-xl sm:rounded-xl border-2 focus:border-mediumBlue outline-none bg-zinc-200 border-gray-600 w-full"
             />
           </div>
         </div>
-        <p className={`mb-5 text-base font-semibold ${statusMessage ? 'text-darkBlue' : 'text-red-600'}`}>
+        <p className={`mb-5 text-base font-semibold ${statusMessage ? 'text-darkBlue' : 'text-red-600 dark:text-red-500'}`}>
           {message}
         </p>
-        <button className='text-base sm:text-lg font-semibold bg-mediumBlue dark:bg-darkBlue dark:hover:bg-blue-900 w-3xs sm:w-xs py-2 text-white rounded-lg sm:rounded-xl mb-2 cursor-pointer hover:bg-darkBlue'
+        <button className='text-base sm:text-[17px] font-semibold bg-blue-700 dark:bg-blue-900/90 dark:hover:bg-blue-800/80 w-3xs sm:w-xs py-2 text-white rounded-md sm:rounded-lg mb-2 cursor-pointer hover:bg-blue-600'
           onClick={add}
         >
           {t('add_department')}

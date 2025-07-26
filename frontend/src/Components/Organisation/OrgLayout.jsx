@@ -9,28 +9,18 @@ export default function OrgLayout() {
   const { orgID } = useParams();
   const [open, setOpen] = useState(false);
   const sidebarLinks = [
-    {
-      section: 'department',
-      items: [
-        { to: 'Departement/Add', icon: <Plus size={18} />, label: 'add_department' },
-        { to: 'Departements', icon: <Eye size={18} />, label: 'view_departments' },
-      ],
-    },
-    {
-      section: 'rh',
-      items: [
-        { to: 'HR/Add', icon: <Plus size={18} />, label: 'add_rh' },
-        { to: 'HRs', icon: <Users size={18} />, label: 'view_rh'},
-      ],
-    },
+    { to: 'Departement/Add', icon: Plus, label: 'add_department' },
+    { to: 'Departements', icon: Eye, label: 'view_departments' },
+    { to: 'HR/Add', icon: Plus, label: 'add_rh' },
+    { to: 'HRs', icon: Users, label: 'view_rh'},
   ];
 
   return (
-    <div className='w-full overflow-x-hidden'>
+    <div className='w-full flex flex-col min-h-screen overflow-x-hidden bg-gray-50 dark:bg-blue-950/89'>
       <NavBar name={orgID} open={open} setOpen={setOpen} />
       <div className='flex flex-col min-h-screen sm:flex-row'>
-        <SideBar name={orgID} open={open} setOpen={setOpen} links={sidebarLinks} role='Admin' />
-        <div className='flex-grow bg-gradient-to-br from-gray-300 to-white dark:bg-blue-950/60 dark:from-blue-950/60 dark:to-blue-950/60'>
+        <SideBar name={orgID} open={open} setOpen={setOpen} links={sidebarLinks}  gap={64} />
+        <div className='flex-grow'>
           <Outlet />
         </div>
       </div>

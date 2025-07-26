@@ -8,11 +8,13 @@ export default function DisplayDept({open}) {
   const { t } = useTranslation();
   const [editable, setEditable] = useState(-1);
   const [newDept, setNewDept] = useState({});
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(true);
+  let delay = 0;
 
   useEffect(() => {
     fetchDepartments();
   }, []);
+
 
   const fetchDepartments = async () => {
     try {
@@ -79,7 +81,7 @@ export default function DisplayDept({open}) {
 
   return (
     <div className="min-h-screen p-6 flex flex-col items-center">
-      <h2 className="text-xl sm:text-2xl font-bold text-mediumBlue dark:text-politeBlue mb-10 mt-5">
+      <h2 className="text-xl sm:text-2xl font-bold text-mediumBlue dark:text-politeBlue mb-10 mt-5" data-aos="fade-right">
         {t("department_list")}
       </h2>
 
@@ -90,45 +92,48 @@ export default function DisplayDept({open}) {
       ) : (
         <div className="w-full max-w-6xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {departments.map((dept, index) => {
+            delay += 200;
             if (index === editable) {
                return (
-      <div
-        key={dept._id}
-        className="relative bg-white dark:bg-blue-950/50 rounded-2xl shadow-md p-5 hover:shadow-lg transition-shadow grid grid-cols-1 gap-3"
-      >
-        <input
-          type="text"
-          defaultValue={dept.nom}
-          onChange={(e) => setNewDept(prev => ({...prev, nom:e.target.value}))}
-          className="text-lg p-2 rounded border dark:bg-politeBlue/10 dark:text-white"
-        />
-        <textarea
-          defaultValue={dept.description}
-          onChange={(e) => setNewDept(prev => ({...prev, description:e.target.value}))}
-          className="text-sm p-2 rounded border dark:bg-politeBlue/10 dark:text-white"
-        />
-        <div className="flex justify-end gap-3 mt-2">
-          <button
-            onClick={() => handleUpdate(dept._id, newDept)}
-            className="bg-mediumBlue dark:bg-darkBlue dark:hover:bg-blue-900 hover:bg-darkBlue cursor-pointer text-white px-4 py-1 rounded"
-          >
-            {t("save")}
-          </button>
-          <button
-            onClick={() => setEditable(-1)}
-            className="bg-gray-500 hover:bg-gray-700 dark:hover:bg-gray-600 text-white px-4 py-1 rounded cursor-pointer"
-          >
-            {t("cancel")}
-          </button>
-        </div>
-      </div>
-    );
+              <div
+                key={`${dept._id}-edit`} 
+                className="relative bg-white dark:bg-blue-950/50 rounded-2xl shadow-md p-5 hover:shadow-lg transition-shadow grid grid-cols-1 gap-3"
+                data-aos="zoom-in"
+              >
+                <input
+                  type="text"
+                  defaultValue={dept.nom}
+                  onChange={(e) => setNewDept(prev => ({...prev, nom:e.target.value}))}
+                  className="px-3 py-3 rounded-lg border-2 focus:border-mediumBlue outline-none bg-zinc-100 border-gray-600 w-full"
+                />
+                <textarea
+                  defaultValue={dept.description}
+                  onChange={(e) => setNewDept(prev => ({...prev, description:e.target.value}))}
+                  className="px-3 py-3 rounded-lg border-2 focus:border-mediumBlue outline-none bg-zinc-100 border-gray-600 w-full"
+                />
+                <div className="flex justify-end gap-3 mt-2">
+                  <button
+                    onClick={() => handleUpdate(dept._id, newDept)}
+                    className='text-base sm:text-[17px] font-semibold bg-blue-700 dark:bg-blue-800 dark:hover:bg-blue-700 py-2 text-white rounded-lg sm:rounded-lg mb-2 cursor-pointer hover:bg-blue-600 px-3'
+                  >
+                    {t("save")}
+                  </button>
+                  <button
+                    onClick={() => setEditable(-1)}
+                    className='text-base sm:text-[17px] font-semibold bg-gray-700 hover:bg-gray-800 dark:bg-gray-400 dark:text-gray-900 dark:hover:bg-gray-300 py-2 text-white rounded-lg sm:rounded-lg mb-2 cursor-pointer px-3'
+                  >
+                    {t("cancel")}
+                  </button>
+                </div>
+              </div>
+            );
             }
 
             return (
               <div
                 key={dept._id}
                 className="relative bg-white dark:bg-blue-950/50 rounded-2xl shadow-md p-5 hover:shadow-lg transition-shadow grid grid-cols-2  gap-3"
+                data-aos="zoom-in" data-aos-delay={delay}
               >
                 <h3 className="text-xl font-semibold text-blue-800 dark:text-gray-200">{dept.nom}</h3>
                 <button
