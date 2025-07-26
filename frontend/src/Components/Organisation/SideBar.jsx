@@ -44,6 +44,7 @@ export default function SideBar({ open, setOpen, links, gap}) {
       <div className={clsx("flex flex-col", {
         "gap-64": gap === 64,
         "gap-72": gap === 72,
+        "gap-96": gap === 96
       })}>
         <div>
           {links.map(({ to, icon, label, end = false }, i) => {

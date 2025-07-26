@@ -366,7 +366,7 @@ export default function RequestLeave() {
                   // value={selectedFile} no for security
                   onChange={(e) => setSelectedFile(e.target.files[0])}
                 />
-                <button className='text-base sm:text-lg font-semibold bg-mediumBlue dark:bg-darkBlue dark:hover:bg-blue-900 py-2 text-white rounded-lg sm:rounded-lg mb-2 cursor-pointer hover:bg-darkBlue'
+                <button className='text-base sm:text-lg font-semibold bg-mediumBlue dark:bg-darkBlue dark:hover:bg-blue-900 py-2 text-white rounded-lg sm:rounded-lg mb-2 cursor-pointer hover:bg-darkBlue h-full'
                   onClick={() => addRequest(selectedDroit.joursAutorisee - selectedDroit.joursPris)}
                 >
                   {t('send_request')}
