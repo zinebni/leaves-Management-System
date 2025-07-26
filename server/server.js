@@ -4,9 +4,12 @@ import cors from 'cors';
 import 'dotenv/config';
 import express from 'express';
 import path from 'path';
+/*importation des tâches planifiées par cron*/ 
 import './cron/updateLeaveRights.js';
 import './cron/resetDroitsCongesTousLesEmployes.js';
-
+/*add importation socket.io for notification*/
+import http from 'http';
+import { Server } from 'socket.io';
 
 //II-importation de la base de données----------------
 import connectDB from './config/mongodb.js';
@@ -25,6 +28,17 @@ import notificationRouter from './routes/notificationRoutes/notificationRoutes.j
 const app =express();//initialiser l'application
 const port = process.env.PORT ||4050; //definir le port du server en faisant appel à la variable d'environnement
 connectDB(); //connecter la base de données
+
+/*initialisation de socket.io*/
+
+const server = http.createServer(app); // on crée un vrai serveur HTTP
+const io = new Server(server, {
+  cors: { 
+    origin: 'http://localhost:5173',  
+    methods: ['GET', 'POST'] ,
+    credentials: true}
+});
+
 
 //V-activer les middlewares----------------
 app.use(express.json());//// Middleware pour lire du JSON dans les requêtes
@@ -47,5 +61,34 @@ app.use('/api/notification', notificationRouter);
 //route de test
 app.get('/',(req,res)=> res.send(`api is working fine on ${port} :)`));
 
+//socket.io
+
+/*client connected*/
+io.on('connection', (socket) => {
+  console.log('a user connected');
+  
+  /*client joined a room*/
+  socket.on('joinRoom', (room) => {
+    socket.join(room);
+    console.log(`user joined room ${room}`);
+  });
+  
+  /*client disconnected*/
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+  });
+
+  
+});
+
+
+
 //VII-lancer le server-------------------
-app.listen(port,()=>console.log(`server started on http://127.0.0.1:${port}`));
+
+//app.listen(port,()=>console.log(`server started on http://127.0.0.1:${port}`));
+
+server.listen(port, () => {
+ console.log(`Express + WebSocket  Server is running on port http://localhost:${port}`);
+});
+
+export default io;
