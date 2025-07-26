@@ -86,7 +86,10 @@ export default function RequestLeave() {
     if(!startDate){
       isValid = false;
       setError(t('select_date_range'));
-    } else {
+    } else if(startDate <= new Date()){
+      isValid = false;
+      setError(t('leave_start_date_after_today'));
+    }else {
       const nbrOfDays = (endDate - startDate) / (1000 * 60 * 60 * 24);
 
       if (!Number.isNaN(remainingDays) && nbrOfDays > remainingDays) {

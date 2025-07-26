@@ -155,5 +155,6 @@
   "confirm_delete_emp": "Are you sure you want to delete this employee?",
   "emp_delete_success": "Employee deleted successfully.",
   "confirm_delete_hr": "Are you sure you want to delete this HR account?",
-  "hr_delete_success": "HR account deleted successfully."
+  "hr_delete_success": "HR account deleted successfully.",
+  "leave_start_date_after_today": "The leave start date must be after today."
 }

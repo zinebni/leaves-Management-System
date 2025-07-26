@@ -156,5 +156,6 @@
   "emp_delete_success": "Employé supprimé avec succès.",
   "confirm_delete_emp": "Êtes-vous sûr de vouloir supprimer cet employé ?",
   "confirm_delete_hr": "Êtes-vous sûr de vouloir supprimer ce compte RH ?",
-  "hr_delete_success": "Compte RH supprimé avec succès."
+  "hr_delete_success": "Compte RH supprimé avec succès.",
+  "leave_start_date_after_today": "La date de début du congé doit être postérieure à aujourd'hui."
 }
