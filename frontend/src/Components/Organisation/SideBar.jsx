@@ -1,46 +1,85 @@
-import { X } from 'lucide-react';
+import axios from 'axios';
+import { MoveLeft, X } from 'lucide-react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-// 1. Import NavLink instead of Link
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import clsx from 'clsx';
 
-// 2. Remove currentPage from the props
-export default function SideBar({ open, setOpen, links, role}) {
+export default function SideBar({ open, setOpen, links, gap}) {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
-  const baseLinkClass = "flex items-center gap-2 hover:bg-lightBlue dark:hover:bg-blue-800 p-2 rounded transition font-semibold";
-  const activeLinkClass = "text-mediumBlue dark:text-blue-300";
+  // --- REFACTORED CLASSES ---
+
+  // 1. Define classes that are TRULY common to both states (no color/bg conflicts)
+  const commonClasses = "flex items-center gap-2 rounded-lg transition sm:border-2 mb-5 py-2 px-3";
+
+  // 2. Define classes ONLY for the INACTIVE state
+  const inactiveClasses = "text-gray-800 sm:bg-gray-100 hover:text-mediumBlue dark:text-gray-300 dark:bg-transparent dark:hover:text-lightBlue";
+
+  // 3. Define classes ONLY for the ACTIVE state
+  const activeClasses = "text-mediumBlue font-semibold sm:font-normal sm:bg-mediumBlue sm:hover:text-white sm:text-white dark:border-none sm:dark:bg-blue-950/80";
+  
+  // --- END REFACTORED CLASSES ---
+
+
+  const moveToHome = async () => {
+    try{
+      const res = await axios.post('http://localhost:4000/api/auth/logout', {}, {
+        withCredentials: true
+      });
+    } catch(error){
+      console.log('Failed to logout : ' + error.message);
+    }
+    setOpen(false);
+    navigate('/');
+  }
 
   return (
-    <aside className={`inset-y-0 fixed sm:static top-0 left-0 z-50 w-full sm:w-64 bg-lightBlue/50 text-gray-800 dark:text-gray-200 sm:dark:bg-blue-950/90 p-6 shadow-lg ${open ? 'block bg-politeBlue dark:bg-blue-950' : 'hidden'} sm:block`}>
-      {role === 'Admin' && 
-        <h2 className="hidden sm:block text-2xl font-bold mb-10">{role}</h2>
-      }
-      <div className='flex justify-end sm:hidden dark:text-white'>
+    <aside className={`fixed inset-y-0 sm:static top-0 left-0 z-50 sm:mt-8 w-full sm:w-72  text-gray-800 dark:text-gray-200 py-4  px-6  ${open ? 'block bg-white dark:bg-blue-950' : 'hidden'} sm:block`}>
+      <div className='flex justify-end sm:hidden dark:text-white mb-5'>
         <X onClick={() => setOpen(false)} />
       </div>
 
-      {links.map(({ section, items }, idx) => (
-        <div key={idx} className="mb-6">
-          <h3 className="text-lg font-semibold text-mediumBlue dark:text-blue-300 mb-3">
-            {t(section)}
-          </h3>
-          <nav className="flex flex-col gap-2">
-            {items.map(({ to, icon, label, end = false }, i) => (
+      <div className={clsx("flex flex-col", {
+        "gap-64": gap === 64,
+        "gap-72": gap === 72,
+        "gap-96": gap === 96
+      })}>
+        <div>
+          {links.map(({ to, icon, label, end = false }, i) => {
+            const Icon = icon;
+            return(
               <NavLink
                 key={i}
                 to={to}
                 end={end}
                 onClick={() => setOpen(false)}
-                className={({ isActive }) => `${baseLinkClass} ${isActive ? activeLinkClass : ''}`}
+                // 4. Use the ternary operator to choose which classes to apply
+                className={({ isActive }) => 
+                  `${commonClasses} ${isActive ? activeClasses : inactiveClasses}`
+                }
               >
-                {icon}
-                {t(label)}
+                {({ isActive }) => (
+                  <>
+                    <Icon size={18} strokeWidth={isActive ? 3 : 2} />
+                    {t(label)}
+                  </>
+                )}
               </NavLink>
-            ))}
-          </nav>
+            )
+          })}
         </div>
-      ))}
+        <button
+          onClick={moveToHome}
+          // The logout button is always "inactive", so we can use these classes
+          className={`${commonClasses} ${inactiveClasses}`}
+        >
+          <MoveLeft size={18} strokeWidth={2} />
+          {t('disconnect')}
+        </button>
+
+      </div>
     </aside>
   );
 }

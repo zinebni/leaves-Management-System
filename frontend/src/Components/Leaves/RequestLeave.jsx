@@ -86,7 +86,10 @@ export default function RequestLeave() {
     if(!startDate){
       isValid = false;
       setError(t('select_date_range'));
-    } else {
+    } else if(startDate <= new Date()){
+      isValid = false;
+      setError(t('leave_start_date_after_today'));
+    }else {
       const nbrOfDays = (endDate - startDate) / (1000 * 60 * 60 * 24);
 
       if (!Number.isNaN(remainingDays) && nbrOfDays > remainingDays) {
@@ -110,7 +113,7 @@ export default function RequestLeave() {
         ...(comment && {commentaire : comment}),
         ...(selectedFile && {justificatif: selectedFile})
       }
-
+      console.log(request);
 
       try{
         const res = await axios.post('http://localhost:4000/api/conge/createLeaveRequest', request, {
@@ -366,7 +369,7 @@ export default function RequestLeave() {
                   // value={selectedFile} no for security
                   onChange={(e) => setSelectedFile(e.target.files[0])}
                 />
-                <button className='text-base sm:text-lg font-semibold bg-mediumBlue dark:bg-darkBlue dark:hover:bg-blue-900 py-2 text-white rounded-lg sm:rounded-lg mb-2 cursor-pointer hover:bg-darkBlue'
+                <button className='text-base sm:text-lg font-semibold bg-mediumBlue dark:bg-darkBlue dark:hover:bg-blue-900 py-2 text-white rounded-lg sm:rounded-lg mb-2 cursor-pointer hover:bg-darkBlue h-full'
                   onClick={() => addRequest(selectedDroit.joursAutorisee - selectedDroit.joursPris)}
                 >
                   {t('send_request')}

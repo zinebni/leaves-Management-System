@@ -92,6 +92,9 @@ export default function LoginPage() {
             const res = await axios.post('http://localhost:4000/api/auth/login', user, {
               withCredentials: true
             });
+            
+            setMessage(t('login_success'));
+            setStatusMessage(true);
 
             // 2. Call OTP API (token is sent automatically via cookie)
             const otpRes = await axios.post('http://localhost:4000/api/auth/send-verify-otp', null, {
@@ -122,13 +125,13 @@ export default function LoginPage() {
         <WebSiteName />
         <LanguageSwitcher />
       </div>
-      <div className='flex justify-center items-center mt-20 sm:mt-25'>
-        <div  className='bg-lightBlue/60 border-2 border-zinc-600 w-fit flex flex-col items-center justify-center px-5 sm:px-10 py-10 rounded-2xl'
+      <div className='flex justify-center items-center mt-15 sm:mt-20'>
+        <div  className='bg-mediumBlue/50 border-2 border-mediumBlue/60 w-fit flex flex-col items-center justify-center px-5 sm:px-10 py-10 rounded-xl'
         onKeyDown={(e) => {
           if (e.key === 'Enter') login();
         }}
         tabIndex="0"> {/* nécessaire pour que le div puisse capter les touches */}
-        <h2 className='mb-8 font-semibold text-xl'>
+        <h2 className='mb-8 font-bold text-[22px] text-gray-800'>
           {t("login")}
         </h2>
         <div className='text-base sm:text-[17px] w-3xs sm:w-xs mb-4'>
@@ -148,7 +151,7 @@ export default function LoginPage() {
                 placeholder={t("emailPlaceholder")}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="pl-10 pr-4 py-3 rounded-2xl bg-zinc-200 border-gray-700 w-full"
+                className="pl-10 pr-4 py-3 rounded-lg bg-zinc-200 border-2 border-mediumBlue w-full outline-none focus:border-gray-700 "
               />
             </>
           </div>
@@ -166,7 +169,7 @@ export default function LoginPage() {
               type='password'
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="pl-10 pr-4 py-3 rounded-2xl bg-zinc-200 border-gray-700 w-full"
+              className="pl-10 pr-4 py-3 rounded-lg bg-zinc-200 border-2 border-mediumBlue w-full outline-none focus:border-gray-700 "
             />
           </div>
           <p className='pl-5 text-red-700'>
@@ -176,7 +179,7 @@ export default function LoginPage() {
         <p className={`mb-5 text-base font-semibold ${statusMessage ? 'text-darkBlue' : 'text-red-600'}`}>
           {message}
         </p>
-        <button className='text-base sm:text-lg font-semibold bg-mediumBlue w-3xs sm:w-xs py-2 text-white rounded-xl mb-2 cursor-pointer hover:bg-darkBlue'
+        <button className='text-base sm:text-lg font-semibold bg-mediumBlue w-3xs sm:w-xs py-2 text-white rounded-lg mb-2 cursor-pointer hover:bg-blue-600'
           onClick={login}
         >
           {t("login")}
