@@ -1,8 +1,4 @@
 import Notification from '../../models/notificationModel.js';
-import Employee from '../../models/employeeModel.js';
-import Conge from '../../models/congeModel.js';
-import transporter from '../../config/nodemailer.js';
-
 
 //get all notifications for an employee
 export const getNotifications = async (req, res) => {

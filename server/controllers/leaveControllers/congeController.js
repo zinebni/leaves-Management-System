@@ -5,6 +5,7 @@ import Conge from "../../models/congeModel.js";
 import DroitConge from "../../models/droitCongeModel.js";
 import Employee from '../../models/employeeModel.js';
 import Notification from "../../models/notificationModel.js";
+import io from '../../server.js'
 //Employé---------------------------------------------------------Employé :
 
 /*createLeaveRequest() */
@@ -59,13 +60,14 @@ export const createLeaveRequest = async (req, res) => {
     await conge.populate({path: 'motif', select: 'type'});
 
     //envoyer la notification 
-    const notification = new Notification({
+
+    /*const notification = new Notification({
       recipient: conge.employee,
       conge: conge._id,
       message: `Votre demande de congé ${conge.motif.type} a été enregistrée.`
     });
     await notification.save();
-    console.log("notification envoyée dans createLeaveRequest");
+    console.log("notification envoyée dans createLeaveRequest");*/
 
     //envoyer mail avec nodemailer
     const employee = await Employee.findById(conge.employee);
@@ -699,6 +701,7 @@ export const getAllLeaveRequestsByDepartmentAndStatus = async (req, res) => {
   }
 
 };
+
 /*approveLeaveRequest(id) */
 export const approveLeaveRequest = async (req, res) => {
   const { id } = req.params;
@@ -738,7 +741,14 @@ export const approveLeaveRequest = async (req, res) => {
     });
     await notification.save();
     console.log("notification envoyée dans approveLeaveRequest");
-
+    //envoyer la notification via socket.io
+    io.to(conge.employee.toString()).emit('newNotification', {
+      data : {
+      message: `Votre demande de congé ${conge.motif.type} a été approuvée.`,
+      date: new Date(),
+      conge: conge._id
+      }
+    });
     //envoyer mail avec nodemailer
     const employee = await Employee.findById(conge.employee);
     
@@ -795,6 +805,17 @@ export const rejectLeaveRequest = async (req, res) => {
     });
     await notification.save();
     console.log("notification envoyée dans rejectLeaveRequest");
+    
+    //envoyer la notification via socket.io
+    io.to(conge.employee.toString()).emit('newNotification', {
+      data: {
+      message: `Votre demande de congé ${conge.motif.type} a été refusée.`,
+      date: new Date(),
+      conge: conge._id
+      }
+    });
+    console.log("notification envoyée via socket.io dans rejectLeaveRequest à l'employee ",conge.employee.toString());
+
     //envoyer mail avec nodemailer
     const mailOptions = {
       from: process.env.SENDER_EMAIL,
