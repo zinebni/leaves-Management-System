@@ -82,6 +82,7 @@ export default function RequestLeave() {
   }, []);
 
   const addRequest = async (remainingDays) => {
+    console.log(remainingDays);
     let isValid = true;
     if(!startDate){
       isValid = false;
@@ -106,20 +107,29 @@ export default function RequestLeave() {
       setComment('');
       setSelectedFile(null);
 
-      const request = {
-        date_debut: startDate,
-        date_fin: endDate,
-        motif: selectedDroit._id,
-        ...(comment && {commentaire : comment}),
-        ...(selectedFile && {justificatif: selectedFile})
+      const formData = new FormData(); //to pass file because json not pass files
+      formData.append('date_debut', startDate.toISOString());
+      formData.append('date_fin', endDate.toISOString());
+      formData.append('motif', selectedDroit._id);
+
+      if (comment) {
+        formData.append('commentaire', comment);
       }
-      console.log(request);
+
+      if (selectedFile) {
+        formData.append('justificatif', selectedFile);
+      }
+
 
       try{
-        const res = await axios.post('http://localhost:4000/api/conge/createLeaveRequest', request, {
-          withCredentials:true
+        const res = await axios.post('http://localhost:4000/api/conge/createLeaveRequest', formData, {
+          withCredentials:true,
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          }
         });
         
+        console.log(res);
         toast.success(t('send_request_success'), {
           position: "top-center",           // Positionne le toast en haut et centré horizontalement
           autoClose: 3000,                  // Ferme automatiquement le toast après 3000 ms (3 secondes)

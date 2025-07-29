@@ -28,7 +28,7 @@ export default function HandleRequests() {
     fetchRequests();
   }, []);
 
-   if(isLoading){
+  if(isLoading){
     return(
       <div className="flex items-center justify-center text-gray-600 dark:text-gray-300 text-lg italic mt-10 gap-2">
         {/* Spinner element: a div shaped as a circle with a spinning border */}

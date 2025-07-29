@@ -27,12 +27,15 @@ import DashbordEmp from './Components/Emp/DashbordEmp';
 import RequestLeave from './Components/Leaves/RequestLeave';
 import HandleRequests from './Components/HR/HandleRequests';
 import ReqDetails from './Components/HR/ReqDetails';
+import EmpHistorForReq from './Components/HR/EmpHistorForReq';
+import EmpEnChauv from './Components/HR/EmpEnChauv';
 
 function App() {
 
   useEffect(() => {
     AOS.init({
       duration: 1000,
+      once: true
     });
   }, [])
 
@@ -66,6 +69,8 @@ function App() {
           <Route path='Employees/Edit/:id' element={<EditEmp />} />
           <Route path='Requests' element={<HandleRequests />} />
           <Route path="Requests/Details/:id" element={<ReqDetails />} />
+          <Route path='Requests/Details/:id/Emp/Historic' element={<EmpHistorForReq />} />
+          <Route path='Requests/Details/:id/dept' element={<EmpEnChauv />} />
         </Route>
         {/* Employee Layout with sidebar/nav */}
         <Route path='/Employee/:orgID/:employeeId' element={<EmpLayout />}>
