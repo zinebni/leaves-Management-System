@@ -176,5 +176,22 @@
   "go_back_to_request": "Retour à la demande",
   "leave_rejected_successfully": "La demande de congé a été rejetée avec succès",
   "employee_leave_history_title": "Historique des congés de l'employé",
-  "rejected_by": "Rejeté par"
+  "rejected_by": "Rejeté par",
+  "leave_history": "Historique des congés",
+  "not_processed_yet": "Cette demande de congé n'a pas encore été traitée.",
+  "confirm_cancel": "Êtes-vous sûr de vouloir annuler cette demande de congé ?",
+  "cancel_success": "La demande de congé a été annulée avec succès.",
+  "filter_by": "Filtrer par",
+  "filter_type": {
+    "all": "Tous",
+    "type": "Type de congé",
+    "status": "Statut",
+    "date": "Date"
+  },
+  "status": {
+    "approved": "Approuvée",
+    "rejected": "Rejetée"
+  },
+  "no_leave_requests": "Aucune demande de congé pour le moment.",
+  "no_matching_leave": "Aucun congé ne correspond à ces critères."
 }

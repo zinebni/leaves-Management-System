@@ -29,6 +29,7 @@ import HandleRequests from './Components/HR/HandleRequests';
 import ReqDetails from './Components/HR/ReqDetails';
 import EmpHistorForReq from './Components/HR/EmpHistorForReq';
 import EmpEnChauv from './Components/HR/EmpEnChauv';
+import EmpHistoric from './Components/Emp/EmpHistoric';
 
 function App() {
 
@@ -76,7 +77,7 @@ function App() {
         <Route path='/Employee/:orgID/:employeeId' element={<EmpLayout />}>
           <Route index element={<DashbordEmp />} />
           <Route path='Request-leave' element={<RequestLeave />} />
-
+          <Route path='Historic' element={<EmpHistoric />} />
         </Route>
       </Routes>  
     </Router>

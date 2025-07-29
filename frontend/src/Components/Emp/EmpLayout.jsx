@@ -1,4 +1,4 @@
-import { CalendarDays} from 'lucide-react';
+import { CalendarDays, History} from 'lucide-react';
 import React, { useEffect, useState } from 'react'
 import { Outlet, useParams } from 'react-router-dom';
 import NavBar from '../Organisation/NavBar';
@@ -34,7 +34,8 @@ export default function EmpLayout() {
 
 
   const sidebarLinks = [
-    { to: 'Request-leave', icon: CalendarDays, label: 'request_leave' }
+    { to: 'Request-leave', icon: CalendarDays, label: 'request_leave' },
+    { to: 'Historic' , icon: History, label: 'leave_history'}
   ];
 
   return (

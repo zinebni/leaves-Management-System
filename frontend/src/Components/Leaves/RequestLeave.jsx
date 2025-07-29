@@ -92,6 +92,7 @@ export default function RequestLeave() {
       setError(t('leave_start_date_after_today'));
     }else {
       const nbrOfDays = (endDate - startDate) / (1000 * 60 * 60 * 24);
+      console.log(nbrOfDays);
 
       if (!Number.isNaN(remainingDays) && nbrOfDays > remainingDays) {
         isValid = false;

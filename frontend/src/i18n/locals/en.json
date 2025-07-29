@@ -176,5 +176,22 @@
   "go_back_to_request": "Go back to request",
   "leave_rejected_successfully": "Leave request rejected successfully",
   "employee_leave_history_title": "Leave History of the Employee",
-  "rejected_by": "Rejected by"
+  "rejected_by": "Rejected by",
+  "leave_history": "Leave History",
+  "not_processed_yet": "This leave request has not been processed yet.",
+  "confirm_cancel": "Are you sure you want to cancel this leave request?",
+  "cancel_success": "The leave request has been successfully cancelled.",
+  "filter_by": "Filter by",
+  "filter_type": {
+    "all": "All",
+    "type": "Leave type",
+    "status": "Status",
+    "date": "Date"
+  },
+  "status": {
+    "approved": "Approved",
+    "rejected": "Rejected"
+  },
+  "no_leave_requests": "No leave requests at the moment.",
+  "no_matching_leave": "No leave matches these criteria."
 }
