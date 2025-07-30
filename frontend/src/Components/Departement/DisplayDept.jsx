@@ -9,7 +9,6 @@ export default function DisplayDept({open}) {
   const [editable, setEditable] = useState(-1);
   const [newDept, setNewDept] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-  let delay = 0;
 
   useEffect(() => {
     fetchDepartments();
@@ -90,15 +89,13 @@ export default function DisplayDept({open}) {
           {t('no_departments')}
         </p>
       ) : (
-        <div className="w-full max-w-6xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <div className="w-full max-w-6xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6" data-aos="zoom-in" delay='400'>
           {departments.map((dept, index) => {
-            delay += 200;
             if (index === editable) {
                return (
               <div
                 key={`${dept._id}-edit`} 
                 className="relative bg-white dark:bg-blue-950/50 rounded-2xl shadow-md p-5 hover:shadow-lg transition-shadow grid grid-cols-1 gap-3"
-                data-aos="zoom-in"
               >
                 <input
                   type="text"
@@ -133,7 +130,6 @@ export default function DisplayDept({open}) {
               <div
                 key={dept._id}
                 className="relative bg-white dark:bg-blue-950/50 rounded-2xl shadow-md p-5 hover:shadow-lg transition-shadow grid grid-cols-2  gap-3"
-                data-aos="zoom-in" data-aos-delay={delay}
               >
                 <h3 className="text-xl font-semibold text-blue-800 dark:text-gray-200">{dept.nom}</h3>
                 <button

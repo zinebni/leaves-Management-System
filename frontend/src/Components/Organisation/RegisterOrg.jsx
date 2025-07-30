@@ -145,30 +145,35 @@ export default function RegisterOrg() {
         <WebSiteName />
         <LanguageSwitcher />
       </div>
-      <div className='flex justify-center items-center mt-2 mb-5'>
-        <div className='bg-lightBlue/60 border-2 border-zinc-600 w-fit flex flex-col items-center justify-center px-6 sm:px-10 py-7 rounded-2xl'>
-          <h2 className='mb-8 font-semibold text-xl'>
+      <div className='flex justify-center items-center mt-1'>
+        <div className='bg-mediumBlue/50 border-2 border-mediumBlue/60 w-fit flex   flex-col items-center justify-center px-5 sm:px-10 py-7 rounded-xl'
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') register();
+          }}
+          tabIndex="0"
+        >
+          <h2 className='mb-5 font-bold text-[21px] text-gray-800'>
             {t("register")}
           </h2>
-          <div className='text-base sm:text-[17px] mb-3'>
-            <div className="relative w-3xs sm:w-xs mb-2">
-              <span className="absolute left-3 pt-4 text-gray-600">
+          <div className='text-base sm:text-[17px] w-3xs sm:w-xs mb-3'>
+            <div className="relative mb-2">
+              <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600">
                 <Mail size={20} />
               </span>
               <input 
                 placeholder={t("emailPlaceholder")}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="pl-10 pr-4 py-3 rounded-2xl bg-zinc-200 border-gray-700 w-full"
+                className="pl-10 pr-4 py-3 rounded-lg bg-zinc-200 border-2 border-mediumBlue w-full outline-none focus:border-gray-700"
               /> 
             </div>
             <p className='pl-5 text-red-700'>
               {error.email}
             </p>
           </div>
-          <div className='text-base sm:text-[17px] mb-3'>
+          <div className='text-base sm:text-[17px] w-3xs sm:w-xs mb-3'>
             {/* relative: This makes the container a reference point for absolutely positioning elements inside it. */}
-            <div className="relative w-3xs sm:w-xs mb-2">
+            <div className="relative mb-2">
               {/* 
                   *top-1/2 sets the top edge of the icon to 50% of the height of its container.
                   *But that puts the top edge in the middle — so the icon appears slightly lower than centered.
@@ -182,31 +187,31 @@ export default function RegisterOrg() {
                 placeholder={t("orgNamePlaceholder")}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="pl-10 pr-4 py-3 rounded-2xl bg-zinc-200 border-gray-700 w-full"
+                className="pl-10 pr-4 py-3 rounded-lg bg-zinc-200 border-2 border-mediumBlue w-full outline-none focus:border-gray-700"
               /> 
             </div>
             <p className='pl-5 text-red-700'>
               {error.name}
             </p>
           </div>
-          <div className='text-base sm:text-[17px] mb-3'>
-            <div className="relative w-3xs sm:w-xs mb-2">
-              <span className="absolute left-3 pt-4 text-gray-600">
+          <div className='text-base sm:text-[17px] w-3xs sm:w-xs mb-3'>
+            <div className="relative mb-2">
+              <span className="absolute left-3 top-1/8 transform  text-gray-600">
                 <FileText size={20} />
               </span>
               <textarea 
                 placeholder={t("descriptionPlaceholder")}
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                className="pl-10 pr-4 py-3 rounded-2xl bg-zinc-200 border-gray-700 w-full"
+                className="pl-10 pr-4 py-2 rounded-lg bg-zinc-200 border-2 border-mediumBlue w-full outline-none focus:border-gray-700"
               /> 
             </div>
             <p className='pl-5 text-red-700'>
               {error.description}
             </p>
           </div>
-          <div className='text-base sm:text-[17px] mb-3'>
-            <div className="relative w-3xs sm:w-xs mb-2">
+          <div className='text-base sm:text-[17px] w-3xs sm:w-xs mb-3'>
+            <div className="relative mb-2">
               <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600">
                 <LockKeyhole size={20} />
               </span>
@@ -215,15 +220,15 @@ export default function RegisterOrg() {
                 type='password'
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="pl-10 pr-4 py-3 rounded-2xl bg-zinc-200 border-gray-700 w-full"
+                className="pl-10 pr-4 py-3 rounded-lg bg-zinc-200 border-2 border-mediumBlue w-full outline-none focus:border-gray-700"
               />
             </div>
             <p className='pl-5 text-red-700'>
               {error.password}
             </p>
           </div>
-          <div className='text-base sm:text-[17px] mb-6'>
-            <div className="relative w-3xs sm:w-xs mb-2">
+          <div className='text-base sm:text-[17px] w-3xs sm:w-xs mb-3'>
+            <div className="relative mb-2">
               <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600">
                 <LockKeyhole size={20} />
               </span>
@@ -232,7 +237,7 @@ export default function RegisterOrg() {
                 type='password'
                 value={confirmedPassword}
                 onChange={(e) => setConfirmedPassword(e.target.value)}
-                className="pl-10 pr-4 py-3 rounded-2xl bg-zinc-200 border-gray-700 w-full"
+                className="pl-10 pr-4 py-3 rounded-lg bg-zinc-200 border-2 border-mediumBlue w-full outline-none focus:border-gray-700"
               />
             </div>
             <p className='pl-5 text-red-700'>
@@ -242,7 +247,7 @@ export default function RegisterOrg() {
           <p className={`mb-5 text-base font-semibold ${statusMessage ? 'text-darkBlue' : 'text-red-600'}`}>
             {message}
           </p>
-          <button className='text-base sm:text-lg font-semibold bg-mediumBlue w-3xs sm:w-xs py-2 text-white rounded-xl mb-2 cursor-pointer hover:bg-darkBlue'
+          <button className='text-base sm:text-lg font-semibold bg-mediumBlue w-3xs sm:w-xs py-2 text-white rounded-lg mb-2 cursor-pointer hover:bg-blue-600'
             onClick={register}
           >
             {t("register")}

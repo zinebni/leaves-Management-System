@@ -52,8 +52,8 @@ export default function HandleRequests() {
   const filteredRequests = requests.filter( request => `${request.employee.prenom} ${request.employee.nom}`.toLowerCase().includes(searchTerm.toLowerCase()) );
 
   return (
-    <div className="min-h-screen p-6 flex flex-col items-center">
-      <h2 className="text-2xl font-bold text-mediumBlue dark:text-politeBlue mb-10 mt-5" data-aos='fade-right'>
+    <div className="flex flex-col items-center">
+      <h2 className="text-xl text-center sm:text-2xl font-bold text-mediumBlue dark:text-politeBlue mb-10 mt-5" data-aos='fade-right'>
         {t("request_pending_title")}
       </h2>
       <input 
@@ -76,14 +76,12 @@ export default function HandleRequests() {
               </p>
             ) :
             (
-              <div className="w-full max-w-6xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                {filteredRequests.map((request, index) => {
-                  delay += 200;
+              <div className="w-full max-w-6xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6" data-aos="zoom-in" delay='600'>
+                {filteredRequests.map(request => {
                   return(
                     <div
                       key={request._id}
                       className="relative bg-white dark:bg-blue-950/50 rounded-2xl shadow-md p-5 hover:shadow-lg transition-shadow space-y-3"
-                      data-aos="zoom-in" data-aos-delay={delay}
                     >
                       {/* Nom complet */}
                       <h3 className="text-lg font-semibold text-blue-800 dark:text-gray-200">
@@ -108,7 +106,6 @@ export default function HandleRequests() {
                     </div>
                   )
                 })}
-
               </div>
             )
       )}

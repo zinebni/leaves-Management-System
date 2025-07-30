@@ -193,5 +193,10 @@
     "rejected": "Rejetée"
   },
   "no_leave_requests": "Aucune demande de congé pour le moment.",
-  "no_matching_leave": "Aucun congé ne correspond à ces critères."
+  "no_matching_leave": "Aucun congé ne correspond à ces critères.",
+  "processed_requests": "Demandes traitées",
+  "page_title_processed_requests": "Historique des demandes traitées",
+  "no_longer_available": "RH non disponible",
+  "no_matching_request": "Aucune demande ne correspond à ce critère",
+  "no_processed_requests": "Aucune demande de congé traitée pour le moment"
 }

@@ -30,6 +30,7 @@ import ReqDetails from './Components/HR/ReqDetails';
 import EmpHistorForReq from './Components/HR/EmpHistorForReq';
 import EmpEnChauv from './Components/HR/EmpEnChauv';
 import EmpHistoric from './Components/Emp/EmpHistoric';
+import ProcessedReq from './Components/HR/ProcessedReq';
 
 function App() {
 
@@ -72,6 +73,7 @@ function App() {
           <Route path="Requests/Details/:id" element={<ReqDetails />} />
           <Route path='Requests/Details/:id/Emp/Historic' element={<EmpHistorForReq />} />
           <Route path='Requests/Details/:id/dept' element={<EmpEnChauv />} />
+          <Route path='Processed-Requests' element={<ProcessedReq />} />
         </Route>
         {/* Employee Layout with sidebar/nav */}
         <Route path='/Employee/:orgID/:employeeId' element={<EmpLayout />}>

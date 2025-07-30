@@ -36,7 +36,7 @@ export default function SideBar({ open, setOpen, links, gap}) {
   }
 
   return (
-    <aside className={`fixed inset-y-0 sm:static top-0 left-0 z-50 sm:mt-8 w-full sm:w-72  text-gray-800 dark:text-gray-200 py-4  px-6  ${open ? 'block bg-white dark:bg-blue-950' : 'hidden'} sm:block`}>
+    <aside className={`fixed inset-y-0 sm:static top-0 left-0 z-50 sm:mt-8 w-full sm:w-72  text-gray-800 dark:text-gray-200 py-4  px-6 ${open ? 'block bg-gray-50 dark:bg-blue-950' : 'hidden'} sm:block sm:bg-transparent`}>
       <div className='flex justify-end sm:hidden dark:text-white mb-5'>
         <X onClick={() => setOpen(false)} />
       </div>

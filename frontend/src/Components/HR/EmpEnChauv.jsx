@@ -88,15 +88,13 @@ export default function EmpEnChauv() {
           {t("overlapping_leave_title")}
         </h2>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl" data-aos='zoom-in' data-aos-delay='200'>
         {employesOnLeave?.map((item) => {
           const approver = approvers[item.approuvePar]; // get RH info
-          delay += 200;
           return (
             <div
               key={item._id}
               className="flex flex-col gap-2 rounded-2xl p-5 bg-white dark:bg-blue-950/50 shadow-md text-base sm:text-[17px]"
-              data-aos='zoom-in' data-aos-delay={delay}
             >
               <p className="font-semibold text-gray-700 dark:text-white text-lg">
                 <span className="filter brightness-125 dark:brightness-150">👤</span>

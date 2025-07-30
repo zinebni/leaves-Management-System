@@ -193,5 +193,10 @@
     "rejected": "Rejected"
   },
   "no_leave_requests": "No leave requests at the moment.",
-  "no_matching_leave": "No leave matches these criteria."
+  "no_matching_leave": "No leave matches these criteria.",
+  "processed_requests": "Processed requests",
+  "page_title_processed_requests": "History of Processed Requests",
+  "no_longer_available": "HR No longer available",
+  "no_matching_request": "No matching request for this criteria",
+  "no_processed_requests": "No leave requests processed yet"
 }

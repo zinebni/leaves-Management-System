@@ -105,14 +105,12 @@ export default function DisplayHR() {
           {t('no_hr_message')}
         </p>
       ) : (
-        <div className="w-full max-w-6xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <div className="w-full max-w-6xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6" data-aos="zoom-in" data-aos-delay='300'>
           {hrs.map((hr) => {
-            delay += 200;
             return(
               <div
                 key={hr._id}
                 className="relative bg-white dark:bg-blue-950/50 rounded-2xl shadow-md p-5 hover:shadow-lg transition-shadow space-y-3"
-                data-aos="zoom-in" data-aos-delay={delay}
               >
                 {/* Nom complet */}
                 <h3 className="text-lg font-semibold text-blue-800 dark:text-gray-200">

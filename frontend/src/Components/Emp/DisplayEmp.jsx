@@ -102,9 +102,9 @@ export default function DisplayEmp() {
   }
 
   return (
-    <div className="min-h-screen p-6 flex flex-col items-center  mx-5 mb-10 rounded-xl">
+    <div className="flex flex-col items-center  mx-5 mb-10 rounded-xl">
       <div className="w-full mb-8 flex justify-center items-center">
-        <h2 className="text-2xl font-bold text-mediumBlue dark:text-politeBlue mb-2 mt-5" data-aos="fade-right">
+        <h2 className="text-xl text-center sm:text-2xl font-bold text-mediumBlue dark:text-politeBlue mb-2 mt-5" data-aos="fade-right">
           {t("emp_list_title")}
         </h2>
       </div>
@@ -145,62 +145,64 @@ export default function DisplayEmp() {
               {t('no_matching_employees')}
             </p>
           ) : (
-            depts.map((dept) => {
-              if (searchDept && searchDept !== dept._id) return null;
+            <div  data-aos='zoom-in' data-aos-delay='800'>
+              {
+                depts.map((dept) => {
+                  if (searchDept && searchDept !== dept._id) return null;
 
-              const employeesInDept = employees.filter((emp) =>
-                emp.department &&
-                emp.department._id === dept._id &&
-                (`${emp.prenom} ${emp.nom}`.toLowerCase().includes(searchTerm.toLowerCase()))
-              );
+                  const employeesInDept = employees.filter((emp) =>
+                    emp.department &&
+                    emp.department._id === dept._id &&
+                    (`${emp.prenom} ${emp.nom}`.toLowerCase().includes(searchTerm.toLowerCase()))
+                  );
 
-              if (employeesInDept.length === 0) return null;
+                  if (employeesInDept.length === 0) return null;
 
-              return (
-                <div key={dept._id} className="w-full max-w-6xl mb-10">
-                  <div className="w-full flex justify-center">
-                    <h3 className="text-xl font-bold text-left text-darkBlue dark:text-lightBlue mb-4 italic">
-                      {dept.nom}
-                    </h3>
-                  </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                    {employeesInDept.map((employee) => {
-                      delay += 200;
-                      return(
-                        <div
-                          key={employee._id}
-                          className="relative bg-white dark:bg-blue-950/50 rounded-2xl shadow-md p-5 hover:shadow-lg transition-shadow space-y-3"
-                          data-aos="zoom-in" data-aos-delay={delay}
-                        >
-                          <h3 className="text-lg font-semibold text-blue-800 dark:text-gray-200">
-                            {employee.prenom} {employee.nom}
-                          </h3>
-                          <p className="text-sm text-gray-700 dark:text-gray-300">
-                            <span className="font-medium">Email :</span> {employee.email}
-                          </p>
-                          <div className="flex justify-end gap-4 mt-4">
-                            <button
-                              className="text-mediumBlue dark:text-lightBlue hover:text-darkBlue dark:hover:text-mediumBlue cursor-pointer"
-                              title={t("edit")}
-                              onClick={() => window.location.href = `Employees/Edit/${employee._id}`}
+                  return (
+                    <div key={dept._id} className="w-full max-w-6xl mb-10">
+                      <div className="w-full flex justify-center">
+                        <h3 className="text-xl font-bold text-left text-darkBlue dark:text-lightBlue mb-4 italic">
+                          {dept.nom}
+                        </h3>
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                        {employeesInDept.map((employee) => {
+                          return(
+                            <div
+                              key={employee._id}
+                              className="relative bg-white dark:bg-blue-950/50 rounded-2xl shadow-md p-5 hover:shadow-lg transition-shadow space-y-3"
                             >
-                              <Pencil />
-                            </button>
-                            <button
-                              onClick={() => handleDelete(employee._id)}
-                              className="text-red-600 hover:text-red-800 dark:hover:text-red-700 cursor-pointer"
-                              title={t("delete")}
-                            >
-                              <Trash />
-                            </button>
-                          </div>
-                        </div>
-                      )
-                    })}
-                  </div>
-                </div>
-              );
-            })
+                              <h3 className="text-lg font-semibold text-blue-800 dark:text-gray-200">
+                                {employee.prenom} {employee.nom}
+                              </h3>
+                              <p className="text-sm text-gray-700 dark:text-gray-300">
+                                <span className="font-medium">Email :</span> {employee.email}
+                              </p>
+                              <div className="flex justify-end gap-4 mt-4">
+                                <button
+                                  className="text-mediumBlue dark:text-lightBlue hover:text-darkBlue dark:hover:text-mediumBlue cursor-pointer"
+                                  title={t("edit")}
+                                  onClick={() => window.location.href = `Employees/Edit/${employee._id}`}
+                                >
+                                  <Pencil />
+                                </button>
+                                <button
+                                  onClick={() => handleDelete(employee._id)}
+                                  className="text-red-600 hover:text-red-800 dark:hover:text-red-700 cursor-pointer"
+                                  title={t("delete")}
+                                >
+                                  <Trash />
+                                </button>
+                              </div>
+                            </div>
+                          )
+                        })}
+                      </div>
+                    </div>
+                  );
+                })
+              }
+            </div>
           )}
         </>
       )}

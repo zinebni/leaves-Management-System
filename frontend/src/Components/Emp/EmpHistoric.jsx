@@ -13,8 +13,8 @@ export default function EmpHistoric() {
   const {t} = useTranslation();
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
   const [filterBy, setFilterBy] = useState('');
-  const [type, setType] = useState('');
-  const [status, setStatus] = useState('');
+  const [type, setType] = useState('annuel');
+  const [status, setStatus] = useState('approved');
   const [date, setDate] = useState('');
   let delay = 0;
 
@@ -60,8 +60,8 @@ export default function EmpHistoric() {
       ? historic.filter(item => item.motif.type === type)
       : (filterBy === 'status' && status)
       ? historic.filter(item =>
-          status === 'status.approved' ? item.approuvePar :
-          status === 'status.rejected' ? item.refusePar : null
+          status === 'approved' ? item.approuvePar :
+          status === 'rejected' ? item.refusePar : null
         )
       : (filterBy === 'date' && date)
       ? historic.filter(item =>
@@ -170,7 +170,6 @@ export default function EmpHistoric() {
               onChange={(e) => setType(e.target.value)}
               data-aos="fade-left"
             >
-              <option value="" disabled>{t("filter_type.type")}</option>
               <option value="annuel">{t('annuel')}</option>
               <option value="maternite">{t('maternite')}</option>
               <option value="paternite">{t('paternite')}</option>
@@ -189,9 +188,8 @@ export default function EmpHistoric() {
               onChange={(e) => setStatus(e.target.value)}
               data-aos="fade-left"
             >
-              <option value="" disabled>{t("filter_type.status")}</option>
-              <option value="status.approved">{t('status.approved')}</option>
-              <option value="status.rejected">{t('status.rejected')}</option>
+              <option value="approved">{t('status.approved')}</option>
+              <option value="rejected">{t('status.rejected')}</option>
             </select>
           ) : 
           filterBy === 'date' ? 
@@ -217,15 +215,13 @@ export default function EmpHistoric() {
             {t('no_matching_leave')}
           </p> : 
           (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl" data-aos='zoom-in' data-aos-delay='500'>
               {filterLeaves.map(item => {
                 const hr = hrs[item.approuvePar || item.refusePar];
-                delay += 200;
                 return (
                   <div
                     key={item._id}
                     className="flex flex-col gap-1 rounded-2xl p-5 bg-white dark:bg-blue-950/80 shadow-md text-base sm:text-[17px]"
-                    data-aos='zoom-in' data-aos-delay={delay}
                   >
                     <p className="text-gray-600 dark:text-gray-300 mt-2">
                       📅 {t('start_date')}: {new Date(item.date_debut).toLocaleDateString()}
