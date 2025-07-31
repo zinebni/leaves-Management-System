@@ -214,5 +214,19 @@
       "end_date_after_start": "End date must be the same as or after the start date."
     }
   },
-  "event_added_successfully": "Event added successfully."
+  "event_added_successfully": "Event added successfully.",
+  "view_events": "View events",
+  "event_list": "Event list",
+  "no_events_message": "No event is currently available.",
+  "description" : "Description",
+  "location": "Lieu",
+  "not_available": "Not available",
+  "search_by_title": "Search by title",
+  "no_matching_events": "No matching events for this criteria.",
+  "event_deleted_successfully": "Event deleted successfully.",
+  "confirm_delete_event": "Do you want to delete this event?",
+  "edit_event_title": "Edit Event",
+  "edit_event_button": "Edit",
+  "cancel_event_button": "Cancel",
+  "event_updated_successfully": "Event updated successfully."
 }

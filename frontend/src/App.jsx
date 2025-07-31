@@ -32,6 +32,8 @@ import EmpEnChauv from './Components/HR/EmpEnChauv';
 import EmpHistoric from './Components/Emp/EmpHistoric';
 import ProcessedReq from './Components/HR/ProcessedReq';
 import AddEvent from './Components/Event/AddEvent';
+import DisplayEvent from './Components/Event/DisplayEvent';
+import EditEvent from './Components/Event/EditEvent';
 
 function App() {
 
@@ -76,6 +78,8 @@ function App() {
           <Route path='Requests/Details/:id/dept' element={<EmpEnChauv />} />
           <Route path='Processed-Requests' element={<ProcessedReq />} />
           <Route path="Event/Add" element={<AddEvent />} />
+          <Route path="Events" element={<DisplayEvent />} />
+          <Route path="Events/Edit/:id" element={<EditEvent />} />
         </Route>
         {/* Employee Layout with sidebar/nav */}
         <Route path='/Employee/:orgID/:employeeId' element={<EmpLayout />}>

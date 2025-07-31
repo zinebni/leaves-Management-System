@@ -13,7 +13,8 @@ export default function HRLayout() {
     { to: 'Employees', icon: Eye, label: 'list_emp' },
     { to: 'Requests', icon: Inbox, label: 'handle_request' },
     { to: 'Processed-Requests', icon: ClipboardCheck, label: 'processed_requests' },
-    { to: 'Event/Add', icon: Plus, label: 'add_event'}
+    { to: 'Event/Add', icon: Plus, label: 'add_event'},
+    { to: 'Events', icon: Eye, label: 'view_events'}
   ];
 
   return (
@@ -27,13 +28,13 @@ export default function HRLayout() {
       <div className="pt-[64px] flex h-full">
         {/* ✅ Sidebar : fixe à gauche sur desktop, en overlay sinon */}
         <div className="hidden sm:block fixed top-[64px] bottom-0 left-0 w-[250px] z-40">
-          <SideBar open={open} setOpen={setOpen} links={sidebarLinks} gap={52} />
+          <SideBar open={open} setOpen={setOpen} links={sidebarLinks} gap={36} />
         </div>
 
         {/* ✅ Sidebar mobile : en overlay */}
         {open && (
           <div className="sm:hidden fixed inset-0 z-50 ">
-            <SideBar open={open} setOpen={setOpen} links={sidebarLinks} gap={52} />
+            <SideBar open={open} setOpen={setOpen} links={sidebarLinks} gap={36} />
           </div>
         )}
 

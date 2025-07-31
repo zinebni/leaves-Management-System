@@ -81,8 +81,8 @@
   "rh_edited_success": "RH modifié avec succès",
   "loading": "Chargement...",
   "emp": "Employés",
-  "add_emp": "Ajouter employé",
-  "list_emp": "Voir employés",
+  "add_emp": "Ajouter un employé",
+  "list_emp": "Voir les employés",
   "invalid_info": "Email ou mot de passe incorrects",
   "select_dept": "sélectionner un département",
   "dept_required": "Veuillez sélectionner un département.",
@@ -214,5 +214,20 @@
       "end_date_after_start": "La date de fin doit être égale ou postérieure à la date de début."
     }
   },
-  "event_added_successfully": "Événement ajouté avec succès."
-  }
+  "event_added_successfully": "Événement ajouté avec succès.",
+  "view_events": "Voir les événements",
+  "event_list": "Liste des événements",
+  "no_events_message": "Aucun événement n’est actuellement disponible.",
+  "description" : "Description",
+  "location": "Location",
+  "not_available": "Non disponible",
+  "search_by_title": "Rechercher par titre",
+  "no_matching_events": "Aucun événement ne correspond à ce critère.",
+  "event_deleted_successfully": "Événement supprimé avec succès.",
+  "confirm_delete_event": "Voulez-vous supprimer cet événement ?",
+  "edit_event_title": "Modifier l'événement",
+  "edit_event_button": "Modifier",
+  "cancel_event_button": "Annuler",
+  "event_updated_successfully": "Événement mis à jour avec succès."
+
+}

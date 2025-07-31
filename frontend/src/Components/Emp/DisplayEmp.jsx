@@ -12,8 +12,6 @@ export default function DisplayEmp() {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchDept, setSearchDept] = useState('');
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
-  let delay = 400;
-
   const { t } = useTranslation();
 
   const fetchDepts = async () => {

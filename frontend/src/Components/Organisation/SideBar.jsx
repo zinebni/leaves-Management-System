@@ -45,7 +45,8 @@ export default function SideBar({ open, setOpen, links, gap}) {
         "gap-64": gap === 64,
         "gap-72": gap === 72,
         "gap-96": gap === 96,
-        "gap-52": gap === 52
+        "gap-52": gap === 52,
+        "gap-36": gap === 36
       })}>
         <div>
           {links.map(({ to, icon, label, end = false }, i) => {

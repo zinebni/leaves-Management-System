@@ -2,23 +2,100 @@ import axios from 'axios';
 import { CalendarCheck, CalendarClock, CheckCircle, FileText, MapPin, Text } from 'lucide-react';
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-export default function AddEvent() {
+export default function EditEvent() {
 
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
-  const [place, setPlace] = useState('');
+  const [event, setEvent] = useState({
+    titre: '',
+    description: '',
+    date_debut: '',
+    date_fin: '',
+    lieu: '',
+  });
   const [error, setError] = useState({});
   const {t} = useTranslation();
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
+  const {id} = useParams();
+  const navigate = useNavigate();
+
+  const fetchEvent = async () => {
+    try{
+      const res = await axios.get(`http://localhost:4000/api/evenement/getevenementById/${id}`, {
+        withCredentials: true
+      })
+      const evt = res.data.evenement;
+      setEvent({
+        titre: evt.titre,
+        description: evt.description || '',
+        date_debut: evt.date_debut,
+        date_fin: evt.date_fin,
+        lieu: evt.lieu || ''
+      });
+    } catch(error){
+      console.log(error);
+    }
+  }
+
+  const edit = async () => {
+    let isValid = true;
+    const newError = {};
+
+    if(!event.titre.trim()){
+      newError.titre = t('event.errors.title_required');
+      isValid = false;
+    }
+    if(!event.date_debut){
+      newError.date_debut = t('event.errors.start_date_required');
+      isValid = false;
+    } else if(new Date(event.date_debut) <= new Date()){
+      newError.date_debut = t('event.errors.start_date_after_today');
+      isValid = false;
+    }
+    if(!event.date_fin){
+      newError.date_fin = t('event.errors.end_date_required');
+      isValid = false;
+    } else if(new Date(event.date_fin) < new Date(event.date_debut)){
+      newError.date_fin = t('event.errors.end_date_after_start');
+      isValid = false;
+    }
+    if(!isValid) {
+      setError(newError);
+      return;
+    }
+
+    setError({});
+
+    try{
+      const res = await axios.put(`http://localhost:4000/api/evenement/updateevenement/${id}`, event, {
+        withCredentials: true
+      });
+      toast.success(t('event_updated_successfully'), {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        icon: <CheckCircle color="#2f51eb" />,
+      });
+      setTimeout(() => {
+        navigate(-1);
+      }, 3500);
+    } catch(error){
+      console.log(error);
+    }
+
+  }
 
   useEffect(() => {
     // This is the stable theme-handling logic.
     // It will not crash the component on navigation.
+    fetchEvent();
+
     const handleThemeChange = () => {
       const storedTheme = localStorage.getItem('theme') || 'light';
       setTheme(storedTheme);
@@ -33,74 +110,12 @@ export default function AddEvent() {
     };
   }, []); // Empty dependency array ensures this runs only once on mount.
   
-  const add = async () => {
-    let isValid = true;
-    const newError = {};
-
-    if(!title.trim()){
-      newError.title = t('event.errors.title_required');
-      isValid = false;
-    }
-    if(!startDate){
-      newError.startDate = t('event.errors.start_date_required');
-      isValid = false;
-    } else if(new Date(startDate) <= new Date()){
-      newError.startDate = t('event.errors.start_date_after_today');
-      isValid = false;
-    }
-    if(!endDate){
-      newError.endDate = t('event.errors.end_date_required');
-      isValid = false;
-    } else if(new Date(endDate) < new Date(startDate)){
-      newError.endDate = t('event.errors.end_date_after_start');
-      isValid = false;
-    }
-    if(!isValid) {
-      setError(newError);
-      return;
-    }
-
-    setError({});
-    const event = {
-      titre: title,
-      date_debut: startDate,
-      date_fin: endDate,
-      ...(description && { description }),
-      ...(place && {lieu : place})
-    };
-
-    try{
-      const res = await axios.post('http://localhost:4000/api/evenement/createevenement', event, {
-        withCredentials: true
-      });
-
-      setTitle('');
-      setDescription('');
-      setStartDate('');
-      setEndDate('');
-      setPlace('');
-      toast.success(t('event_added_successfully'), {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        icon: <CheckCircle color="#2f51eb" />,
-      });
-    } catch(error){
-      console.log(error);
-    }
-
-  }
-
 
   return(
     <div className={`flex justify-center items-center`}>
         <div className='bg-mediumBlue/60 dark:bg-blue-950/50 shadow-xl ring-1 ring-white/10  border-2 border-mediumBlue/50 w-fit flex flex-col items-center justify-center px-8 sm:px-10 py-5 sm:py-6 rounded-xl dark:border-none'>
         <h2 className='mb-8 font-bold text-lg sm:text-xl text-gray-900/95 dark:text-gray-200'>
-          {t('add_event_title')}
+          {t('edit_event_title')}
         </h2>
         <div className='grid grid-cols-1 gap-2'>
           <div className="text-sm sm:text-[17px] w-2xs sm:w-xs">
@@ -110,13 +125,13 @@ export default function AddEvent() {
               </span>
               <input 
                   placeholder={t('event_title_placeholder')}
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
+                  value={event.titre}
+                  onChange={(e) => setEvent(prev => ({...prev, titre: e.target.value}))}
                   className="pl-10 pr-4 py-3 rounded-xl sm:rounded-xl border-2 focus:border-mediumBlue outline-none bg-zinc-200 border-gray-600 w-full"
               />
             </div>
             <p className='pl-5 text-red-700 dark:text-red-500'>
-              {error.title}
+              {error.titre}
             </p>
           </div>
           <div className='text-sm sm:text-[17px] w-2xs sm:w-xs'>
@@ -134,8 +149,8 @@ export default function AddEvent() {
                 </span>
                 <textarea 
                   placeholder={t('description_placeholder')}
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
+                  value={event.description}
+                  onChange={(e) => setEvent(prev => ({...prev, description: e.target.value}))}
                   className="pl-10 pr-4 py-3 rounded-xl sm:rounded-xl border-2 focus:border-mediumBlue outline-none bg-zinc-200 border-gray-600 w-full"
                 />
               </>
@@ -153,14 +168,14 @@ export default function AddEvent() {
                 <CalendarClock size={20} />
               </span>
               <input 
-                type='date'
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
+                type="date"
+                value={event.date_debut ? new Date(event.date_debut).toISOString().slice(0,10) : ""}
+                onChange={(e) => setEvent(prev => ({ ...prev, date_debut: e.target.value }))}
                 className="pl-10 pr-4 py-3 rounded-xl sm:rounded-xl border-2 focus:border-mediumBlue outline-none bg-zinc-200 border-gray-600 w-full"
               />
             </div>
             <p className='pl-5 text-red-700 dark:text-red-500'>
-              {error.startDate}
+              {error.date_debut}
             </p>
           </div>
           <div className='text-sm sm:text-[17px] w-2xs sm:w-xs'>
@@ -173,13 +188,13 @@ export default function AddEvent() {
                 </span>
                 <input 
                   type='date'
-                  value={endDate}
-                  onChange={(e) => setEndDate(e.target.value)}
+                  value={event.date_fin ? new Date(event.date_fin).toISOString().slice(0,10) : ""}
+                  onChange={(e) => setEvent(prev => ({...prev, date_fin: e.target.value}))}
                   className="pl-10 pr-4 py-3 rounded-xl sm:rounded-xl border-2 focus:border-mediumBlue outline-none bg-zinc-200 border-gray-600 w-full"
                 />
             </div>
             <p className='pl-5 text-red-700 dark:text-red-500'>
-              {error.endDate}
+              {error.date_fin}
             </p>
           </div>
           <div className='text-sm sm:text-[17px] w-2xs sm:w-xs'>
@@ -189,20 +204,27 @@ export default function AddEvent() {
               </span>
               <input 
                 placeholder={t('place_placeholder')}
-                value={place}
-                onChange={(e) => setPlace(e.target.value)}
+                value={event.lieu}
+                onChange={(e) => setEvent(prev => ({...prev, lieu: e.target.value}))}
                 className="pl-10 pr-4 py-3 rounded-xl sm:rounded-xl border-2 focus:border-mediumBlue outline-none bg-zinc-200 border-gray-600 w-full"
               />
             </div>
             <p className='pl-5 text-red-700'>
-              {error.place}
+              {error.lieu}
             </p>
           </div>
-          <button className='text-base sm:text-[17px] font-semibold bg-blue-700 dark:bg-blue-900/90 dark:hover:bg-blue-800/80 w-2xs sm:w-xs py-3 text-white rounded-lg sm:rounded-xl mb-2 cursor-pointer hover:bg-blue-600'
-            onClick={add}
-          >
-            {t('add_event_button')}
-          </button>
+          <div className='grid grid-cols-1 sm:grid-cols-2 gap-5 w-full mt-8'>
+            <button className='text-base sm:text-[17px] font-semibold bg-gray-700 hover:bg-gray-800 dark:bg-gray-400 dark:text-gray-900 dark:hover:bg-gray-300 py-2 text-white rounded-lg sm:rounded-lg mb-2 cursor-pointer'
+              onClick={() => navigate(-1)}
+            >
+              {t('cancel_event_button')}
+            </button>
+            <button className='text-base sm:text-[17px] font-semibold bg-blue-700 dark:bg-blue-800 dark:hover:bg-blue-700  py-2 text-white rounded-lg sm:rounded-lg mb-2 cursor-pointer hover:bg-blue-600'
+              onClick={edit}
+            >
+              {t('edit_event_button')}
+            </button>
+          </div>
         </div>
       </div>
       <ToastContainer theme={theme} />
