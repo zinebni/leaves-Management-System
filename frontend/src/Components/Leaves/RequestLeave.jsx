@@ -289,6 +289,7 @@ export default function RequestLeave() {
           startAccessor="start"
           endAccessor="end"
           style={{ height: 600 }}
+          tooltipAccessor={(event) => `test`}
           view={view}
           onView={setView}
           date={date}

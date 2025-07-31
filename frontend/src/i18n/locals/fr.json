@@ -198,5 +198,21 @@
   "page_title_processed_requests": "Historique des demandes traitées",
   "no_longer_available": "RH non disponible",
   "no_matching_request": "Aucune demande ne correspond à ce critère",
-  "no_processed_requests": "Aucune demande de congé traitée pour le moment"
-}
+  "no_processed_requests": "Aucune demande de congé traitée pour le moment",
+  "add_event_title": "Ajouter un événement",
+  "event_title_placeholder": "Titre de l'événement",
+  "description_placeholder": "Description",
+  "place_placeholder": "Lieu",
+  "add_event_button": "Ajouter",
+  "add_event": "Ajouter un événement",
+  "event": {
+    "errors": {
+      "title_required": "Le titre est obligatoire.",
+      "start_date_required": "La date de début est obligatoire.",
+      "start_date_after_today": "La date de début doit être postérieure à aujourd'hui.",
+      "end_date_required": "La date de fin est obligatoire.",
+      "end_date_after_start": "La date de fin doit être égale ou postérieure à la date de début."
+    }
+  },
+  "event_added_successfully": "Événement ajouté avec succès."
+  }

@@ -198,5 +198,21 @@
   "page_title_processed_requests": "History of Processed Requests",
   "no_longer_available": "HR No longer available",
   "no_matching_request": "No matching request for this criteria",
-  "no_processed_requests": "No leave requests processed yet"
+  "no_processed_requests": "No leave requests processed yet",
+  "add_event_title": "Add event",
+  "event_title_placeholder": "Event title",
+  "description_placeholder": "Description",
+  "place_placeholder": "Location",
+  "add_event_button": "Add",
+  "add_event": "Add event",
+  "event": {
+    "errors": {
+      "title_required": "Title is required.",
+      "start_date_required": "Start date is required.",
+      "start_date_after_today": "Start date must be after today.",
+      "end_date_required": "End date is required.",
+      "end_date_after_start": "End date must be the same as or after the start date."
+    }
+  },
+  "event_added_successfully": "Event added successfully."
 }

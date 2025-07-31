@@ -76,7 +76,7 @@ export default function HandleRequests() {
               </p>
             ) :
             (
-              <div className="w-full max-w-6xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6" data-aos="zoom-in" delay='600'>
+              <div className="w-full max-w-6xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6" data-aos="zoom-in" data-aos-delay='600'>
                 {filteredRequests.map(request => {
                   return(
                     <div

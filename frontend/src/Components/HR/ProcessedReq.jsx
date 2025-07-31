@@ -161,7 +161,7 @@ export default function ProcessedReq() {
             {t('no_matching_request')}
           </p> : 
           (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl" data-aos='zoom-in'>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl" data-aos='zoom-in' data-aos-delay='600'>
               {
                 filterRequests.map(item => {
                   return (
