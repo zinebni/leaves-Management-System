@@ -219,7 +219,7 @@
   "event_list": "Event list",
   "no_events_message": "No event is currently available.",
   "description" : "Description",
-  "location": "Lieu",
+  "location": "Location",
   "not_available": "Not available",
   "search_by_title": "Search by title",
   "no_matching_events": "No matching events for this criteria.",
@@ -228,5 +228,10 @@
   "edit_event_title": "Edit Event",
   "edit_event_button": "Edit",
   "cancel_event_button": "Cancel",
-  "event_updated_successfully": "Event updated successfully."
+  "event_updated_successfully": "Event updated successfully.",
+  "event_details": "Event Details",
+  "Title": "Title",
+  "Description": "Description",
+  "Location": "Location",
+  "leave_request_info": "You already have a pending leave request. Please wait for it to be processed before submitting a new one. Its status is visible in the leave history (including pending request)."
 }

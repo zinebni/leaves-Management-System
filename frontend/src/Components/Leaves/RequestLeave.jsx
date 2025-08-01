@@ -32,7 +32,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import { CheckCircle } from 'lucide-react';
+import { CheckCircle, Info, X } from 'lucide-react';
 
 export default function RequestLeave() {
   const { t, i18n } = useTranslation(); // Hook de traduction
@@ -48,6 +48,36 @@ export default function RequestLeave() {
   const selectedDroit = droits.find(droit => droit.type === selectedLeave);
   const [error, setError] = useState('');
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
+  const [events, setEvents] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState({ description: '', lieu: '' });
+  const [pendingReq, setPendingReq] = useState([]);
+
+  // ...
+
+  const handleEventClick = (event) => {
+    setModalContent({
+      title: event.title,
+      description: event.description || t('no_description'),
+      location: event.lieu || t('no_location'),
+    });
+    setModalOpen(true);
+  };
+
+
+  const closeModal = () => setModalOpen(false);
+
+  const fetchEvents = async () => {
+    try{
+      const res = await axios.get('http://localhost:4000/api/evenement/getevenements', {
+        withCredentials: true
+      });
+      console.log(res.data.evenements);
+      setEvents(res.data.evenements);
+    } catch(error){
+      console.log(error);
+    }
+  }
 
 
   const fetchDroitsGonges = async () => {
@@ -58,8 +88,22 @@ export default function RequestLeave() {
     setDroits(res.data.droits);
   }
 
+  const fetchPendingReq = async () => {
+    try{
+      const res = await axios.get(`http://localhost:4000/api/conge/getLeaveRequestsByStatus/${'en attente'}`, {
+        withCredentials: true
+      })
+      console.log(res.data.conges);
+      setPendingReq(res.data.conges);
+    } catch(error){
+      console.log(error);
+    }
+  }
+
   useEffect(() => {
     fetchDroitsGonges();
+    fetchEvents();
+    fetchPendingReq();
     // Crée un nouvel observateur qui surveille les changements sur l'attribut 'class' de l'élément HTML <html>
     const observer = new MutationObserver(() => {
       // Récupère la classe actuelle de <html> (soit "light", "dark", etc.)
@@ -141,6 +185,7 @@ export default function RequestLeave() {
           progress: undefined,              // Laisse la progression automatique par défaut
           icon: <CheckCircle color="#2f51eb" />,
         });
+        fetchPendingReq();
       } catch(error) {
         console.log(error);
       }
@@ -226,6 +271,16 @@ export default function RequestLeave() {
     resource: 'holiday',                 // Tag optionnel pour indiquer que c’est un jour férié
   }));
 
+  const eventsFromBd = events.map(event => ({
+    title: event.titre,
+    start: new Date(event.date_debut),
+    end: new Date(event.date_fin),
+    allDay: true,
+    resource: 'custom',
+    description: event.description,
+    lieu: event.lieu,
+  }));
+
    // --- ÉTAPE 5: Créer un événement dynamique pour la sélection ---
   const selectionEvents = [];
   if (startDate) {
@@ -241,26 +296,29 @@ export default function RequestLeave() {
   }
 
   // Combiner les jours fériés et l'événement de sélection
-  const allEvents = [...holidayEvents, ...selectionEvents];
+  const allEvents = [...holidayEvents, ...selectionEvents, ...eventsFromBd];
 
   // --- ÉTAPE 6: Styliser l'événement de sélection ---
   const eventStyleGetter = (event) => {
-    // On ajoute le préfixe '!' aux classes qui sont en conflit.
-    let newClassName = 'p-1 text-base rounded-md  !border-none '; // Classes communes
+    let newClassName = 'p-1 text-base rounded-md !border-none';
 
     if (event.resource === 'selection') {
-      // Le '!' est la clé ici !
-      newClassName += '!bg-zinc-500/50 font-semibold !text-black hover:!bg-zinc-500/70 dark:!text-gray-200 dark:!bg-gray-500 dark:hover:!bg-gray-400';
+      newClassName += ' !bg-zinc-500/50 font-semibold !text-black hover:!bg-zinc-500/70 dark:!text-gray-200 dark:!bg-gray-500 dark:hover:!bg-gray-400';
     } else if (event.resource === 'holiday') {
-      newClassName += '!text-white !bg-mediumBlue hover:!bg-blue-800 dark:!bg-blue-900';
+      newClassName += ' !text-white !bg-mediumBlue hover:!bg-blue-800 dark:!bg-blue-900';
+    } else if (event.resource === 'custom') {
+      newClassName += ' !bg-blue-400 !text-white hover:!bg-blue-500 dark:!bg-blue-600 dark:hover:!bg-blue-500';
     } else {
-      newClassName += '!bg-gray-500';
+      newClassName += ' !bg-gray-500';
     }
 
     return {
       className: newClassName
     };
   };
+
+
+
    return (
     <div className="p-6">
       {/* Affichage des dates sélectionnées pour feedback utilisateur */}
@@ -289,7 +347,12 @@ export default function RequestLeave() {
           startAccessor="start"
           endAccessor="end"
           style={{ height: 600 }}
-          tooltipAccessor={(event) => `test`}
+          tooltipAccessor={(event) => {
+            let parts = [];
+            if (event.description) parts.push(`${t('description')} : ${event.description}`);
+            if (event.lieu) parts.push(`${t('location')} : ${event.lieu}`);
+            return parts.join('\n');
+          }}
           view={view}
           onView={setView}
           date={date}
@@ -307,12 +370,40 @@ export default function RequestLeave() {
           culture={i18n.language}
           
           // --- ÉTAPE 2 & 3: Activer la sélection et lier le gestionnaire ---
-          selectable={true}
+          selectable={!pendingReq.length && true}
           onSelectSlot={handleSelectSlot}
 
           // --- ÉTAPE 6: Appliquer le style conditionnel ---
           eventPropGetter={eventStyleGetter}
+          onSelectEvent={handleEventClick}
         />
+        {/* Modal simple */}
+        {modalOpen && (
+          <div
+            onClick={closeModal}
+            className="fixed inset-0 flex items-center justify-center z-50"
+          >
+            <div
+              onClick={e => e.stopPropagation()}
+              className="bg-white  dark:bg-blue-950 rounded-md border border-gray-700 dark:border-gray-500 p-2 max-w-sm mx-4 dark:text-white"
+            >
+              <div className='w-full flex justify-end'>
+                <button
+                  onClick={closeModal}
+                  className="text-black dark:text-white"
+                >
+                <X size={22}/>
+                </button>
+              </div>
+              <div className='py-2 px-4'>
+                <h3 className='text-lg font-semibold mb-2 text-mediumBlue dark:text-politeBlue'>{t('event_details')}</h3>
+                <p><span className='font-semibold text-gray-800 dark:text-gray-200'>{t('Title')}:</span> {modalContent.title}</p>
+                <p><span className='font-semibold text-gray-800 dark:text-gray-200'>{t('Description')}:</span> {modalContent.description}</p>
+                <p><span className='font-semibold text-gray-800 dark:text-gray-200'>{t('Location')}:</span> {modalContent.location}</p>
+              </div>
+            </div>
+          </div>
+        )}
         <p className='mt-3 text-red-500'>
           {error}
         </p>
@@ -344,52 +435,63 @@ export default function RequestLeave() {
             ) : null
           }
         </div>
-        <div className='grid grid-cols-1 sm:grid-cols-2 gap-10'>
-          <div className='flex justify-start items-start'>
-            <select 
-              id="leave-type-select"
-              value={selectedLeave}
-              onChange={(e) => setSelectedLeave(e.target.value)}
-              className='w-full px-4 py-2 border border-mediumBlue rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-mediumBlue focus:border-transparent text-gray-800 dark:text-white bg-white dark:bg-blue-950/80 placeholder-gray-400 transition duration-200 dark:border-slate-600'
-            >
-              {/* Option par défaut */}
-              <option value="" disabled>
-                {t('select_leave_type')}
-              </option>
-              
-              {/* Boucle sur les types de congé pour créer les options */}
-              {droits.map((droit) => (
-                <option key={droit._id} value={droit.type}>
-                  {t(`${droit.type}`)}
-                </option>
-              ))}
-            </select>
-          </div>
-          {
-            (selectedLeave && ((selectedDroit.hasOwnProperty('joursAutorisee') && (selectedDroit.joursAutorisee - selectedDroit.joursPris) > 0) || !selectedDroit.hasOwnProperty('joursAutorisee'))) ? (
-              <>
-                <input
-                  type='text'
+        {
+          pendingReq.length > 0 ? (
+            <div className="bg-blue-100 text-blue-800 dark:bg-blue-900/80 dark:text-blue-200 px-4 py-3 border border-blue-800 dark:border-blue-700 rounded-md mb-4 flex items-center gap-2">
+              <Info size={18} className="shrink-0" />
+              {t('leave_request_info')}
+            </div>
+          ): 
+          (
+            <div className='grid grid-cols-1 sm:grid-cols-2 gap-10'>
+              <div className='flex justify-start items-start'>
+                <select 
+                  id="leave-type-select"
+                  value={selectedLeave}
+                  onChange={(e) => setSelectedLeave(e.target.value)}
                   className='w-full px-4 py-2 border border-mediumBlue rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-mediumBlue focus:border-transparent text-gray-800 dark:text-white bg-white dark:bg-blue-950/80 placeholder-gray-400 transition duration-200 dark:border-slate-600'
-                  placeholder={t('comment_placeholder')}
-                  value={comment}
-                  onChange={(e) => setComment(e.target.value)}
-                />
-                <input
-                  type='file'
-                  className='w-full px-4 py-2 border border-mediumBlue rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-mediumBlue focus:border-transparent text-gray-800 dark:text-white bg-white dark:bg-blue-950/80 placeholder-gray-400 transition duration-200 dark:border-slate-600'
-                  // value={selectedFile} no for security
-                  onChange={(e) => setSelectedFile(e.target.files[0])}
-                />
-                <button className='text-base sm:text-lg font-semibold bg-mediumBlue dark:bg-darkBlue dark:hover:bg-blue-900 py-2 text-white rounded-lg sm:rounded-lg mb-2 cursor-pointer hover:bg-darkBlue h-full'
-                  onClick={() => addRequest(selectedDroit.joursAutorisee - selectedDroit.joursPris)}
                 >
-                  {t('send_request')}
-                </button>
-              </>
-            ) : null
-          }
-        </div>        
+                  {/* Option par défaut */}
+                  <option value="" disabled>
+                    {t('select_leave_type')}
+                  </option>
+                  
+                  {/* Boucle sur les types de congé pour créer les options */}
+                  {droits.map((droit) => (
+                    <option key={droit._id} value={droit.type}>
+                      {t(`${droit.type}`)}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              {
+                (selectedLeave && ((selectedDroit.hasOwnProperty('joursAutorisee') && (selectedDroit.joursAutorisee - selectedDroit.joursPris) > 0) || !selectedDroit.hasOwnProperty('joursAutorisee'))) ? (
+                  <>
+                    <input
+                      type='text'
+                      className='w-full px-4 py-2 border border-mediumBlue rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-mediumBlue focus:border-transparent text-gray-800 dark:text-white bg-white dark:bg-blue-950/80 placeholder-gray-400 transition duration-200 dark:border-slate-600'
+                      placeholder={t('comment_placeholder')}
+                      value={comment}
+                      onChange={(e) => setComment(e.target.value)}
+                    />
+                    <input
+                      type='file'
+                      className='w-full px-4 py-2 border border-mediumBlue rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-mediumBlue focus:border-transparent text-gray-800 dark:text-white bg-white dark:bg-blue-950/80 placeholder-gray-400 transition duration-200 dark:border-slate-600'
+                      // value={selectedFile} no for security
+                      onChange={(e) => setSelectedFile(e.target.files[0])}
+                    />
+                    <button className='text-base sm:text-lg font-semibold bg-mediumBlue dark:bg-darkBlue dark:hover:bg-blue-900 py-2 text-white rounded-lg sm:rounded-lg mb-2 cursor-pointer hover:bg-darkBlue h-full'
+                      onClick={() => addRequest(selectedDroit.joursAutorisee - selectedDroit.joursPris)}
+                    >
+                      {t('send_request')}
+                    </button>
+                  </>
+                ) : null
+              }
+            </div>   
+          )
+        }
+             
       </div>
       <ToastContainer theme={theme} />
     </div>

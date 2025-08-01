@@ -219,7 +219,7 @@
   "event_list": "Liste des événements",
   "no_events_message": "Aucun événement n’est actuellement disponible.",
   "description" : "Description",
-  "location": "Location",
+  "location": "Lieu",
   "not_available": "Non disponible",
   "search_by_title": "Rechercher par titre",
   "no_matching_events": "Aucun événement ne correspond à ce critère.",
@@ -228,6 +228,10 @@
   "edit_event_title": "Modifier l'événement",
   "edit_event_button": "Modifier",
   "cancel_event_button": "Annuler",
-  "event_updated_successfully": "Événement mis à jour avec succès."
-
+  "event_updated_successfully": "Événement mis à jour avec succès.",
+  "event_details": "Détails de l'événement",
+  "Title": "Titre",
+  "Description": "Description",
+  "Location": "Lieu",
+  "leave_request_info": "Vous avez déjà une demande de congé en attente. Veuillez attendre qu'elle soit traitée avant d'en soumettre une nouvelle. Son statut est visible dans l’historique des congés (y compris la demande en attente)."
 }
