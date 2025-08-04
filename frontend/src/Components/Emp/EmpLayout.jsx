@@ -4,12 +4,26 @@ import { Outlet, useParams } from 'react-router-dom';
 import NavBar from '../Organisation/NavBar';
 import SideBar from '../Organisation/SideBar';
 import socket from '../../socket.js';
+import axios from 'axios';
 
 export default function EmpLayout() {
   const { orgID , employeeId} = useParams();
   const [open, setOpen] = useState(false);
+  const [nbrNotif, setNbrNotif] = useState(0);
+
+  const fetchNbrNotif = async () => {
+    try{
+      const res = await axios.get('http://localhost:4000/api/notification/getNotifications', {
+        withCredentials: true
+      });
+      setNbrNotif(res.data.notifications.length);
+    } catch(error){
+      console.log(error);
+    }
+  }
 
   useEffect(() => {
+    fetchNbrNotif();
     if (employeeId) {
       socket.emit('joinRoom', employeeId);
       console.log('🧠 Socket connecté à la room :', employeeId);
@@ -25,6 +39,7 @@ export default function EmpLayout() {
     socket.on("newNotification", (data) => {
       console.log("🔔 Notification reçue :", data);
       // ici tu fais un setNotificationState ou toast ou autre
+      setNbrNotif(prev => prev + 1);
     });
 
     return () => {
@@ -42,7 +57,7 @@ export default function EmpLayout() {
     <div className="w-full h-screen overflow-hidden bg-gray-50 dark:bg-blue-950/89">
       {/* ✅ Navbar fixée en haut */}
       <div className="fixed top-0 left-0 right-0 z-50">
-        <NavBar name={orgID} open={open} setOpen={setOpen} />
+        <NavBar name={orgID} open={open} setOpen={setOpen} nbrNotif={nbrNotif} setNbrNotif={setNbrNotif}/>
       </div>
 
       {/* ✅ Layout en dessous de la navbar */}

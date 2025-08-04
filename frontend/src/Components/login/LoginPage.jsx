@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Building2, LockKeyhole, Mail } from 'lucide-react';
+import { Building2, CheckCircle, LockKeyhole, Mail } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -7,6 +7,8 @@ import * as THREE from 'three';
 import NET from 'vanta/dist/vanta.net.min';
 import LanguageSwitcher from '../../i18n/LanguageSwitcher';
 import WebSiteName from '../WebSiteName';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function LoginPage() {
   const {role} = useParams();
@@ -92,18 +94,33 @@ export default function LoginPage() {
             const res = await axios.post('http://localhost:4000/api/auth/login', user, {
               withCredentials: true
             });
-            
-            setMessage(t('login_success'));
-            setStatusMessage(true);
+            if(role === res.data.data.role){
+              setMessage(t('login_success'));
+              setStatusMessage(true);
 
-            // 2. Call OTP API (token is sent automatically via cookie)
-            const otpRes = await axios.post('http://localhost:4000/api/auth/send-verify-otp', null, {
-              withCredentials: true
-            });
+              // 2. Call OTP API (token is sent automatically via cookie)
+              const otpRes = await axios.post('http://localhost:4000/api/auth/send-verify-otp', null, {
+                withCredentials: true
+              });
 
-            setTimeout(() => {
-              navigate(`/Login/Otp/${role}`);
-            }, 2000);
+              setTimeout(() => {
+                navigate(`/Login/Otp/${role}`);
+              }, 2000);
+            } else {
+                toast.success(t('access_denied'), {
+                  position: "top-center",           // Positionne le toast en haut et centré horizontalement
+                  autoClose: 3000,                  // Ferme automatiquement le toast après 3000 ms (3 secondes)
+                  hideProgressBar: true,           // Affiche la barre de progression (temps restant)
+                  closeOnClick: true,               // Ferme le toast si l’utilisateur clique dessus
+                  pauseOnHover: true,               // Met en pause la fermeture automatique si la souris survole le toast
+                  draggable: true,                  // Permet de déplacer le toast avec la souris
+                  progress: undefined,              // Laisse la progression automatique par défaut
+                  icon: <CheckCircle color="#2f51eb" />,
+                });
+                setTimeout(() => {
+                    navigate(-1);
+                }, 3500);
+            }
 
           } catch (error) {
             console.error("Login or OTP failed:", error?.response?.data || error.message);
@@ -194,7 +211,7 @@ export default function LoginPage() {
 
       </div>
       </div>
-      
+      <ToastContainer />
     </div>
   )
 }

@@ -34,6 +34,7 @@ import ProcessedReq from './Components/HR/ProcessedReq';
 import AddEvent from './Components/Event/AddEvent';
 import DisplayEvent from './Components/Event/DisplayEvent';
 import EditEvent from './Components/Event/EditEvent';
+import NotificationPage from './Components/Notification/NotificationPage';
 
 function App() {
 
@@ -86,6 +87,7 @@ function App() {
           <Route index element={<DashbordEmp />} />
           <Route path='Request-leave' element={<RequestLeave />} />
           <Route path='Historic' element={<EmpHistoric />} />
+          <Route path='Notifications' element={<NotificationPage />} />
         </Route>
       </Routes>  
     </Router>

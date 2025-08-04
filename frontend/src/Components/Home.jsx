@@ -99,7 +99,7 @@ function Home() {
             </button>
             <button
               className="px-4 py-2 border border-gray-500 rounded font-semibold  cursor-pointer hover:bg-mediumBlue hover:text-white hover:border-none duration-500"
-              onClick={() => navigate('/Login/Employee')}
+              onClick={() => navigate('/Login/employe')}
             >
               {t('loginEmployee')}
             </button>

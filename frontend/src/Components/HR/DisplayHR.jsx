@@ -10,8 +10,7 @@ export default function DisplayHR() {
   const [hrs, setHrs] = useState([]);
   const {t} = useTranslation();
   const [isLoading, setIsLoading] = useState(true);
-  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light')
-  let delay = 0;
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
 
   const fetchHRs = async () => {
     try{

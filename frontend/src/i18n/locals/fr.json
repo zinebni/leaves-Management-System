@@ -118,9 +118,9 @@
   "annuel": "Congé annuel",
   "maternite": "Maternité",
   "paternite": "Paternité",
-  "sans_solde": "Congé sans solde",
-  "maladie": "Congé maladie",
-  "examen": "Congé pour examen",
+  "sans_solde": "Sans solde",
+  "maladie": "Maladie",
+  "examen": "Pour examen",
   "Décès (conjoint, parent, enfant)": "Décès (conjoint, parent, enfant)",
   "Décès (frère, sœur, beau-parent)": "Décès (frère, sœur, beau-parent)",
   "remaining_days": "Jours restants",
@@ -233,5 +233,13 @@
   "Title": "Titre",
   "Description": "Description",
   "Location": "Lieu",
-  "leave_request_info": "Vous avez déjà une demande de congé en attente. Veuillez attendre qu'elle soit traitée avant d'en soumettre une nouvelle. Son statut est visible dans l’historique des congés (y compris la demande en attente)."
+  "leave_request_info": "Vous avez déjà une demande de congé en attente. Veuillez attendre qu'elle soit traitée avant d'en soumettre une nouvelle. Son statut est visible dans l’historique des congés (y compris la demande en attente).",
+  "access_denied": "Vous n’êtes pas autorisé à vous connecter.",
+  "notification": {
+    "leave_approved": "Votre demande de congé <strong>{{type}}</strong> a été <strong>approuvée</strong>.",
+    "leave_rejected": "Votre demande de congé <strong>{{type}}</strong> a été <strong>refusée</strong>.",
+    "new_notification": "Notifications",
+    "no_notifications": "Aucune notification disponible."
+  },
+  "no_location": "Aucun lieu spécifié"
 }

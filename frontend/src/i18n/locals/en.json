@@ -233,5 +233,13 @@
   "Title": "Title",
   "Description": "Description",
   "Location": "Location",
-  "leave_request_info": "You already have a pending leave request. Please wait for it to be processed before submitting a new one. Its status is visible in the leave history (including pending request)."
+  "leave_request_info": "You already have a pending leave request. Please wait for it to be processed before submitting a new one. Its status is visible in the leave history (including pending request).",
+  "access_denied": "You are not authorized to connect.",
+  "notification": {
+    "leave_approved": "Your <strong>{{type}}</strong> leave request has been <strong>approved</strong>.",
+    "leave_rejected": "Your <strong>{{type}}</strong> leave request has been <strong>rejected</strong>.",
+    "new_notification": "Notifications",
+    "no_notifications": "No notifications available."
+  },
+  "no_location": "No location specified"
 }

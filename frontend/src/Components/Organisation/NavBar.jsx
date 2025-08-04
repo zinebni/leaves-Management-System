@@ -3,17 +3,19 @@ import WebSiteName from '../WebSiteName';
 import LanguageSwitcher from '../../i18n/LanguageSwitcher';
 import DarkMode from '../DarkMode'
 import { Menu } from 'lucide-react';
+import NotificationBell from '../Notification/NotificationBell';
 
-export default function NavBar({name, open, setOpen}) {
+export default function NavBar({name, open, setOpen, nbrNotif, setNbrNotif}) {
   return (
     <div className={`flex items-start sm:items-end justify-between px-5 sm:px-8 py-4 shadow-blue-50   ${open ? 'hidden' : ''}`}>
       <div className='sm:flex sm:items-end gap-5'>
         <WebSiteName />
-        <span className='text-lg font-semibold text-zinc-700 dark:text-zinc-300'>
+        <span className='text-lg font-semibold text-zinc-700 dark:text-zinc-300 hidden sm:block'>
           {name}
         </span>
       </div>
       <div className='flex items-center gap-3'>
+        <NotificationBell count={nbrNotif} setNbrNotif={setNbrNotif}/>
         <LanguageSwitcher />
         <DarkMode />
         <Menu className='block sm:hidden dark:text-gray-100'

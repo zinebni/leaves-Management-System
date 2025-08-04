@@ -56,12 +56,14 @@ export default function RequestLeave() {
   // ...
 
   const handleEventClick = (event) => {
-    setModalContent({
-      title: event.title,
-      description: event.description || t('no_description'),
-      location: event.lieu || t('no_location'),
-    });
-    setModalOpen(true);
+    if(event.moreDetails) {
+      setModalContent({
+        title: event.title,
+        description: event.description || t('no_description'),
+        location: event.lieu || t('no_location'),
+      });
+      setModalOpen(true);
+    }
   };
 
 
@@ -267,6 +269,7 @@ export default function RequestLeave() {
     title: t(`holidays.${holiday.key}`), // Traduction dynamique du titre
     start: holiday.start,       // Date de début
     end: holiday.end,         // Date de fin
+    moreDetails: true,
     allDay: true,                        // Événement sur toute la journée
     resource: 'holiday',                 // Tag optionnel pour indiquer que c’est un jour férié
   }));
@@ -275,6 +278,7 @@ export default function RequestLeave() {
     title: event.titre,
     start: new Date(event.date_debut),
     end: new Date(event.date_fin),
+    moreDetails: true,
     allDay: true,
     resource: 'custom',
     description: event.description,
@@ -290,6 +294,7 @@ export default function RequestLeave() {
       start: startDate,
       end: endDate ? addDays(endDate, 1) : startDate, // Si endDate est null, utilise startDate
       title: t('selection'), // Ajoutez "selection": "Votre Sélection" dans votre fichier de traduction
+      moreDetails: false,
       allDay: true,
       resource: 'selection', // Un identifiant pour le style
     });
@@ -370,7 +375,7 @@ export default function RequestLeave() {
           culture={i18n.language}
           
           // --- ÉTAPE 2 & 3: Activer la sélection et lier le gestionnaire ---
-          selectable={!pendingReq.length && true}
+          selectable={!pendingReq.length && { drag: true, longPress: true }}
           onSelectSlot={handleSelectSlot}
 
           // --- ÉTAPE 6: Appliquer le style conditionnel ---

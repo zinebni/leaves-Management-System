@@ -9,7 +9,6 @@ export default function HandleRequests() {
   const {t} = useTranslation();
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
-  let delay = 200;
 
   const fetchRequests = async () => {
     try{
