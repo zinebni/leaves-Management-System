@@ -53,8 +53,10 @@ function Home() {
       <div className="px-5 sm:px-10 py-5 flex justify-between items-center">
         <WebSiteName />
         <div className="flex items-center gap-2d sm:gap-5">
-          <button className="flex items-center gap-2 px-4 sm:px-5 py-1 sm:py-2 rounded-2xl font-semibold bg-lightBlue text-lg border-2 border-gray-600 cursor-pointer hover:bg-lightBlue/70 duration-500">
-            {t('explore')}
+          <button className="flex items-center gap-2 px-4 sm:px-5 py-1 sm:py-2 rounded-2xl font-semibold bg-lightBlue text-lg border-2 border-gray-600 cursor-pointer hover:bg-lightBlue/70 duration-500"
+            onClick={() => navigate('/Explore')}
+          >
+            {t('explore_button')}
             <MoveRight />
           </button>
           <LanguageSwitcher />

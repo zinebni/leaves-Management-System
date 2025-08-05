@@ -1,5 +1,5 @@
 {
-  "explore": "Explore RHPlus",
+  "explore_button": "Explore RHPlus",
   "headline": "Make managing your leaves easy",
   "subheadline": "Simplify leave tracking, centralize HR management, and improve transparency in your organization.",
   "createAccount": "🎯 Create an organization account",
@@ -241,5 +241,71 @@
     "new_notification": "Notifications",
     "no_notifications": "No notifications available."
   },
-  "no_location": "No location specified"
+  "no_location": "No location specified",
+  "forgot_password": "Forgot password?",
+  "reset": "Reset",
+  "reset_password": "New Password",
+  "otpRequired": "Verification code is required.",
+  "otpInvalid": "The verification code is incorrect.",
+  "otpPlaceholder": "Enter the verification code",
+  "passwordResetSuccess": "Password reset successfully. You'll be logged in automatically and redirected to the OTP page.",
+  "my_account": "My Account",
+  "Homme": "Male",
+  "Femme": "Female",
+  "dep": "Department",
+  "recruitment_date": "Recruitment Date",
+  "verification_email": "Verification Email",
+  "reset_password_button": "Reset Password",
+  "password_changed_successfully": "Your password has been changed successfully. You can now log in with your new password.",
+  "explore": {
+    "title": "Explore RHPlus",
+    "subtitle": "Welcome to RHPlus — your smart HR management platform.",
+    "org": {
+      "title": "For Organisations",
+      "departments": {
+        "title": "Create and manage departments",
+        "desc": "Organize your company into departments for better visibility and access control."
+      },
+      "hr": {
+        "title": "Add and manage HR managers",
+        "desc": "Assign HR managers to oversee employee operations within departments."
+      }
+    },
+    "hr": {
+      "title": "For HR Managers",
+      "employees": {
+        "title": "Add and manage employees",
+        "desc": "Register employees and assign them to departments."
+      },
+      "requests": {
+        "title": "Process leave requests",
+        "desc": "Handle pending leave requests submitted by employees."
+      },
+      "history": {
+        "title": "View request history",
+        "desc": "Keep track of all processed leave requests for auditing and transparency."
+      },
+      "events": {
+        "title": "Create and manage events",
+        "desc": "Schedule events and automatically sync them to employees’ calendars."
+      }
+    },
+    "emp": {
+      "title": "For Employees",
+      "request": {
+        "title": "Submit leave requests from the calendar",
+        "desc": "Intuitive calendar interface to request time off directly."
+      },
+      "history": {
+        "title": "View leave history",
+        "desc": "Track the status and history of all your leave requests."
+      },
+      "inform": {
+        "title": "Stay informed",
+        "desc": "Automatically see HR events on your calendar."
+      }
+    },
+    "footer": "RHPlus is simple, smart, and designed to streamline your HR management."
+  }
+
 }

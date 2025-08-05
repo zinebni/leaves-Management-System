@@ -57,7 +57,7 @@ export default function EditHR() {
       const res = await axios.put(`http://localhost:4000/api/employee/updateEmployeeById/${id}`, editInfo, {
         withCredentials: true
       });
-      toast.success(t('rh_edited_success'), {
+      t.success(t('rh_edited_success'), {
         position: "top-center",           // Positionne le toast en haut et centré horizontalement
         autoClose: 3000,                  // Ferme automatiquement le toast après 3000 ms (3 secondes)
         hideProgressBar: true,           // Affiche la barre de progression (temps restant)
@@ -103,7 +103,7 @@ export default function EditHR() {
       // Récupère la classe actuelle de <html> (soit "light", "dark", etc.)
       const htmlTheme = document.documentElement.className;
 
-      // Met à jour le state React 'theme' (ex: "dark" ou "light")
+      // Metoast à jour le state React 'theme' (ex: "dark" ou "light")
       // Si aucune classe n'est trouvée, on garde 'light' par défaut
       setTheme(htmlTheme || 'light');
     });

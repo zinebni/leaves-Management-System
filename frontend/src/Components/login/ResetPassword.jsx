@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { AlertCircle, Building2, CheckCircle, LockKeyhole, Mail } from 'lucide-react';
+import { AlertCircle, Building2, CheckCircle, Key, LockKeyhole, Mail, ShieldCheck } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -10,17 +10,19 @@ import WebSiteName from '../WebSiteName';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-export default function LoginPage() {
+export default function ResetPassword() {
   const {role} = useParams();
   const {t} = useTranslation();
   const vantaRef = useRef(null);
   const [vantaEffect, setVantaEffect] = useState(null);
-  const [email, setEmail] = useState('');
+  const [otp, setOtp] = useState('');
   const [password, setPassword]  = useState('');
+  const [confirmed, setConfirmed] = useState('');
   const [error, setError] = useState({});
   const navigate = useNavigate();
   const [message, setMessage] = useState('');
   const [statusMessage, setStatusMessage] = useState(true);
+  const email = localStorage.getItem('email') || '';
 
   useEffect(() => {
     if(!vantaEffect){
@@ -45,35 +47,24 @@ export default function LoginPage() {
     }
   },[]);
 
-  const resetPassword = async () => {
-    if (!email.trim()){
-      setError({email: t("emailRequired")});
-    } else {
-      setError({});
-      try{
-        const res = await axios.post('http://localhost:4000/api/auth/send-reset-otp', {
-          email
-        });
-        console.log(res);
-        localStorage.setItem('email', email);
-        navigate(`/ResetPassword/${role}`);
-      } catch(error) {
-        console.log(error);
-      }
-    }
-  }
-
-  const login = async () =>  {
+  const resetPassword = async () =>  {
     let isValid = true;
     const newError = {};
 
-    if (!email.trim()){
+    if (!otp.trim()){
       isValid = false;
-      newError.email = t("emailRequired");
+      newError.otp = t("otpRequired");
     }
     if(!password.trim()){
       isValid = false;
       newError.password = t("passwordRequired");
+    }
+    if(!confirmed.trim()){
+      isValid = false;
+      newError.confirmed = t("confirmedPasswordRequired");
+    } else if(password.trim() && password !== confirmed) {
+      isValid = false;
+      newError.confirmed = t("confirmedPasswordMismatch");
     }
 
     if(!isValid){
@@ -82,73 +73,61 @@ export default function LoginPage() {
     } 
 
     setError({});
-    if(role === 'Organisation'){
-      const org = {
+    const newPassword = {
+      email,
+      otp,
+      newpassword: password
+    };
+
+    try{
+      const res = await axios.post('http://localhost:4000/api/auth/reset-password', newPassword);
+      toast.success(t('passwordResetSuccess'), {
+        position: "top-center",           // Positionne le toast en haut et centré horizontalement
+        autoClose: 3000,                  // Ferme automatiquement le toast après 3000 ms (3 secondes)
+        hideProgressBar: true,           // Affiche la barre de progression (temps restant)
+        closeOnClick: true,               // Ferme le toast si l’utilisateur clique dessus
+        pauseOnHover: true,               // Met en pause la fermeture automatique si la souris survole le toast
+        draggable: true,                  // Permet de déplacer le toast avec la souris
+        progress: undefined,              // Laisse la progression automatique par défaut
+        icon: <CheckCircle color="#2f51eb" />,
+      });
+
+      const user = {
         email,
         password
       };
 
-      try {
-        const res = await axios.post('http://localhost:4000/api/auth/orgLogin', org, {
+      const resLogin = await axios.post('http://localhost:4000/api/auth/login', user, {
+        withCredentials: true
+      });
+      if(role === resLogin.data.data.role){
+        // 2. Call OTP API (token is sent automatically via cookie)
+        const otpRes = await axios.post('http://localhost:4000/api/auth/send-verify-otp', null, {
           withCredentials: true
         });
-        const orgID = res.data.orgID;
-        setMessage(t('loginSuccess'));
-        setStatusMessage(true);
-        setTimeout(() => { 
-          navigate(`/Organisation/${orgID}`);
-        }, 2000);
-      } catch (error) {
-        setMessage(t('invalidCredentials'));
+
+        setTimeout(() => {
+          navigate(`/Login/Otp/${role}`);
+        }, 4000);
+      } else {
+          toast.error(t('access_denied'), {
+            position: "top-center",           // Positionne le toast en haut et centré horizontalement
+            autoClose: 3000,                  // Ferme automatiquement le toast après 3000 ms (3 secondes)
+            hideProgressBar: true,           // Affiche la barre de progression (temps restant)
+            closeOnClick: true,               // Ferme le toast si l’utilisateur clique dessus
+            pauseOnHover: true,               // Met en pause la fermeture automatique si la souris survole le toast
+            draggable: true,                  // Permet de déplacer le toast avec la souris
+            progress: undefined,              // Laisse la progression automatique par défaut
+            icon: <AlertCircle color="#2f51eb" />,
+          });
+      }
+    } catch(error) {
+      console.log(error);
+      if(error.status === 400){
+        setMessage(t('otpInvalid'));
         setStatusMessage(false);
       }
-   } else {
-          const user = {
-            email,
-            password
-          };
-            try {
-            // 1. Login: Set token in HTTP-only cookie
-            const res = await axios.post('http://localhost:4000/api/auth/login', user, {
-              withCredentials: true
-            });
-            if(role === res.data.data.role){
-              setMessage(t('login_success'));
-              setStatusMessage(true);
-
-              // 2. Call OTP API (token is sent automatically via cookie)
-              const otpRes = await axios.post('http://localhost:4000/api/auth/send-verify-otp', null, {
-                withCredentials: true
-              });
-
-              setTimeout(() => {
-                navigate(`/Login/Otp/${role}`);
-              }, 2000);
-            } else {
-                toast.error(t('access_denied'), {
-                  position: "top-center",           // Positionne le toast en haut et centré horizontalement
-                  autoClose: 3000,                  // Ferme automatiquement le toast après 3000 ms (3 secondes)
-                  hideProgressBar: true,           // Affiche la barre de progression (temps restant)
-                  closeOnClick: true,               // Ferme le toast si l’utilisateur clique dessus
-                  pauseOnHover: true,               // Met en pause la fermeture automatique si la souris survole le toast
-                  draggable: true,                  // Permet de déplacer le toast avec la souris
-                  progress: undefined,              // Laisse la progression automatique par défaut
-                  icon: <AlertCircle color="#2f51eb" />,
-                });
-                setTimeout(() => {
-                    navigate(-1);
-                }, 3500);
-            }
-
-          } catch (error) {
-            console.error("Login or OTP failed:", error?.response?.data || error.message);
-            if(error.status === 401) {
-              setMessage(t('invalid_info'));
-              setStatusMessage(false);
-            }
-          }
     }
-    
 
   }
 
@@ -160,14 +139,14 @@ export default function LoginPage() {
         <WebSiteName />
         <LanguageSwitcher />
       </div>
-      <div className='flex justify-center items-center mt-15 sm:mt-20'>
+      <div className='flex justify-center items-center mt-10 sm:mt-15'>
         <div  className='bg-mediumBlue/50 border-2 border-mediumBlue/60 w-fit flex flex-col items-center justify-center px-5 sm:px-10 py-10 rounded-xl'
         onKeyDown={(e) => {
-          if (e.key === 'Enter') login();
+          if (e.key === 'Enter') resetPassword();
         }}
         tabIndex="0"> {/* nécessaire pour que le div puisse capter les touches */}
-        <h2 className='mb-8 font-bold text-[22px] text-gray-800'>
-          {t("login")}
+        <h2 className='mb-8 font-bold text-xl sm:text-[22px] text-gray-800'>
+          {t("reset_password")}
         </h2>
         <div className='text-base sm:text-[17px] w-3xs sm:w-xs mb-4'>
           {/* relative: This makes the container a reference point for absolutely positioning elements inside it. */}
@@ -180,18 +159,18 @@ export default function LoginPage() {
              */}
             <>
               <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600">
-                <Mail size={20} />
+                <ShieldCheck size={20} />
               </span>
               <input 
-                placeholder={t("emailPlaceholder")}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                placeholder={t("otpPlaceholder")}
+                value={otp}
+                onChange={(e) => setOtp(e.target.value)}
                 className="pl-10 pr-4 py-3 rounded-lg bg-zinc-200 border-2 border-mediumBlue w-full outline-none focus:border-gray-700 "
               />
             </>
           </div>
           <p className='pl-5 text-red-700'>
-            {error.email}
+            {error.otp}
           </p>
         </div>
         <div className='text-base text-[17px] w-3xs sm:w-xs mb-5'>
@@ -211,33 +190,31 @@ export default function LoginPage() {
             {error.password}
           </p>
         </div>
+        <div className='text-base text-[17px] w-3xs sm:w-xs mb-5'>
+          <div className="relative  mb-2">
+            <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600">
+              <LockKeyhole size={20} />
+            </span>
+            <input 
+              placeholder={t("confirmedPasswordPlaceholder")}
+              type='password'
+              value={confirmed}
+              onChange={(e) => setConfirmed(e.target.value)}
+              className="pl-10 pr-4 py-3 rounded-lg bg-zinc-200 border-2 border-mediumBlue w-full outline-none focus:border-gray-700 "
+            />
+          </div>
+          <p className='pl-5 text-red-700'>
+            {error.confirmed}
+          </p>
+        </div>
         <p className={`mb-5 text-base font-semibold ${statusMessage ? 'text-darkBlue' : 'text-red-600'}`}>
           {message}
         </p>
-        {
-          role !== 'Organisation' && (
-            <div className="w-3xs sm:w-xs text-right  mb-4">
-              <a
-                onClick={resetPassword}
-                className="text-blue-800 font-semibold hover:underline cursor-pointer"
-              >
-                {t('forgot_password')}
-              </a>
-            </div>
-          )
-        }
         <button className='text-base sm:text-lg font-semibold bg-mediumBlue w-3xs sm:w-xs py-2 text-white rounded-lg mb-2 cursor-pointer hover:bg-blue-600'
-          onClick={login}
+          onClick={resetPassword}
         >
-          {t("login")}
+          {t("reset")}
         </button>
-        {
-          role === 'Organisation' && (
-            <p className="mt-4 text-base text-gray-800">
-              {t("noAccount")} <a href="/Register/Organisation" className="text-mediumBlue underline hover:text-darkBlue">{t("register")}</a>
-            </p>
-          )
-        }
 
       </div>
       </div>

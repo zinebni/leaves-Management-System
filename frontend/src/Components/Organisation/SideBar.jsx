@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { MoveLeft, X } from 'lucide-react';
+import { MoveLeft, UserCog, X } from 'lucide-react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { NavLink, useNavigate } from 'react-router-dom';
@@ -43,10 +43,10 @@ export default function SideBar({ open, setOpen, links, gap}) {
 
       <div className={clsx("flex flex-col", {
         "gap-64": gap === 64,
-        "gap-72": gap === 72,
+        "gap-80": gap === 80,
         "gap-96": gap === 96,
         "gap-52": gap === 52,
-        "gap-36": gap === 36
+        "gap-20": gap === 20
       })}>
         <div>
           {links.map(({ to, icon, label, end = false }, i) => {
@@ -72,15 +72,31 @@ export default function SideBar({ open, setOpen, links, gap}) {
             )
           })}
         </div>
-        <button
-          onClick={moveToHome}
-          // The logout button is always "inactive", so we can use these classes
-          className={`${commonClasses} ${inactiveClasses}`}
-        >
-          <MoveLeft size={18} strokeWidth={2} />
-          {t('disconnect')}
-        </button>
-
+        <div className='w-full'>
+          <NavLink
+            to='MyAccount'
+            end={false}
+            // 4. Use the ternary operator to choose which classes to apply
+            className={({ isActive }) => 
+              `${commonClasses} ${isActive ? activeClasses : inactiveClasses}`
+            }
+          >
+            {({ isActive }) => (
+              <>
+                <UserCog size={18} strokeWidth={isActive ? 3 : 2} />
+                {t('my_account')}
+              </>
+            )}
+          </NavLink>
+          <button
+            onClick={moveToHome}
+            // The logout button is always "inactive", so we can use these classes
+            className={`${commonClasses} ${inactiveClasses} w-full cursor-pointer`}
+          >
+            <MoveLeft size={18} strokeWidth={2} />
+            {t('disconnect')}
+          </button>
+        </div>
       </div>
     </aside>
   );

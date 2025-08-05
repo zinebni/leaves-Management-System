@@ -64,13 +64,13 @@ export default function EmpLayout() {
       <div className="pt-[64px] flex h-full">
         {/* ✅ Sidebar : fixe à gauche sur desktop, en overlay sinon */}
         <div className="hidden sm:block fixed top-[64px] bottom-0 left-0 w-[250px] z-40">
-          <SideBar open={open} setOpen={setOpen} links={sidebarLinks} gap={64} />
+          <SideBar open={open} setOpen={setOpen} links={sidebarLinks} gap={80}/>
         </div>
 
         {/* ✅ Sidebar mobile : en overlay */}
         {open && (
           <div className="sm:hidden fixed inset-0 z-50 ">
-            <SideBar open={open} setOpen={setOpen} links={sidebarLinks} gap={64} />
+            <SideBar open={open} setOpen={setOpen} links={sidebarLinks} gap={80} />
           </div>
         )}
 

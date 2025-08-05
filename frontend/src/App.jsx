@@ -35,6 +35,10 @@ import AddEvent from './Components/Event/AddEvent';
 import DisplayEvent from './Components/Event/DisplayEvent';
 import EditEvent from './Components/Event/EditEvent';
 import NotificationPage from './Components/Notification/NotificationPage';
+import ResetPassword from './Components/login/ResetPassword';
+import MyAccount from './Components/login/MyAccount';
+import AccountResetPassword from './Components/login/AccountResetPassword';
+import ExploreRHPlus from './Components/ExploreRHPlus';
 
 function App() {
 
@@ -56,7 +60,9 @@ function App() {
         />
         <Route path='/Login/Otp/:role' element={<Otp />}
         />
-        <Route path='/Dashbord' element={<Dashbord />}
+        <Route path='/ResetPassword/:role' element={<ResetPassword />}
+        />
+        <Route path='/Explore' element={<ExploreRHPlus />}
         />
         {/* ORG Layout with sidebar/nav */}
         <Route path="/Organisation/:orgID" element={<OrgLayout />}>
@@ -68,7 +74,7 @@ function App() {
           <Route path="HRs/Edit/:id" element={<EditHR />} />
         </Route>
         {/* HR Layout with sidebar/nav */}
-        <Route path="/HR/:orgID" element={<HRLayout />}>
+        <Route path="/HR/:orgID/:rhId" element={<HRLayout />}>
           <Route index element={<DashbordHR />} />
           <Route path='Employee/Add' element={<AddEmp />}/>
           <Route path='Employees' element={<DisplayEmp  />}/>
@@ -81,6 +87,8 @@ function App() {
           <Route path="Event/Add" element={<AddEvent />} />
           <Route path="Events" element={<DisplayEvent />} />
           <Route path="Events/Edit/:id" element={<EditEvent />} />
+          <Route path='MyAccount' element={<MyAccount />} />
+          <Route path='MyAccount/ResetPassword' element={<AccountResetPassword />} />
         </Route>
         {/* Employee Layout with sidebar/nav */}
         <Route path='/Employee/:orgID/:employeeId' element={<EmpLayout />}>
@@ -88,6 +96,8 @@ function App() {
           <Route path='Request-leave' element={<RequestLeave />} />
           <Route path='Historic' element={<EmpHistoric />} />
           <Route path='Notifications' element={<NotificationPage />} />
+          <Route path='MyAccount' element={<MyAccount />} />
+          <Route path='MyAccount/ResetPassword' element={<AccountResetPassword />} />
         </Route>
       </Routes>  
     </Router>

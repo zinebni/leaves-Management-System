@@ -63,7 +63,7 @@ export default function Otp() {
         const employeeId = res.data.data.employee._id;
 
         if(role === 'RH'){
-          navigate(`/HR/${orgID}`);
+          navigate(`/HR/${orgID}/${employeeId}`);
         } else {
           navigate(`/Employee/${orgID}/${employeeId}`);
         }

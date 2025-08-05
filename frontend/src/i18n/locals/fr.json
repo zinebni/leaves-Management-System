@@ -1,5 +1,5 @@
 {
-  "explore": "Découvrir RHPlus",
+  "explore_button": "Découvrir RHPlus",
   "headline": "Facilitez la gestion de vos congés",
   "subheadline": "Simplifiez le suivi des congés, centralisez la gestion RH et améliorez la transparence dans votre organisation.",
   "createAccount": "🎯 Créer un compte organisation",
@@ -241,5 +241,70 @@
     "new_notification": "Notifications",
     "no_notifications": "Aucune notification disponible."
   },
-  "no_location": "Aucun lieu spécifié"
+  "no_location": "Aucun lieu spécifié",
+  "forgot_password": "Mot de passe oublié ?",
+  "reset": "Réinitialiser",
+  "reset_password": "Nouveau mot de passe",
+  "otpRequired": "Le code de vérification est requis.",
+  "otpInvalid": "Le code de vérification est incorrect.",
+  "otpPlaceholder": "Entrez le code de vérification",
+  "passwordResetSuccess": "Mot de passe réinitialisé avec succès. Vous serez connecté automatiquement et redirigé vers la page de vérification.",
+  "my_account": "Mon compte",
+  "Homme": "Homme",
+  "Femme": "Femme",
+  "dep": "Département",
+  "recruitment_date": "Date de recrutement",
+  "verification_email": "Email de vérification",
+  "reset_password_button": "Réinitialiser le mot de passe",
+  "password_changed_successfully": "Votre mot de passe a été modifié avec succès. Vous pouvez maintenant vous connecter avec votre nouveau mot de passe.",
+  "explore": {
+    "title": "Explorez RHPlus",
+    "subtitle": "Bienvenue sur RHPlus — votre plateforme intelligente de gestion RH.",
+    "org": {
+      "title": "Pour les organisations",
+      "departments": {
+        "title": "Créer et gérer les départements",
+        "desc": "Organisez votre entreprise en départements pour une meilleure visibilité et un meilleur contrôle d'accès."
+      },
+      "hr": {
+        "title": "Ajouter et gérer les RH",
+        "desc": "Assignez des responsables RH pour superviser les opérations des employés au sein des départements."
+      }
+    },
+    "hr": {
+      "title": "Pour les responsables RH",
+      "employees": {
+        "title": "Ajouter et gérer les employés",
+        "desc": "Enregistrez les employés et assignez-les à des départements."
+      },
+      "requests": {
+        "title": "Traiter les demandes de congé",
+        "desc": "Gérez les demandes de congé en attente soumises par les employés."
+      },
+      "history": {
+        "title": "Voir l’historique des demandes",
+        "desc": "Gardez une trace de toutes les demandes de congé traitées pour l’audit et la transparence."
+      },
+      "events": {
+        "title": "Créer et gérer les événements",
+        "desc": "Planifiez des événements et synchronisez-les automatiquement avec les calendriers des employés."
+      }
+    },
+    "emp": {
+      "title": "Pour les employés",
+      "request": {
+        "title": "Soumettre une demande de congé via le calendrier",
+        "desc": "Interface calendrier intuitive pour demander un congé facilement."
+      },
+      "history": {
+        "title": "Voir l’historique des congés",
+        "desc": "Suivez le statut et l’historique de toutes vos demandes de congé."
+      },
+      "inform": {
+        "title": "Restez informé",
+        "desc": "Voyez automatiquement les événements RH dans votre calendrier."
+      }
+    },
+    "footer": "RHPlus est simple, intelligent, et conçu pour simplifier la gestion RH."
+  }
 }
