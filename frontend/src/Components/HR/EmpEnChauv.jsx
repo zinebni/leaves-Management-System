@@ -100,8 +100,14 @@ export default function EmpEnChauv() {
                 <span className="filter brightness-125 dark:brightness-150">👤</span>
                 {item.employee?.prenom} {item.employee?.nom}
               </p>
+              
               <p className="text-gray-600 dark:text-gray-300">
-                📞 {item.employee.numeroDeContact}
+                <span className='mr-1'>📞</span>
+                {
+                  item.employee.numeroDeContact?
+                  item.employee.numeroDeContact
+                  : t('not_available')
+                }
               </p>
 
               {item.employee?.verificationEmail && (

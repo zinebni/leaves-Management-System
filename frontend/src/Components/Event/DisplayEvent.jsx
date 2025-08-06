@@ -13,6 +13,7 @@ export default function DisplayEvent() {
   const currentLanguage = i18n.language;
   const [title, setTitle] = useState('');
   const [date, setDate] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
   const navigate = useNavigate();
 
@@ -26,6 +27,7 @@ export default function DisplayEvent() {
     } catch(error){
       console.log(error);
     }
+    setIsLoading(false);
   }
 
   const filterEvents = events.filter(event => {
@@ -93,10 +95,19 @@ export default function DisplayEvent() {
     }
   }
 
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center text-gray-600 dark:text-gray-300 text-lg italic mt-10 gap-2">
+        <div className="w-5 h-5 border-4 border-gray-400 border-t-transparent rounded-full animate-spin" />
+        {t('loading')}
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col items-center mx-5 mb-10">
       <div className="w-full mb-8 flex justify-center items-center">
-        <h2 className="text-xl text-center sm:text-2xl font-bold text-mediumBlue dark:text-politeBlue mb-2 mt-5" data-aos="fade-right">
+        <h2 className="text-xl text-center sm:text-2xl font-bold text-mediumBlue dark:text-politeBlue mb-2" data-aos="fade-right">
           {t("event_list")}
         </h2>
       </div>
@@ -131,7 +142,7 @@ export default function DisplayEvent() {
             ) : 
             (
               <div data-aos='zoom-in' data-aos-delay='800'
-              className='grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-6'>
+              className='grid grid-cols-1 lg:grid-cols-3 gap-6 sm:px-10'>
                 {
                   filterEvents.map((event,i) => {
                     const start_date = new Date(event.date_debut).toLocaleDateString(currentLanguage);
@@ -141,7 +152,7 @@ export default function DisplayEvent() {
                         key={event._id}
                         className="relative bg-white dark:bg-blue-950/50 rounded-2xl shadow-md p-6 hover:shadow-lg transition-shadow space-y-3"
                       >
-                        <h3 className="text-lg font-semibold text-blue-800 dark:text-gray-200">
+                        <h3 className="text-[17px] sm:text-lg font-semibold text-blue-800 dark:text-gray-200">
                           {event.titre}
                         </h3>
 

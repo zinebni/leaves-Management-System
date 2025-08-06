@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { AlertCircleIcon, Check, CheckCircle, History, X } from 'lucide-react';
 import React, { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom';
 import { Trans, useTranslation } from 'react-i18next';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
@@ -121,7 +122,7 @@ export default function ReqDetails() {
               <li><strong>{t('fullname_label')}:</strong> {congeDetails.conge?.employee.prenom} {congeDetails.conge?.employee.nom}</li>
               <li><strong>{t('dept')}:</strong> {congeDetails.conge?.employee.department.nom}</li>
               <li><strong>{t('family_situation')}:</strong> {t(congeDetails.conge?.employee.situationFamiliale)}</li>
-              <li><strong>{t('child_number_placeholder')}:</strong> {congeDetails.conge?.employee.nombreEnfants}</li>
+              <li><strong>{congeDetails.conge?.employee.nombreEnfants && `${t('child_number_placeholder')}:`}</strong> {congeDetails.conge?.employee.nombreEnfants}</li>
             </ul>
           </div>
 
@@ -159,8 +160,8 @@ export default function ReqDetails() {
               }
             </ul>
           </div>
-          {previewVisible && (
-            <div className="fixed inset-0 z-[9999] bg-black/40 backdrop-blur-sm flex justify-center items-center">
+          {previewVisible && createPortal(
+            <div className="fixed inset-0 z-[9999] bg-black/40 backdrop-blur-md flex justify-center items-center">
               <div className="bg-lightBlue border-mediumBlue dark:bg-blue-900 border-2 dark:border-blue-950 p-4 rounded-xl shadow-2xl max-w-4xl w-full relative">
                 <iframe
                   src={`http://localhost:4000/uploads/${congeDetails.conge?.justificatif[0]}`}
@@ -175,8 +176,10 @@ export default function ReqDetails() {
                   <X size={20} strokeWidth={3}/>
                 </button>
               </div>
-            </div>
+            </div>,
+            document.body
           )}
+
         </div>
         <div className="max-w-5xl w-full px-6 mt-6 flex flex-col sm:flex-row gap-4">
           <div className='w-full sm:w-1/2'>

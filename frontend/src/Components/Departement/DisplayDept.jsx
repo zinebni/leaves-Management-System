@@ -1,7 +1,9 @@
 import axios from 'axios';
-import { Pencil, Trash } from 'lucide-react';
+import { CheckCircle, Pencil, Trash } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function DisplayDept({open}) {
   const [departments, setDepartments] = useState([]);
@@ -9,10 +11,32 @@ export default function DisplayDept({open}) {
   const [editable, setEditable] = useState(-1);
   const [newDept, setNewDept] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
+  
   useEffect(() => {
     fetchDepartments();
+    // Crée un nouvel observateur qui surveille les changements sur l'attribut 'class' de l'élément HTML <html>
+    const observer = new MutationObserver(() => {
+      // Récupère la classe actuelle de <html> (soit "light", "dark", etc.)
+      const htmlTheme = document.documentElement.className;
+
+      // Met à jour le state React 'theme' (ex: "dark" ou "light")
+      // Si aucune classe n'est trouvée, on garde 'light' par défaut
+      setTheme(htmlTheme || 'light');
+    });
+
+    // Lance l'observateur : on demande à observer les changements d'attributs sur <html>
+    observer.observe(document.documentElement, {
+      attributes: true,              // On veut écouter les changements d'attributs
+      attributeFilter: ['class'],   // Mais uniquement si c’est l’attribut "class" qui change
+    });
+
+    // Cette fonction de retour sera exécutée lorsque le composant est démonté
+    // Elle permet d'arrêter l'observation pour éviter des fuites mémoire
+    return () => observer.disconnect();
+
   }, []);
+
 
 
   const fetchDepartments = async () => {
@@ -38,6 +62,16 @@ export default function DisplayDept({open}) {
         prev.map(d => (d._id === id ? { ...d, ...updatedDept } : d))
       );
       setEditable(-1);
+      toast.success(t('departmentEditSuccess'), {
+        position: "top-center",           // Positionne le toast en haut et centré horizontalement
+        autoClose: 3000,                  // Ferme automatiquement le toast après 3000 ms (3 secondes)
+        hideProgressBar: true,           // Affiche la barre de progression (temps restant)
+        closeOnClick: true,               // Ferme le toast si l’utilisateur clique dessus
+        pauseOnHover: true,               // Met en pause la fermeture automatique si la souris survole le toast
+        draggable: true,                  // Permet de déplacer le toast avec la souris
+        progress: undefined,              // Laisse la progression automatique par défaut
+        icon: <CheckCircle color="#2f51eb" />,
+      });
     } catch (error) {
       console.error("Erreur lors de la mise à jour :", error);
     }
@@ -50,6 +84,16 @@ export default function DisplayDept({open}) {
     try {
       await axios.delete(`http://localhost:4000/api/department/deleteDepartment/${id}`, {
         withCredentials: true
+      });
+      toast.success(t('departmentDeleteSuccess'), {
+        position: "top-center",           // Positionne le toast en haut et centré horizontalement
+        autoClose: 3000,                  // Ferme automatiquement le toast après 3000 ms (3 secondes)
+        hideProgressBar: true,           // Affiche la barre de progression (temps restant)
+        closeOnClick: true,               // Ferme le toast si l’utilisateur clique dessus
+        pauseOnHover: true,               // Met en pause la fermeture automatique si la souris survole le toast
+        draggable: true,                  // Permet de déplacer le toast avec la souris
+        progress: undefined,              // Laisse la progression automatique par défaut
+        icon: <CheckCircle color="#2f51eb" />,
       });
       setDepartments(departments.filter((dept) => dept._id !== id));
     } catch (error) {
@@ -155,6 +199,7 @@ export default function DisplayDept({open}) {
 
         </div>
       )}
+      <ToastContainer theme={theme} />
     </div>
   );
 

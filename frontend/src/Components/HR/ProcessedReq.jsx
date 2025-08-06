@@ -87,7 +87,7 @@ export default function ProcessedReq() {
   }
 
   return (
-    <div className='flex flex-col justify-center items-center px-4'>
+    <div className='flex flex-col justify-center items-center mx-4'>
       {/* Title */}
       <div className='flex justify-center'>
         <h2 className="text-xl sm:text-2xl font-bold text-center text-mediumBlue dark:text-politeBlue mb-10" data-aos="fade-right">

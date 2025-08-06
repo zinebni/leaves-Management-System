@@ -51,8 +51,8 @@ export default function HandleRequests() {
   const filteredRequests = requests.filter( request => `${request.employee.prenom} ${request.employee.nom}`.toLowerCase().includes(searchTerm.toLowerCase()) );
 
   return (
-    <div className="flex flex-col items-center">
-      <h2 className="text-xl text-center sm:text-2xl font-bold text-mediumBlue dark:text-politeBlue mb-10 mt-5" data-aos='fade-right'>
+    <div className="flex flex-col items-center mx-4">
+      <h2 className="text-xl text-center sm:text-2xl font-bold text-mediumBlue dark:text-politeBlue mb-10" data-aos='fade-right'>
         {t("request_pending_title")}
       </h2>
       <input 

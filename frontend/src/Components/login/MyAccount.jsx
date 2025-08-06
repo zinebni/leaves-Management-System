@@ -8,7 +8,7 @@ import { User} from 'lucide-react';
 export default function MyAccount() {
 
   const {rhId, employeeId} = useParams();
-  const id = rhId ? rhId : employeeId;
+  const id = rhId || employeeId;
   const [info, setInfo] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const {t, i18n } = useTranslation();
@@ -73,10 +73,15 @@ export default function MyAccount() {
       <p><strong className='text-gray-700 dark:text-gray-300'>{t('first_name_placeholder')}:</strong> {info.prenom}</p>
       <p><strong className='text-gray-700 dark:text-gray-300'>{t('last_name_placeholder')}:</strong> {info.nom}</p>
       <p><strong className='text-gray-700 dark:text-gray-300'>Email:</strong> {info.email}</p>
-      <p><strong className='text-gray-700 dark:text-gray-300'>{t('contact_placeholder')}:</strong> {info.numeroDeContact}</p>
+        <p><strong className='text-gray-700 dark:text-gray-300'>{t('contact_placeholder')}:</strong> {info.numeroDeContact ? info.numeroDeContact : <span className='text-gray-600 italic'>{t('not_available')}</span>}</p>
       <p><strong className='text-gray-700 dark:text-gray-300'>{t('gender')}:</strong> {t(info.sexe)}</p>
       <p><strong className='text-gray-700 dark:text-gray-300'>{t('family_situation')}:</strong> {t(info.situationFamiliale.toLowerCase())}</p>
-      <p><strong className='text-gray-700 dark:text-gray-300'>{t('child_number_placeholder')}:</strong> {info.nombreEnfants}</p>
+      {
+        info.nombreEnfants &&
+        (
+          <p><strong className='text-gray-700 dark:text-gray-300'>{t('child_number_placeholder')}:</strong> {info.nombreEnfants}</p>
+        )
+      }
       <p><strong className='text-gray-700 dark:text-gray-300'>{t('recruitment_date')}:</strong> {new Date(info.dateDeRecrutement).toLocaleDateString(i18n.language)}</p>
       {info?.department && <p><strong className='text-gray-700 dark:text-gray-300'>{t('dep')}:</strong> {info.department?.nom}</p>}
       <p><strong className='text-gray-700 dark:text-gray-300'>{t('verification_email')}:</strong> {info.verificationEmail}</p>

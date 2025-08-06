@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { NavLink, useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 
-export default function SideBar({ open, setOpen, links, gap}) {
+export default function SideBar({ open, setOpen, links, gap, haveAccount}) {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
@@ -73,13 +73,14 @@ export default function SideBar({ open, setOpen, links, gap}) {
           })}
         </div>
         <div className='w-full'>
-          <NavLink
+          {haveAccount && <NavLink
             to='MyAccount'
             end={false}
             // 4. Use the ternary operator to choose which classes to apply
             className={({ isActive }) => 
               `${commonClasses} ${isActive ? activeClasses : inactiveClasses}`
             }
+            onClick={() => setOpen(false)}
           >
             {({ isActive }) => (
               <>
@@ -88,6 +89,7 @@ export default function SideBar({ open, setOpen, links, gap}) {
               </>
             )}
           </NavLink>
+          }
           <button
             onClick={moveToHome}
             // The logout button is always "inactive", so we can use these classes

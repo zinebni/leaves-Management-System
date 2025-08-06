@@ -147,13 +147,13 @@ export default function AddEmp() {
   }
 
   return (
-    <div className={`flex justify-center items-center`}>
+    <div className={`flex justify-center items-center w-full`}>
         <div className='bg-mediumBlue/60 dark:bg-blue-950/50 shadow-xl ring-1 ring-white/10  border-2 border-mediumBlue/50 w-fit flex flex-col items-center justify-center px-8 sm:px-10 py-5 sm:py-8 rounded-xl dark:border-none'>
         <h2 className='mb-8 font-bold text-lg sm:text-xl text-gray-900/95 dark:text-gray-200'>
           {t('add_emp_title')}
         </h2>
         <div className='grid grid-cols-1 sm:grid-cols-2 gap-5'>
-          <div className="text-sm sm:text-[17px] w-2xs sm:w-xs">
+          <div className="text-sm sm:text-[17px] w-full sm:w-xs">
             <div className="relative mb-2">
               <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600">
                 <Boxes size={20} />
@@ -173,7 +173,7 @@ export default function AddEmp() {
               {error.department}
             </p>
           </div>
-          <div className='text-sm sm:text-[17px] w-2xs sm:w-xs'>
+          <div className='text-sm sm:text-[17px] w-full sm:w-xs'>
             {/* relative: This makes the container a reference point for absolutely positioning elements inside it. */}
             <div className="relative mb-2">
               {/* 
@@ -198,7 +198,7 @@ export default function AddEmp() {
               {error.lastName}
             </p>
           </div>
-          <div className='text-sm sm:text-[17px] w-2xs sm:w-xs'>
+          <div className='text-sm sm:text-[17px] w-full sm:w-xs'>
             <div className="relative  mb-2">
               <span className="absolute left-3 pt-4 text-gray-600">
                 <User size={20} />
@@ -214,7 +214,7 @@ export default function AddEmp() {
               {error.firstName}
             </p>
           </div>
-          <div className='text-sm sm:text-[17px] w-2xs sm:w-xs'>
+          <div className='text-sm sm:text-[17px] w-full sm:w-xs'>
             {/* relative: This makes the container a reference point for absolutely positioning elements inside it. */}
             <div className="relative mb-2">
               {/* 
@@ -239,7 +239,7 @@ export default function AddEmp() {
               {error.email}
             </p>
           </div>
-          <div className="text-sm sm:text-[17px] w-2xs sm:w-xs pl-5">
+          <div className="text-sm sm:text-[17px] w-full sm:w-xs pl-5">
             <div className="flex items-center h-8/12 gap-6">
               <label className="block font-medium text-gray-800 dark:text-gray-200">{t('gender')}</label>
               <label className="inline-flex items-center">
@@ -270,7 +270,7 @@ export default function AddEmp() {
               {error.sexe}
             </p>
           </div>
-          <div className="text-sm sm:text-[17px] w-2xs sm:w-xs">
+          <div className="text-sm sm:text-[17px] w-full sm:w-xs">
             <div className="relative mb-2">
               <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600">
                 <User size={20} />
@@ -287,7 +287,7 @@ export default function AddEmp() {
               </select>
             </div>
           </div>
-          <div className='text-sm sm:text-[17px] w-2xs sm:w-xs'>
+          <div className='text-sm sm:text-[17px] w-full sm:w-xs'>
             <div className="relative mb-2">
               <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600">
                 <Phone size={20} />
@@ -303,7 +303,7 @@ export default function AddEmp() {
               {error.contact}
             </p>
           </div>
-          <div className='text-sm sm:text-[17px] w-2xs sm:w-xs'>
+          <div className='text-sm sm:text-[17px] w-full sm:w-xs'>
             <div className="relative mb-2">
               <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600">
                 <Hash size={20} />
@@ -320,7 +320,7 @@ export default function AddEmp() {
               {error.childNumber}
             </p>
           </div>
-          <div className='text-sm sm:text-[17px] w-2xs sm:w-xs'>
+          <div className='text-sm sm:text-[17px] w-full sm:w-xs'>
             <div className="relative mb-2">
               <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600">
                 <Calendar size={20} />
@@ -333,15 +333,15 @@ export default function AddEmp() {
               />
             </div>
           </div>
-          <button className='text-base sm:text-[17px] font-semibold bg-blue-700 dark:bg-blue-900/90 dark:hover:bg-blue-800/80 w-2xs sm:w-xs py-2 text-white rounded-lg sm:rounded-xl mb-2 cursor-pointer hover:bg-blue-600'
+          <p className={`text-base font-semibold ${statusMessage ? 'text-darkBlue' : 'text-red-600 dark:text-red-500'}`}>
+            {message}
+          </p>
+          <button className='text-base sm:text-[17px] font-semibold bg-blue-700 dark:bg-blue-900/90 dark:hover:bg-blue-800/80 w-full sm:w-xs py-2 text-white rounded-lg sm:rounded-xl mb-2 cursor-pointer hover:bg-blue-600'
             onClick={add}
           >
             {t('add_emp')}
           </button>
         </div>
-        <p className={`mb-3 mt-7 text-base font-semibold ${statusMessage ? 'text-darkBlue' : 'text-red-600 dark:text-red-500'}`}>
-          {message}
-        </p>
       </div>
       <ToastContainer theme={theme} />
     </div>

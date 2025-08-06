@@ -135,7 +135,7 @@ export default function Otp() {
         <LanguageSwitcher />
       </div>
       <div className="flex flex-col items-center mt-20 min-h-screen p-4">
-      <h2 className="text-2xl font-bold mb-10">{t('otp.enter')}</h2>
+      <h2 className="text-xl sm:text-2xl font-bold mb-10 text-center">{t('otp.enter')}</h2>
       <div className="flex gap-2 mb-8">
         {otp.map((digit, i) => (
           <input

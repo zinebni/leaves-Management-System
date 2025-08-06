@@ -89,7 +89,7 @@ export default function EditEmp() {
         icon: <CheckCircle color="#2f51eb" />,
       });
       setTimeout(() => {
-        navigate(`/HR/${orgID}/Employees`);
+        navigate(-1);
       }, (4000));
     } catch(error) {
       console.log(error);
@@ -143,7 +143,7 @@ export default function EditEmp() {
   }, [employee])
 
   return (
-    <div className={`flex justify-center items-center mt-5 sm:mt-5 mb-5`}>
+    <div className={`flex justify-center items-center mt-0 mb-5`}>
       <div className='bg-mediumBlue/60 dark:bg-blue-950/50 shadow-xl ring-1 ring-white/10  border-2 border-mediumBlue/50 w-fit flex flex-col items-center justify-center px-8 sm:px-10 py-5 sm:py-8 rounded-xl dark:border-none'>
         <div className='flex justify-start items-center w-full pl-5'>
           <p className="text-xl mb-5 font-bold text-gray-800 dark:text-gray-300">
@@ -252,7 +252,7 @@ export default function EditEmp() {
         </p>
         <div className='grid grid-cols-1 sm:grid-cols-2 gap-5 w-full mt-8'>
           <button className='text-base sm:text-[17px] font-semibold bg-gray-700 hover:bg-gray-800 dark:bg-gray-400 dark:text-gray-900 dark:hover:bg-gray-300 py-2 text-white rounded-lg sm:rounded-lg mb-2 cursor-pointer'
-            onClick={() => window.location.href = `/HR/${orgID}/Employees`}
+            onClick={() => navigate(-1)}
           >
             {t('cancel')}
           </button>

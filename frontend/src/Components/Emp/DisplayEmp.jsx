@@ -100,9 +100,9 @@ export default function DisplayEmp() {
   }
 
   return (
-    <div className="flex flex-col items-center  mx-5 mb-10 rounded-xl">
+    <div className="flex flex-col items-center  mx-5">
       <div className="w-full mb-8 flex justify-center items-center">
-        <h2 className="text-xl text-center sm:text-2xl font-bold text-mediumBlue dark:text-politeBlue mb-2 mt-5" data-aos="fade-right">
+        <h2 className="text-xl text-center sm:text-2xl font-bold text-mediumBlue dark:text-politeBlue mb-2" data-aos="fade-right">
           {t("emp_list_title")}
         </h2>
       </div>
@@ -157,13 +157,13 @@ export default function DisplayEmp() {
                   if (employeesInDept.length === 0) return null;
 
                   return (
-                    <div key={dept._id} className="w-full max-w-6xl mb-10">
+                    <div key={dept._id} className="w-full mb-10">
                       <div className="w-full flex justify-center">
-                        <h3 className="text-xl font-bold text-left text-darkBlue dark:text-lightBlue mb-4 italic">
+                        <h3 className="text-lg sm:text-xl font-bold  text-darkBlue dark:text-lightBlue mb-8 italic text-center">
                           {dept.nom}
                         </h3>
                       </div>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-6">
                         {employeesInDept.map((employee) => {
                           return(
                             <div

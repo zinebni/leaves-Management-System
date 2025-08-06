@@ -21,20 +21,20 @@ export default function HRLayout() {
     <div className="w-full h-screen overflow-hidden bg-gray-50 dark:bg-blue-950/89">
       {/* ✅ Navbar fixée en haut */}
       <div className="fixed top-0 left-0 right-0 z-50">
-        <NavBar name={orgID} open={open} setOpen={setOpen} />
+        <NavBar name={orgID} open={open} setOpen={setOpen} isNotif={false}/>
       </div>
 
       {/* ✅ Layout en dessous de la navbar */}
       <div className="pt-[64px] flex h-full">
         {/* ✅ Sidebar : fixe à gauche sur desktop, en overlay sinon */}
         <div className="hidden sm:block fixed top-[64px] bottom-0 left-0 w-[250px] z-40">
-          <SideBar open={open} setOpen={setOpen} links={sidebarLinks} gap={20} />
+          <SideBar open={open} setOpen={setOpen} links={sidebarLinks} gap={20} haveAccount={true}/>
         </div>
 
         {/* ✅ Sidebar mobile : en overlay */}
         {open && (
           <div className="sm:hidden fixed inset-0 z-50 ">
-            <SideBar open={open} setOpen={setOpen} links={sidebarLinks} gap={20} />
+            <SideBar open={open} setOpen={setOpen} links={sidebarLinks} gap={20} haveAccount={true}/>
           </div>
         )}
 

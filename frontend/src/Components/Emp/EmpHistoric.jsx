@@ -82,6 +82,7 @@ export default function EmpHistoric() {
         withCredentials: true
       });
       console.log(res);
+      fetchHistoric();
       toast.success(t('cancel_success'), {
         position: "top-center",           // Positionne le toast en haut et centré horizontalement
         autoClose: 3000,                  // Ferme automatiquement le toast après 3000 ms (3 secondes)
@@ -92,7 +93,6 @@ export default function EmpHistoric() {
         progress: undefined,              // Laisse la progression automatique par défaut
         icon: <CheckCircle color="#2f51eb" />,
       });
-      fetchHistoric();
     } catch(error){
       console.log(error);
     }

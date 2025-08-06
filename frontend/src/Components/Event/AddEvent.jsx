@@ -97,13 +97,13 @@ export default function AddEvent() {
 
 
   return(
-    <div className={`flex justify-center items-center`}>
+    <div className={`flex justify-center items-center w-full`}>
         <div className='bg-mediumBlue/60 dark:bg-blue-950/50 shadow-xl ring-1 ring-white/10  border-2 border-mediumBlue/50 w-fit flex flex-col items-center justify-center px-8 sm:px-10 py-5 sm:py-6 rounded-xl dark:border-none'>
         <h2 className='mb-8 font-bold text-lg sm:text-xl text-gray-900/95 dark:text-gray-200'>
           {t('add_event_title')}
         </h2>
         <div className='grid grid-cols-1 gap-2'>
-          <div className="text-sm sm:text-[17px] w-2xs sm:w-xs">
+          <div className="text-sm sm:text-[17px] w-full sm:w-xs">
             <div className="relative mb-2">
               <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600">
                 <Text size={20} />
@@ -119,7 +119,7 @@ export default function AddEvent() {
               {error.title}
             </p>
           </div>
-          <div className='text-sm sm:text-[17px] w-2xs sm:w-xs'>
+          <div className='text-sm sm:text-[17px] w-full sm:w-xs'>
             {/* relative: This makes the container a reference point for absolutely positioning elements inside it. */}
             <div className="relative mb-2">
               {/* 
@@ -144,7 +144,7 @@ export default function AddEvent() {
               {error.description}
             </p>
           </div>
-          <div className='text-sm sm:text-[17px] w-2xs sm:w-xs'>
+          <div className='text-sm sm:text-[17px] w-full sm:w-xs'>
               <label className="block mb-1 pl-2 text-gray-700 dark:text-gray-200 font-medium">
                 {t('start_date')}
               </label>
@@ -163,7 +163,7 @@ export default function AddEvent() {
               {error.startDate}
             </p>
           </div>
-          <div className='text-sm sm:text-[17px] w-2xs sm:w-xs'>
+          <div className='text-sm sm:text-[17px] w-full sm:w-xs'>
               <label className="block pl-2 mb-1 text-gray-700 dark:text-gray-200 font-medium">
                 {t('end_date')}
               </label>
@@ -182,7 +182,7 @@ export default function AddEvent() {
               {error.endDate}
             </p>
           </div>
-          <div className='text-sm sm:text-[17px] w-2xs sm:w-xs'>
+          <div className='text-sm sm:text-[17px] w-full sm:w-xs'>
             <div className="relative mb-2">
               <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600">
                 <MapPin size={20} />
@@ -198,7 +198,7 @@ export default function AddEvent() {
               {error.place}
             </p>
           </div>
-          <button className='text-base sm:text-[17px] font-semibold bg-blue-700 dark:bg-blue-900/90 dark:hover:bg-blue-800/80 w-2xs sm:w-xs py-3 text-white rounded-lg sm:rounded-xl mb-2 cursor-pointer hover:bg-blue-600'
+          <button className='text-base sm:text-[17px] font-semibold bg-blue-700 dark:bg-blue-900/90 dark:hover:bg-blue-800/80 w-full sm:w-xs py-2 sm:py-3 text-white rounded-lg sm:rounded-xl mb-2 cursor-pointer hover:bg-blue-600'
             onClick={add}
           >
             {t('add_event_button')}

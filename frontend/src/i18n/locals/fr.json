@@ -306,5 +306,7 @@
       }
     },
     "footer": "RHPlus est simple, intelligent, et conçu pour simplifier la gestion RH."
-  }
+  },
+  "departmentEditSuccess": "Département modifié avec succès",
+  "departmentDeleteSuccess": "Département supprimé avec succès"
 }
