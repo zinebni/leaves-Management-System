@@ -15,11 +15,7 @@ To address these limitations, we created RHPlus — an HR solution designed spec
 At the moment, the core functionality of our platform is leave management. However, RHPlus is scalable, and we plan to add more features in the future.
 ## 📸 Demo
 
-![Demo video](./Docs/RHPlusForGitHub.mp4)
-<video width="600" controls>
-  <source src="./Docs/RHPlusForGitHub.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+[Watch the full demo video](./Docs/RHPlusForGitHub.mp4)
 
 
 ## 🔧 Features
