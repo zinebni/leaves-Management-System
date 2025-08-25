@@ -87,16 +87,16 @@ At the moment, the core functionality of our platform is leave management. Howev
 ## ⚙️ Installation
 Clone the repository with 
 ```bash
-git clone https://github.com/your-username/leaves-Management-System.git
+git clone https://github.com/zinebni/leaves-Management-System.git
 ```
 And navigate to the project folder using 
 ```bash
-cd leaves-Management-System.
+cd leaves-Management-System
 ```
 
 Open two terminals: 
 
-In the first:
+In the first terminal:
 ```bash
 cd frontend
 npm install
