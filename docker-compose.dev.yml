@@ -1,0 +1,27 @@
+# Development Docker Compose - MongoDB only
+# Use this for local development with hot-reload on frontend/backend
+
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7
+    container_name: leaves-mongodb-dev
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data_dev:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
+    environment:
+      - MONGO_INITDB_DATABASE=gestion-conge
+
+volumes:
+  mongodb_data_dev:
+    name: leaves-mongodb-data-dev
+

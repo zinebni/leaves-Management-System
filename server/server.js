@@ -5,8 +5,8 @@ import 'dotenv/config';
 import express from 'express';
 import path from 'path';
 /*importation des tâches planifiées par cron*/ 
-import './cron/updateLeaveRights.js';
 import './cron/resetDroitsCongesTousLesEmployes.js';
+import './cron/updateLeaveRights.js';
 /*add importation socket.io for notification*/
 import http from 'http';
 import { Server } from 'socket.io';
@@ -16,25 +16,30 @@ import connectDB from './config/mongodb.js';
 
 //III-importation des routes----------------
 import authRouter from './routes/auth/authRoutes.js';
-import departmentRouter from './routes/departmentRoutes/departmentRoutes.js';
-import employeeRouter from './routes/employeeRoutes/employeeRoutes.js';
-import rhRouter from './routes/rhRoutes/rhRoutes.js';
-import droitCongeRouter from './routes/droitCongeRoutes/droitCongeRoutes.js';
 import congeRouter from './routes/conge/cogeRoutes.js';
+import departmentRouter from './routes/departmentRoutes/departmentRoutes.js';
+import droitCongeRouter from './routes/droitCongeRoutes/droitCongeRoutes.js';
+import employeeRouter from './routes/employeeRoutes/employeeRoutes.js';
 import evenementRouter from './routes/evenementRoutes/evenementRoutes.js';
 import notificationRouter from './routes/notificationRoutes/notificationRoutes.js';
+import rhRouter from './routes/rhRoutes/rhRoutes.js';
 
 //IV-initialisation  du server----------------
 const app =express();//initialiser l'application
 const port = process.env.PORT ||4050; //definir le port du server en faisant appel à la variable d'environnement
 connectDB(); //connecter la base de données
 
+/*Configuration CORS - adapte selon l'environnement*/
+const corsOrigin = process.env.CORS_ORIGIN || (process.env.NODE_ENV === 'production'
+  ? 'http://localhost:8080'  // Production: nginx serves frontend on port 8080
+  : 'http://localhost:5173'); // Development: Vite dev server
+
 /*initialisation de socket.io*/
 
 const server = http.createServer(app); // on crée un vrai serveur HTTP
 const io = new Server(server, {
-  cors: { 
-    origin: 'http://localhost:5173',  
+  cors: {
+    origin: corsOrigin,
     methods: ['GET', 'POST'] ,
     credentials: true}
 });
@@ -43,7 +48,7 @@ const io = new Server(server, {
 //V-activer les middlewares----------------
 app.use(express.json());//// Middleware pour lire du JSON dans les requêtes
 app.use(cookieParser());// Middleware pour gérer les cookies
-app.use(cors({origin: 'http://localhost:5173',credentials: true}));// Middleware pour permettre les requêtes cross-origin (React → Express) // l'option truepermet l’envoi des cookies/JWT
+app.use(cors({origin: corsOrigin, credentials: true}));// Middleware pour permettre les requêtes cross-origin (React → Express) // l'option truepermet l’envoi des cookies/JWT
 
 app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
