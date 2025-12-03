@@ -1,7 +1,7 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import api from '../../api';
 
 export default function HandleRequests() {
   const [requests, setRequests] = useState([]);
@@ -12,9 +12,7 @@ export default function HandleRequests() {
 
   const fetchRequests = async () => {
     try{
-      const res = await axios.get('http://localhost:4000/api/conge/getAllLeaveRequests', {
-        withCredentials:true
-      });
+      const res = await api.get('/api/conge/getAllLeaveRequests');
       console.log(res.data.conges);
       setRequests(res.data.conges);
       setIsLoading(false);

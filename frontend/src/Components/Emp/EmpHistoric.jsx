@@ -1,9 +1,9 @@
-import axios from 'axios';
 import { CheckCircle, X } from 'lucide-react';
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import api from '../../api';
 
 export default function EmpHistoric() {
 
@@ -21,9 +21,7 @@ export default function EmpHistoric() {
 
   const fetchHistoric = async () => {
     try{
-      const res = await axios.get('http://localhost:4000/api/conge/getMyLeaveRequests', {
-        withCredentials: true
-      });
+      const res = await api.get('/api/conge/getMyLeaveRequests');
       const historicData = res.data.conges.reverse();
       setHistoric(historicData);
       console.log(historicData);
@@ -40,9 +38,7 @@ export default function EmpHistoric() {
         const hrData = {}
         await Promise.all(
           hrIds.map(async (hrId) => {
-            const hrRes = await axios.get(`http://localhost:4000/api/employee/getEmployeeById/${hrId}`, {
-              withCredentials: true
-            });
+            const hrRes = await api.get(`/api/employee/getEmployeeById/${hrId}`);
             hrData[hrId] = hrRes.data.employee;
           })
         )
@@ -78,9 +74,7 @@ export default function EmpHistoric() {
     }
 
     try{
-      const res = await axios.delete(`http://localhost:4000/api/conge/cancelLeaveRequest/${id}`, {
-        withCredentials: true
-      });
+      const res = await api.delete(`/api/conge/cancelLeaveRequest/${id}`);
       console.log(res);
       fetchHistoric();
       toast.success(t('cancel_success'), {

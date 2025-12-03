@@ -1,8 +1,6 @@
-import Aos from 'aos';
-import axios from 'axios';
-import { set } from 'date-fns';
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import api from '../../api';
 
 export default function ProcessedReq() {
 
@@ -17,9 +15,7 @@ export default function ProcessedReq() {
 
   const fetchRequests = async () => {
     try{
-      const res = await axios.get('http://localhost:4000/api/conge/getLeaveRequests', {
-        withCredentials: true
-      });
+      const res = await api.get('/api/conge/getLeaveRequests');
       const processedReq = res.data.conges.reverse();
       console.log(processedReq);
       setRequests(processedReq);
@@ -34,9 +30,7 @@ export default function ProcessedReq() {
         const hrsData = {};
         await Promise.all(
           hrsId.map(async(id) => {
-            const hrRes = await axios.get(`http://localhost:4000/api/employee/getEmployeeById/${id}`, {
-              withCredentials: true
-            });
+            const hrRes = await api.get(`/api/employee/getEmployeeById/${id}`);
             hrsData[id] = hrRes.data.employee;
           })
         );

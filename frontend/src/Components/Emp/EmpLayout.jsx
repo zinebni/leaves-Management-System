@@ -1,10 +1,10 @@
-import { CalendarDays, History} from 'lucide-react';
-import React, { useEffect, useState } from 'react'
+import { CalendarDays, History } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { Outlet, useParams } from 'react-router-dom';
+import api from '../../api';
+import socket from '../../socket.js';
 import NavBar from '../Organisation/NavBar';
 import SideBar from '../Organisation/SideBar';
-import socket from '../../socket.js';
-import axios from 'axios';
 
 export default function EmpLayout() {
   const { orgID , employeeId} = useParams();
@@ -13,9 +13,7 @@ export default function EmpLayout() {
 
   const fetchNbrNotif = async () => {
     try{
-      const res = await axios.get('http://localhost:4000/api/notification/getNotifications', {
-        withCredentials: true
-      });
+      const res = await api.get('/api/notification/getNotifications');
       setNbrNotif(res.data.notifications.length);
     } catch(error){
       console.log(error);

@@ -1,4 +1,4 @@
-import axios from 'axios';
+import api from '../../api';
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -16,7 +16,7 @@ export default function MyAccount() {
 
   const moveToResetPassword = async (email) => {
    try{
-      const res = await axios.post('http://localhost:4000/api/auth/send-reset-otp', {
+      const res = await api.post('/api/auth/send-reset-otp', {
         email
       });
       console.log(res);
@@ -27,11 +27,9 @@ export default function MyAccount() {
     }
   }
 
-  const fetchPersonalInfo = async () => { 
+  const fetchPersonalInfo = async () => {
     try{
-      const res = await axios.get(`http://localhost:4000/api/employee/getEmployeeById/${id}`, {
-        withCredentials: true
-      });
+      const res = await api.get(`/api/employee/getEmployeeById/${id}`);
       console.log(res.data.employee);
       setInfo(res.data.employee);
     } catch(error) {

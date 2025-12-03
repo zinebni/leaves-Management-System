@@ -1,14 +1,14 @@
-import axios from 'axios';
-import { AlertCircle, Building2, CheckCircle, LockKeyhole, Mail } from 'lucide-react';
+import { AlertCircle, LockKeyhole, Mail } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
-import * as THREE from 'three';
-import NET from 'vanta/dist/vanta.net.min';
-import LanguageSwitcher from '../../i18n/LanguageSwitcher';
-import WebSiteName from '../WebSiteName';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import * as THREE from 'three';
+import NET from 'vanta/dist/vanta.net.min';
+import api from '../../api';
+import LanguageSwitcher from '../../i18n/LanguageSwitcher';
+import WebSiteName from '../WebSiteName';
 
 export default function LoginPage() {
   const {role} = useParams();
@@ -51,7 +51,7 @@ export default function LoginPage() {
     } else {
       setError({});
       try{
-        const res = await axios.post('http://localhost:4000/api/auth/send-reset-otp', {
+        const res = await api.post('/api/auth/send-reset-otp', {
           email
         });
         console.log(res);
@@ -89,9 +89,7 @@ export default function LoginPage() {
       };
 
       try {
-        const res = await axios.post('http://localhost:4000/api/auth/orgLogin', org, {
-          withCredentials: true
-        });
+        const res = await api.post('/api/auth/orgLogin', org);
         const orgID = res.data.orgID;
         setMessage(t('loginSuccess'));
         setStatusMessage(true);
@@ -109,17 +107,13 @@ export default function LoginPage() {
           };
             try {
             // 1. Login: Set token in HTTP-only cookie
-            const res = await axios.post('http://localhost:4000/api/auth/login', user, {
-              withCredentials: true
-            });
+            const res = await api.post('/api/auth/login', user);
             if(role === res.data.data.role){
               setMessage(t('login_success'));
               setStatusMessage(true);
 
               // 2. Call OTP API (token is sent automatically via cookie)
-              const otpRes = await axios.post('http://localhost:4000/api/auth/send-verify-otp', null, {
-                withCredentials: true
-              });
+              const otpRes = await api.post('/api/auth/send-verify-otp', null);
 
               setTimeout(() => {
                 navigate(`/Login/Otp/${role}`);

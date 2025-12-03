@@ -1,10 +1,10 @@
-import axios from 'axios';
 import { CheckCircle, LockKeyhole, ShieldCheck } from 'lucide-react';
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import api from '../../api';
 
 export default function AccountResetPassword() {
 
@@ -75,7 +75,7 @@ export default function AccountResetPassword() {
     };
 
     try{
-      const res = await axios.post('http://localhost:4000/api/auth/reset-password', newPassword);
+      const res = await api.post('/api/auth/reset-password', newPassword);
       toast.success(t('password_changed_successfully'), {
         position: "top-center",           // Positionne le toast en haut et centré horizontalement
         autoClose: 3000,                  // Ferme automatiquement le toast après 3000 ms (3 secondes)

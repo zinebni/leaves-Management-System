@@ -1,8 +1,8 @@
-import axios from 'axios';
 import { ChevronLeft } from 'lucide-react';
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
+import api from '../../api';
 
 export default function EmpEnChauv() {
   const {id} = useParams();
@@ -16,9 +16,7 @@ export default function EmpEnChauv() {
   // Fetch leave request and employees on leave
   const fetchDetails = async () => {
     try{
-      const res = await axios.get(`http://localhost:4000/api/conge/getLeaveRequestById/${id}`, {
-        withCredentials:true
-      });
+      const res = await api.get(`/api/conge/getLeaveRequestById/${id}`);
       const employees = res.data.data.employeesConge || [];
       setEmployesOnLeave(employees);
 
@@ -31,9 +29,7 @@ export default function EmpEnChauv() {
         //Promise.all is used to run multiple asynchronous operations in parallel instead of sequentially, which improves performance.
         await Promise.all(
           approverIds.map(async (approverId) => {
-            const rhRes = await axios.get(`http://localhost:4000/api/employee/getEmployeeById/${approverId}`, {
-              withCredentials: true
-            });
+            const rhRes = await api.get(`/api/employee/getEmployeeById/${approverId}`);
             approversData[approverId] = rhRes.data.employee;
           })
         );

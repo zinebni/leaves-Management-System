@@ -1,9 +1,9 @@
-import axios from 'axios';
 import { CheckCircle, Pencil, Trash } from 'lucide-react';
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import api from '../../api';
 
 export default function DisplayHR() {
 
@@ -14,9 +14,7 @@ export default function DisplayHR() {
 
   const fetchHRs = async () => {
     try{
-      const res = await axios.get('http://localhost:4000/api/employee/getEmployeesByRole/RH', {
-        withCredentials: true
-      })
+      const res = await api.get('/api/employee/getEmployeesByRole/RH');
       setHrs(res.data.employees.reverse());
       setIsLoading(false);
     } catch(error) {
@@ -53,9 +51,7 @@ export default function DisplayHR() {
     if(!confirm)
       return;
     try{
-      const res = await axios.delete(`http://localhost:4000/api/employee/deleteEmployeeById/${id}`, {
-        withCredentials: true
-      });
+      const res = await api.delete(`/api/employee/deleteEmployeeById/${id}`);
       fetchHRs();
       toast.success(t('hr_delete_success'), {
         position: "top-center",           // Positionne le toast en haut et centré horizontalement
