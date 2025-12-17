@@ -1,10 +1,10 @@
-import axios from 'axios';
 import { Boxes, CheckCircle, Hash, Mail, Phone, User } from 'lucide-react';
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import api from '../../api';
 
 export default function EditEmp() {
   const {id} = useParams();
@@ -25,9 +25,7 @@ export default function EditEmp() {
 
   const fetchDepts = async () => {
     try{
-      const res = await axios.get('http://localhost:4000/api/department/getDepartments', {
-        withCredentials: true
-      });
+      const res = await api.get('/api/department/getDepartments');
       setDepts(res.data.departments);
     } catch(error){
       console.log(error.message);
@@ -73,9 +71,7 @@ export default function EditEmp() {
     };
 
     try{
-      const res = await axios.put(`http://localhost:4000/api/employee/updateEmployeeById/${id}`, editInfo, {
-        withCredentials: true
-      });
+      const res = await api.put(`/api/employee/updateEmployeeById/${id}`, editInfo);
 
       console.log(res);
       toast.success(t('emp_edited_success'), {
@@ -98,9 +94,7 @@ export default function EditEmp() {
 
   const fetchEmployee = async () => {
     try{
-      const res = await axios.get(`http://localhost:4000/api/employee/getEmployeeById/${id}`, {
-        withCredentials:true
-      });
+      const res = await api.get(`/api/employee/getEmployeeById/${id}`);
 
       setEmployee(res.data.employee);
     } catch(error) {

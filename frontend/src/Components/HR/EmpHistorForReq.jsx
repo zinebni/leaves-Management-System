@@ -1,8 +1,8 @@
-import axios from 'axios';
 import { ChevronLeft } from 'lucide-react';
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom';
+import api from '../../api';
 
 export default function EmpHistorForReq() {
   const {id} = useParams();
@@ -15,9 +15,7 @@ export default function EmpHistorForReq() {
 
   const fetchHistoric = async () => {
     try {
-      const res = await axios.get(`http://localhost:4000/api/conge/getLeaveRequestById/${id}`, {
-        withCredentials: true
-      });
+      const res = await api.get(`/api/conge/getLeaveRequestById/${id}`);
 
       const historique = res.data.data.congesHistorique.reverse() || [];
       setHistoric(historique);
@@ -37,9 +35,7 @@ export default function EmpHistorForReq() {
 
         await Promise.all(
           actorIds.map(async (actorId) => {
-            const rhRes = await axios.get(`http://localhost:4000/api/employee/getEmployeeById/${actorId}`, {
-              withCredentials: true
-            });
+            const rhRes = await api.get(`/api/employee/getEmployeeById/${actorId}`);
             actorsData[actorId] = rhRes.data.employee;
           })
         );

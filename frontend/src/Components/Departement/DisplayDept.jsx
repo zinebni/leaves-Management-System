@@ -1,9 +1,9 @@
-import axios from 'axios';
 import { CheckCircle, Pencil, Trash } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import api from '../../api';
 
 export default function DisplayDept({open}) {
   const [departments, setDepartments] = useState([]);
@@ -41,9 +41,7 @@ export default function DisplayDept({open}) {
 
   const fetchDepartments = async () => {
     try {
-      const res = await axios.get('http://localhost:4000/api/department/getDepartments', {
-        withCredentials: true
-      });
+      const res = await api.get('/api/department/getDepartments');
       setDepartments(res.data.departments);
       setIsLoading(false)
     } catch (error) {
@@ -53,9 +51,7 @@ export default function DisplayDept({open}) {
 
   const handleUpdate = async (id, updatedDept) => {
     try {
-      await axios.put(`http://localhost:4000/api/department/updateDepartment/${id}`, updatedDept, {
-        withCredentials: true
-      });
+      await api.put(`/api/department/updateDepartment/${id}`, updatedDept);
       setNewDept({});
 
       setDepartments(prev =>
@@ -82,9 +78,7 @@ export default function DisplayDept({open}) {
     if (!confirmDelete) return;
 
     try {
-      await axios.delete(`http://localhost:4000/api/department/deleteDepartment/${id}`, {
-        withCredentials: true
-      });
+      await api.delete(`/api/department/deleteDepartment/${id}`);
       toast.success(t('departmentDeleteSuccess'), {
         position: "top-center",           // Positionne le toast en haut et centré horizontalement
         autoClose: 3000,                  // Ferme automatiquement le toast après 3000 ms (3 secondes)

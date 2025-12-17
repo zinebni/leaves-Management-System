@@ -1,10 +1,10 @@
-import axios from 'axios';
 import { CheckCircle, Hash, Mail, Phone, User } from 'lucide-react';
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import api from '../../api';
 
 export default function EditHR() {
   const {id} = useParams();
@@ -54,9 +54,7 @@ export default function EditHR() {
     };
 
     try{
-      const res = await axios.put(`http://localhost:4000/api/employee/updateEmployeeById/${id}`, editInfo, {
-        withCredentials: true
-      });
+      const res = await api.put(`/api/employee/updateEmployeeById/${id}`, editInfo);
       toast.success(t('rh_edited_success'), {
         position: "top-center",           // Positionne le toast en haut et centré horizontalement
         autoClose: 3000,                  // Ferme automatiquement le toast après 3000 ms (3 secondes)
@@ -77,9 +75,7 @@ export default function EditHR() {
 
   const fetchHR = async () => {
     try{
-      const res = await axios.get(`http://localhost:4000/api/employee/getEmployeeById/${id}`, {
-        withCredentials:true
-      });
+      const res = await api.get(`/api/employee/getEmployeeById/${id}`);
 
       setEmployee(res.data.employee);
     } catch(error) {

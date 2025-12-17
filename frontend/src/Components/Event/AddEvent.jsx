@@ -1,9 +1,9 @@
-import axios from 'axios';
 import { CalendarCheck, CalendarClock, CheckCircle, FileText, MapPin, Text } from 'lucide-react';
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import api from '../../api';
 
 export default function AddEvent() {
 
@@ -70,9 +70,7 @@ export default function AddEvent() {
     };
 
     try{
-      const res = await axios.post('http://localhost:4000/api/evenement/createevenement', event, {
-        withCredentials: true
-      });
+      const res = await api.post('/api/evenement/createevenement', event);
 
       setTitle('');
       setDescription('');

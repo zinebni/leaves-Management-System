@@ -1,10 +1,10 @@
-import axios from 'axios';
 import { CheckCircle, Pencil, Trash } from 'lucide-react';
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import api from '../../api';
 
 export default function DisplayEvent() {
 
@@ -19,9 +19,7 @@ export default function DisplayEvent() {
 
   const fetchEvents = async () => {
     try{
-      const res = await axios.get('http://localhost:4000/api/evenement/getevenements', {
-        withCredentials: true
-      });
+      const res = await api.get('/api/evenement/getevenements');
       const events = res.data.evenements.reverse();
       setEvents(events);
     } catch(error){
@@ -75,9 +73,7 @@ export default function DisplayEvent() {
     }
 
     try{
-      const res = await axios.delete(`http://localhost:4000/api/evenement/deleteevenement/${id}`, {
-        withCredentials: true
-      });
+      const res = await api.delete(`/api/evenement/deleteevenement/${id}`);
       console.log(res);
       fetchEvents();
       toast.success(t('event_deleted_successfully'), {

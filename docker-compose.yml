@@ -1,0 +1,82 @@
+# Production Docker Compose - Full stack
+
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7
+    container_name: leaves-mongodb
+    restart: unless-stopped
+    volumes:
+      - mongodb_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
+    environment:
+      - MONGO_INITDB_DATABASE=gestion-conge
+    networks:
+      - leaves-network
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: leaves-server
+    restart: unless-stopped
+    expose:
+      - "4000"
+    env_file:
+      - ./server/.env
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017/gestion-conge
+      - NODE_ENV=production
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:4000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    volumes:
+      - server_uploads:/app/uploads
+    networks:
+      - leaves-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: leaves-frontend
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    depends_on:
+      server:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:80/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - leaves-network
+
+volumes:
+  mongodb_data:
+    name: leaves-mongodb-data
+  server_uploads:
+    name: leaves-server-uploads
+
+networks:
+  leaves-network:
+    name: leaves-network
+    driver: bridge
+

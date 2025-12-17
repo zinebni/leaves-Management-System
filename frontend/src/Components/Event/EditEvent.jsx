@@ -1,10 +1,10 @@
-import axios from 'axios';
 import { CalendarCheck, CalendarClock, CheckCircle, FileText, MapPin, Text } from 'lucide-react';
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import api from '../../api';
 
 export default function EditEvent() {
 
@@ -23,9 +23,7 @@ export default function EditEvent() {
 
   const fetchEvent = async () => {
     try{
-      const res = await axios.get(`http://localhost:4000/api/evenement/getevenementById/${id}`, {
-        withCredentials: true
-      })
+      const res = await api.get(`/api/evenement/getevenementById/${id}`);
       const evt = res.data.evenement;
       setEvent({
         titre: evt.titre,
@@ -69,9 +67,7 @@ export default function EditEvent() {
     setError({});
 
     try{
-      const res = await axios.put(`http://localhost:4000/api/evenement/updateevenement/${id}`, event, {
-        withCredentials: true
-      });
+      const res = await api.put(`/api/evenement/updateevenement/${id}`, event);
       toast.success(t('event_updated_successfully'), {
         position: "top-center",
         autoClose: 3000,

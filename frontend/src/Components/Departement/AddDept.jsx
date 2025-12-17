@@ -1,9 +1,9 @@
-import axios from 'axios';
 import { Boxes, CheckCircle, FileText } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import api from '../../api';
 
 export default function AddDept() {
   const { t } = useTranslation();
@@ -47,7 +47,7 @@ export default function AddDept() {
     const dept = { nom: name, description };
     if(isValid){
       try{
-        const res = await axios.post('http://localhost:4000/api/department/createDepartment', dept, { withCredentials: true });
+        const res = await api.post('/api/department/createDepartment', dept);
         setName('');
         setDescription('');
         toast.success(t('deptAddSuccess'), {

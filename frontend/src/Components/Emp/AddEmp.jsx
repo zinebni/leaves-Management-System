@@ -1,9 +1,9 @@
-import axios from 'axios';
 import { Boxes, Calendar, CheckCircle, Hash, Mail, Phone, User } from 'lucide-react';
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import api from '../../api';
 
 export default function AddEmp() {
   const {t} = useTranslation();
@@ -24,9 +24,7 @@ export default function AddEmp() {
 
   const fetchDepts = async () => {
     try{
-      const res = await axios.get('http://localhost:4000/api/department/getDepartments', {
-        withCredentials: true
-      });
+      const res = await api.get('/api/department/getDepartments');
       setDepts(res.data.departments);
     } catch(error){
       console.log(error.message);
@@ -113,11 +111,7 @@ export default function AddEmp() {
 
     try{
       setError({});
-      const res = await axios.post('http://localhost:4000/api/auth/empRegister', emp,
-        {
-          withCredentials: true
-        }
-      );
+      const res = await api.post('/api/auth/empRegister', emp);
 
       setLastName('');
       setFirstName('');

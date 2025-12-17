@@ -1,12 +1,12 @@
-import React, { use, useEffect, useRef, useState } from 'react';
+import { Building2, FileText, LockKeyhole, Mail } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import * as THREE from 'three';
 import NET from 'vanta/dist/vanta.net.min';
-import WebSiteName from '../WebSiteName';
+import api from '../../api';
 import LanguageSwitcher from '../../i18n/LanguageSwitcher';
-import { useTranslation } from 'react-i18next';
-import { Mail, Building2, FileText, LockKeyhole } from 'lucide-react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import WebSiteName from '../WebSiteName';
 
 
 export default function RegisterOrg() {
@@ -93,7 +93,7 @@ export default function RegisterOrg() {
     };
 
     try{
-      const res = await axios.post('http://localhost:4000/api/auth/orgRegister', organisation);
+      const res = await api.post('/api/auth/orgRegister', organisation);
       if(res.status === 201){
         setMessage(t('orgAccountCreated'));
         setStatusMessage(true);
@@ -103,9 +103,7 @@ export default function RegisterOrg() {
         };
         //login
         try {
-          const res = await axios.post('http://localhost:4000/api/auth/orgLogin', org, {
-            withCredentials: true
-          });
+          const res = await api.post('/api/auth/orgLogin', org);
           const orgID = res.data.orgID;
           setTimeout(async () => {
             navigate(`/Organisation/${orgID}`);

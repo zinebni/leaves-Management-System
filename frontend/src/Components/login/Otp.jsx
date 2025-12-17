@@ -1,11 +1,11 @@
-import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate, useParams } from 'react-router-dom';
 import * as THREE from 'three';
 import NET from 'vanta/dist/vanta.net.min';
+import api from '../../api';
 import LanguageSwitcher from '../../i18n/LanguageSwitcher';
 import WebSiteName from '../WebSiteName';
-import { useNavigate, useParams } from 'react-router-dom';
 
 export default function Otp() {
   const {role} = useParams();
@@ -56,9 +56,7 @@ export default function Otp() {
     
 
       try {
-        const res = await axios.post('http://localhost:4000/api/auth/verify-account', {otp: finalOtp}, {
-          withCredentials: true
-        });
+        const res = await api.post('/api/auth/verify-account', {otp: finalOtp});
         const orgID = res.data.data.orgID;
         const employeeId = res.data.data.employee._id;
 

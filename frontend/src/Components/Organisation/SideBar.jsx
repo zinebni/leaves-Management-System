@@ -1,9 +1,8 @@
-import axios from 'axios';
+import clsx from 'clsx';
 import { MoveLeft, UserCog, X } from 'lucide-react';
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { NavLink, useNavigate } from 'react-router-dom';
-import clsx from 'clsx';
+import api from '../../api';
 
 export default function SideBar({ open, setOpen, links, gap, haveAccount}) {
   const { t } = useTranslation();
@@ -25,9 +24,7 @@ export default function SideBar({ open, setOpen, links, gap, haveAccount}) {
 
   const moveToHome = async () => {
     try{
-      const res = await axios.post('http://localhost:4000/api/auth/logout', {}, {
-        withCredentials: true
-      });
+      const res = await api.post('/api/auth/logout', {});
     } catch(error){
       console.log('Failed to logout : ' + error.message);
     }

@@ -1,7 +1,7 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import { Bell } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-import { Bell, CalendarDays } from 'lucide-react';
+import api from '../../api';
 
 export default function NotificationPage() {
   const [notifs, setNotifs] = useState([]);
@@ -10,17 +10,13 @@ export default function NotificationPage() {
 
   const fetchNotifs = async () => {
     try {
-      const res = await axios.get('http://localhost:4000/api/notification/getNotifications', {
-        withCredentials: true
-      });
+      const res = await api.get('/api/notification/getNotifications');
       const notifications = res.data.notifications || [];
       setNotifs(notifications);
       console.log(notifications);
       notifications.map(async (notif) => {
         try{
-          const res = await axios.put(`http://localhost:4000/api/notification/markNotificationAsRead/${notif._id}`, {}, {
-            withCredentials: true
-          });
+          const res = await api.put(`/api/notification/markNotificationAsRead/${notif._id}`, {});
           console.log(res);
         } catch(error){
           console.log(error);

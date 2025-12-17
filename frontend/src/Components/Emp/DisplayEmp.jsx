@@ -1,9 +1,9 @@
-import axios from 'axios';
 import { CheckCircle, Pencil, Trash } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import api from '../../api';
 
 export default function DisplayEmp() {
   const [employees, setEmployees] = useState([]);
@@ -16,9 +16,7 @@ export default function DisplayEmp() {
 
   const fetchDepts = async () => {
     try {
-      const res = await axios.get('http://localhost:4000/api/department/getDepartments', {
-        withCredentials: true
-      });
+      const res = await api.get('/api/department/getDepartments');
       setDepts(res.data.departments);
     } catch (error) {
       console.log(error.message);
@@ -27,9 +25,7 @@ export default function DisplayEmp() {
 
   const fetchEmployees = async () => {
     try {
-      const res = await axios.get('http://localhost:4000/api/employee/getEmployeesByRole/employe', {
-        withCredentials: true
-      });
+      const res = await api.get('/api/employee/getEmployeesByRole/employe');
       setEmployees(res.data.employees.reverse());
       setIsLoading(false);
     } catch (error) {
@@ -65,9 +61,7 @@ export default function DisplayEmp() {
     const confirmed = window.confirm(t('confirm_delete_emp'));
     if (!confirmed) return;
     try {
-      await axios.delete(`http://localhost:4000/api/employee/deleteEmployeeById/${id}`, {
-        withCredentials: true
-      });
+      await api.delete(`/api/employee/deleteEmployeeById/${id}`);
       fetchEmployees();
       toast.success(t('emp_delete_success'), {
         position: "top-center",           // Positionne le toast en haut et centré horizontalement

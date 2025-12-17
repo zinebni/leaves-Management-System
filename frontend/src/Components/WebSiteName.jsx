@@ -1,6 +1,5 @@
-import axios from 'axios';
-import React from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
+import api from '../api';
 
 export default function WebSiteName() {
 
@@ -8,9 +7,7 @@ export default function WebSiteName() {
 
   const moveToHome = async () => {
     try{
-      const res = await axios.post('http://localhost:4000/api/auth/logout', {}, {
-        withCredentials: true
-      });
+      const res = await api.post('/api/auth/logout', {});
       //Pour get on ne met pas {} car il n'attend pas de body mais pour put , post il faut {}
     } catch(error){
       console.log('Failed to logout : ' + error.message);

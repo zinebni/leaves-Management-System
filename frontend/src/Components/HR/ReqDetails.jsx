@@ -1,11 +1,11 @@
-import axios from 'axios';
 import { AlertCircleIcon, Check, CheckCircle, History, X } from 'lucide-react';
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Trans, useTranslation } from 'react-i18next';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import api from '../../api';
 
 export default function ReqDetails() {
   const {id,orgID} = useParams();
@@ -40,9 +40,7 @@ export default function ReqDetails() {
 
   const fetchDetails = async () => {
     try{
-      const res = await axios.get(`http://localhost:4000/api/conge/getLeaveRequestById/${id}`, {
-        withCredentials:true
-      });
+      const res = await api.get(`/api/conge/getLeaveRequestById/${id}`);
 
       console.log(res.data.data);
       setCongeDetails(res.data.data);
@@ -53,11 +51,7 @@ export default function ReqDetails() {
 
   const approve = async () => {
     try {
-      await axios.put(
-        `http://localhost:4000/api/conge/approveLeaveRequest/${congeDetails.conge._id}`,
-        {}, // no body needed
-        { withCredentials: true } // put this in config
-      );
+      await api.put(`/api/conge/approveLeaveRequest/${congeDetails.conge._id}`);
       toast.success(t('leave_approved_successfully'), {
         position: "top-center",           // Positionne le toast en haut et centré horizontalement
         autoClose: 3000,                  // Ferme automatiquement le toast après 3000 ms (3 secondes)
@@ -78,11 +72,7 @@ export default function ReqDetails() {
 
   const reject = async () => {
     try {
-      await axios.put(
-        `http://localhost:4000/api/conge/rejectLeaveRequest/${congeDetails.conge._id}`,
-        {}, // no body needed
-        { withCredentials: true } // put this in config
-      );
+      await api.put(`/api/conge/rejectLeaveRequest/${congeDetails.conge._id}`);
       toast.success(t('leave_rejected_successfully'), {
         position: "top-center",           // Positionne le toast en haut et centré horizontalement
         autoClose: 3000,                  // Ferme automatiquement le toast après 3000 ms (3 secondes)
@@ -164,7 +154,7 @@ export default function ReqDetails() {
             <div className="fixed inset-0 z-[9999] bg-black/40 backdrop-blur-md flex justify-center items-center">
               <div className="bg-lightBlue border-mediumBlue dark:bg-blue-900 border-2 dark:border-blue-950 p-4 rounded-xl shadow-2xl max-w-4xl w-full relative">
                 <iframe
-                  src={`http://localhost:4000/uploads/${congeDetails.conge?.justificatif[0]}`}
+                  src={`${import.meta.env.VITE_API_URL || ''}/uploads/${congeDetails.conge?.justificatif[0]}`}
                   className="w-full h-[500px] rounded-xl"
                   title="Justificatif"
                 />

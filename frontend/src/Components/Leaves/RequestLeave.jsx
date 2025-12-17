@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 // Importation des outils nécessaires de react-big-calendar et date-fns
+import { addDays, format, getDay, parse, startOfWeek } from 'date-fns';
 import { Calendar, dateFnsLocalizer, Views } from 'react-big-calendar';
-import { format, parse, startOfWeek, getDay, addDays } from 'date-fns';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 // `format`: formate un objet Date en chaîne lisible selon un format donné
@@ -22,17 +22,17 @@ import 'react-toastify/dist/ReactToastify.css';
 
 
 // Importation des locales françaises et anglaises
-import fr from 'date-fns/locale/fr';
 import en from 'date-fns/locale/en-US';
+import fr from 'date-fns/locale/fr';
 
 // Style par défaut de react-big-calendar
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 // Importation de i18n pour la traduction
-import { useTranslation } from 'react-i18next';
-import axios from 'axios';
-import { useParams } from 'react-router-dom';
 import { CheckCircle, Info, X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { useParams } from 'react-router-dom';
+import api from '../../api';
 
 export default function RequestLeave() {
   const { t, i18n } = useTranslation(); // Hook de traduction
@@ -71,9 +71,7 @@ export default function RequestLeave() {
 
   const fetchEvents = async () => {
     try{
-      const res = await axios.get('http://localhost:4000/api/evenement/getevenements', {
-        withCredentials: true
-      });
+      const res = await api.get('/api/evenement/getevenements');
       console.log(res.data.evenements);
       setEvents(res.data.evenements);
     } catch(error){
@@ -83,18 +81,14 @@ export default function RequestLeave() {
 
 
   const fetchDroitsGonges = async () => {
-    const res = await axios.get(`http://localhost:4000/api/droits/getLeaveRightsByEmployee/${employeeId}`, {
-      withCredentials: true
-    });
+    const res = await api.get(`/api/droits/getLeaveRightsByEmployee/${employeeId}`);
 
     setDroits(res.data.droits);
   }
 
   const fetchPendingReq = async () => {
     try{
-      const res = await axios.get(`http://localhost:4000/api/conge/getLeaveRequestsByStatus/${'en attente'}`, {
-        withCredentials: true
-      })
+      const res = await api.get(`/api/conge/getLeaveRequestsByStatus/${'en attente'}`);
       console.log(res.data.conges);
       setPendingReq(res.data.conges);
     } catch(error){
@@ -170,8 +164,7 @@ export default function RequestLeave() {
 
 
       try{
-        const res = await axios.post('http://localhost:4000/api/conge/createLeaveRequest', formData, {
-          withCredentials:true,
+        const res = await api.post('/api/conge/createLeaveRequest', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           }
