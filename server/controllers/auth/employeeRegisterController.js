@@ -9,8 +9,10 @@ import { createDefaultLeaveRights } from '../leaveControllers/droitCongeControll
 //Employee register 
 
 export const empRegister = async (req, res) => {
-  const { nom, prenom, verificationEmail, department, sexe, numeroDeContact, dateDeRecrutement, situationFamiliale, nombreEnfants } = req.body;
 
+  //colect champs
+  const { nom, prenom, verificationEmail, department, sexe, numeroDeContact, dateDeRecrutement, situationFamiliale, nombreEnfants } = req.body;
+  //verify champs 
   if (!nom || !prenom  ||!verificationEmail|| !department || !sexe) {
     return res.status(400).json({
       success: false,
@@ -23,7 +25,7 @@ export const empRegister = async (req, res) => {
     const randomPassword = Math.random().toString(36).slice(-8);
     const hashedPassword = await bcrypt.hash(randomPassword, 10);
 
-    //creer email
+    //creer email par uuid pour garantire l'unicité du email
     const email = `${nom.toLowerCase()}.${prenom.toLowerCase()}.${uuidv4().slice(0, 3)}@employe.org`;
     
     // Vérifier si l'employé existe déjà

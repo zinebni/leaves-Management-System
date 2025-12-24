@@ -18,7 +18,7 @@ const organisationSchema = new mongoose.Schema(
     password:{type:String, required:true},
     role:{
         type:String,
-        enum:["org"]
+        enum:["org"] //focé
     }
     },
     //b-ajouter les timestamps pour la creation et la modification automatisée(createdAt et updatedAt)

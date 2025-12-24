@@ -47,7 +47,7 @@ export const login = async (req,res)=>{
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',
                 sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-                maxAge: 7*24*60*60*1000
+                maxAge: 7*24*60*60*1000 //7j
             });
         
         //6-envoyer la reponse (ou le role de l'utilisateur pour le rederiger correctement vers la page RH ou employee dans le frontend)
