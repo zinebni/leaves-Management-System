@@ -239,7 +239,8 @@
     "leave_approved": "Votre demande de congé <strong>{{type}}</strong> a été <strong>approuvée</strong>.",
     "leave_rejected": "Votre demande de congé <strong>{{type}}</strong> a été <strong>refusée</strong>.",
     "new_notification": "Notifications",
-    "no_notifications": "Aucune notification disponible."
+    "no_notifications": "Aucune notification disponible.",
+    "new_notification_received": "Nouvelle notification reçue!"
   },
   "no_location": "Aucun lieu spécifié",
   "forgot_password": "Mot de passe oublié ?",

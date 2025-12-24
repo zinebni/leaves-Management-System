@@ -56,7 +56,10 @@ All services run in Docker containers.
 ```bash
 docker-compose up -d --build
 ```
-
+### Initialiser la base de données
+```bash
+docker-compose exec leaves-server  seeds/seeder.js
+```
 ### Access the Application:
 - **Frontend**: http://localhost:8080
 - **API**: http://localhost:8080/api/

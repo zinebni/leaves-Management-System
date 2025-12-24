@@ -239,7 +239,8 @@
     "leave_approved": "Your <strong>{{type}}</strong> leave request has been <strong>approved</strong>.",
     "leave_rejected": "Your <strong>{{type}}</strong> leave request has been <strong>rejected</strong>.",
     "new_notification": "Notifications",
-    "no_notifications": "No notifications available."
+    "no_notifications": "No notifications available.",
+    "new_notification_received": "New notification received!"
   },
   "no_location": "No location specified",
   "forgot_password": "Forgot password?",

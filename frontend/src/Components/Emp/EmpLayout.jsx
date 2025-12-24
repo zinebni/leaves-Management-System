@@ -1,6 +1,9 @@
 import { CalendarDays, History } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Outlet, useParams } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import api from '../../api';
 import socket from '../../socket.js';
 import NavBar from '../Organisation/NavBar';
@@ -10,6 +13,8 @@ export default function EmpLayout() {
   const { orgID , employeeId} = useParams();
   const [open, setOpen] = useState(false);
   const [nbrNotif, setNbrNotif] = useState(0);
+  const [isShaking, setIsShaking] = useState(false);
+  const { t } = useTranslation();
 
   const fetchNbrNotif = async () => {
     try{
@@ -36,14 +41,35 @@ export default function EmpLayout() {
   useEffect(() => {
     socket.on("newNotification", (data) => {
       console.log("🔔 Notification reçue :", data);
-      // ici tu fais un setNotificationState ou toast ou autre
+
+      // Incrementer le compteur de notifications
       setNbrNotif(prev => prev + 1);
+
+      // Déclencher l'animation shake
+      setIsShaking(true);
+      setTimeout(() => setIsShaking(false), 1000);
+
+      // Afficher un toast de notification
+      toast.info(
+        <div className="flex items-center gap-2">
+          <span>🔔</span>
+          <span>{t('notification.new_notification_received') || 'Nouvelle notification reçue!'}</span>
+        </div>,
+        {
+          position: "top-right",
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        }
+      );
     });
 
     return () => {
       socket.off("newNotification"); // propre : évite doublons si le layout est rechargé
     };
-  }, []);
+  }, [t]);
 
 
   const sidebarLinks = [
@@ -53,9 +79,12 @@ export default function EmpLayout() {
 
   return (
     <div className="w-full h-screen overflow-hidden bg-gray-50 dark:bg-blue-950/89">
+      {/* Toast container pour les notifications */}
+      <ToastContainer />
+
       {/* ✅ Navbar fixée en haut */}
       <div className="fixed top-0 left-0 right-0 z-50">
-        <NavBar name={orgID} open={open} setOpen={setOpen} nbrNotif={nbrNotif} setNbrNotif={setNbrNotif} isNotif={true}/>
+        <NavBar name={orgID} open={open} setOpen={setOpen} nbrNotif={nbrNotif} setNbrNotif={setNbrNotif} isNotif={true} isShaking={isShaking}/>
       </div>
 
       {/* ✅ Layout en dessous de la navbar */}

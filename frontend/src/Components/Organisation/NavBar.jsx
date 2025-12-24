@@ -1,11 +1,10 @@
-import React from 'react'
-import WebSiteName from '../WebSiteName';
-import LanguageSwitcher from '../../i18n/LanguageSwitcher';
-import DarkMode from '../DarkMode'
 import { Menu } from 'lucide-react';
+import LanguageSwitcher from '../../i18n/LanguageSwitcher';
+import DarkMode from '../DarkMode';
 import NotificationBell from '../Notification/NotificationBell';
+import WebSiteName from '../WebSiteName';
 
-export default function NavBar({name, open, setOpen, nbrNotif, setNbrNotif, isNotif}) {
+export default function NavBar({name, open, setOpen, nbrNotif, setNbrNotif, isNotif, isShaking}) {
   return (
     <div className={`flex items-start sm:items-end justify-between px-5 sm:px-8 py-4 shadow-blue-50   ${open ? 'hidden' : ''}`}>
       <div className='sm:flex sm:items-end gap-5'>
@@ -15,7 +14,7 @@ export default function NavBar({name, open, setOpen, nbrNotif, setNbrNotif, isNo
         </span>
       </div>
       <div className='flex items-center gap-3'>
-        {isNotif && <NotificationBell count={nbrNotif} setNbrNotif={setNbrNotif}/>}
+        {isNotif && <NotificationBell count={nbrNotif} setNbrNotif={setNbrNotif} isShaking={isShaking}/>}
         <LanguageSwitcher />
         <DarkMode />
         <Menu className='block sm:hidden dark:text-gray-100'
