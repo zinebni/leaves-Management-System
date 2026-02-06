@@ -223,7 +223,7 @@ const seedDatabase = async () => {
       sexe: 'Femme',
       situationFamiliale: 'marié(e)',
       nombreEnfants: 2,
-      isAccountVerified: true
+      isAccountVerified: false
     });
     console.log(`✅ HR created: ${hrEmployee.prenom} ${hrEmployee.nom}`);
 
@@ -240,7 +240,7 @@ const seedDatabase = async () => {
         department: departments[0]._id,
         sexe: 'Homme',
         situationFamiliale: 'marié(e)',
-        nombreEnfants: 1
+        nombreEnfants: 1,
       },
       {
         nom: 'ElAmrani',
@@ -253,7 +253,7 @@ const seedDatabase = async () => {
         department: departments[0]._id,
         sexe: 'Femme',
         situationFamiliale: 'célibataire',
-        nombreEnfants: 0
+        nombreEnfants: 0,
       },
       {
         nom: 'Tazi',
@@ -266,7 +266,7 @@ const seedDatabase = async () => {
         department: departments[2]._id,
         sexe: 'Homme',
         situationFamiliale: 'célibataire',
-        nombreEnfants: 0
+        nombreEnfants: 0,
       },
       {
         nom: 'Alaoui',
@@ -279,7 +279,7 @@ const seedDatabase = async () => {
         department: departments[2]._id,
         sexe: 'Femme',
         situationFamiliale: 'marié(e)',
-        nombreEnfants: 3
+        nombreEnfants: 3,
       },
       {
         nom: 'Bouazza',
@@ -292,7 +292,7 @@ const seedDatabase = async () => {
         department: departments[0]._id,
         sexe: 'Homme',
         situationFamiliale: 'célibataire',
-        nombreEnfants: 0
+        nombreEnfants: 0,
       }
     ];
 
@@ -304,7 +304,7 @@ const seedDatabase = async () => {
         password: hashedPassword,
         role: 'employe',
         organisation: organisation._id,
-        isAccountVerified: true
+        isAccountVerified: false
       });
       employees.push(employee);
     }
